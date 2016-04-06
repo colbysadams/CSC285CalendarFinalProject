@@ -11,23 +11,27 @@ package csc285finalproject;
  *
  * @author colbysadams
  */
-public class CalendarEvent {
+public abstract class CalendarEvent 
+{
     
     private MyDate startDate, endDate;
     
-    private String name;
+    private String name,description;
+    private EventType eventType;
     
     
     
-    public CalendarEvent(MyDate date, String name) {
-        this(date,null,name);
-    }
-    
-    public CalendarEvent(MyDate startDate, MyDate endDate, String name){
+    public CalendarEvent(MyDate startDate, MyDate endDate, String name, String description, EventType eventType) 
+    {
         this.startDate = startDate;
         this.endDate = endDate;
         this.name = name;
+        this.description = description;
+        this.eventType = eventType;
+        
     }
+    
+    
     
     
 }

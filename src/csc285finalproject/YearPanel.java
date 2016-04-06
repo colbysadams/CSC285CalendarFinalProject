@@ -39,6 +39,7 @@ public class YearPanel extends CalendarViewPanel implements Subject{
         
         MonthPanel monthPanel = null;
         JLabel monthLabel = null;
+        //create a month panel for each month, override the SelectedDate with the first day of the month
         for (int i = 1; i <= 12; i++){
             subPanel = new JPanel(new BorderLayout());
             
