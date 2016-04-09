@@ -5,13 +5,17 @@
  */
 package csc285finalproject;
 
+import java.awt.Component;
+import java.awt.Graphics;
+import javax.swing.Icon;
+
 
 
 /**
  *
  * @author colbysadams
  */
-public abstract class CalendarEvent 
+public abstract class CalendarEvent implements Icon
 {
     
     private MyDate startDate, endDate;
@@ -19,6 +23,7 @@ public abstract class CalendarEvent
     private String name,description;
     private EventType eventType;
     
+    public static final int diameter = 5;
     
     
     public CalendarEvent(MyDate startDate, MyDate endDate, String name, String description, EventType eventType) 
@@ -31,7 +36,20 @@ public abstract class CalendarEvent
         
     }
     
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {
+        g.setColor(eventType.COLOR);
+        g.drawOval(x, y, getIconWidth(), getIconHeight());
+    }
     
+    public int getIconWidth()
+    {
+        return diameter;    
+    }
     
+    public int getIconHeight()
+    {
+        return diameter;
+    }
     
 }

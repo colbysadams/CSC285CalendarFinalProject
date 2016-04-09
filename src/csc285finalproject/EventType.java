@@ -5,7 +5,9 @@
  */
 package csc285finalproject;
 
-import javafx.scene.paint.Color;
+import java.awt.Color;
+
+
 
 /**
  *
@@ -13,11 +15,11 @@ import javafx.scene.paint.Color;
  */
 public enum EventType {
     
-    social(Color.AQUA),
-    business(Color.BLUEVIOLET),
-    school(Color.CORAL),
-    family(Color.DARKGOLDENROD),
-    other(Color.GREENYELLOW);
+    social(Color.red),
+    business(Color.blue),
+    school(Color.green),
+    family(Color.yellow),
+    other(Color.orange);
     
     public final Color COLOR;
     
@@ -25,4 +27,7 @@ public enum EventType {
     {
         COLOR = color;
     }
+    
+    
+
 }
