@@ -316,7 +316,7 @@ public class MyDate implements Comparable<MyDate>
     
     /**
      * 
-     * easy way to manually check equality of a date without having to handle all the exceptions
+     * lightweight, easy way to manually check equality of a date without having to handle all the exceptions
      *
      * @param month
      * @param day
@@ -331,5 +331,10 @@ public class MyDate implements Comparable<MyDate>
             return false;
         
         return year == this.year;
+    }
+    
+    
+    public boolean equals(MyDate other) {
+        return this.fieldsEqual(other.month.monthNum, other.day, other.year);
     }
 }

@@ -154,4 +154,14 @@ public class SelectedDate extends MyDate implements Subject
        }
        notifyObservers();
    }
+    
+//    @Override
+//    public int hashCode(){
+//        return date.super.hashCode();
+//    }
+//    
+//    public boolean equals(Object other){
+//        return super.equals(other);
+//    }
+//    
 }

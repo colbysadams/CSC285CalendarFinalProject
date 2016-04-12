@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -30,7 +31,7 @@ import javax.swing.JTabbedPane;
  * 
  * @author colbysadams
  */
-public class ChangeDatePanel extends JPanel implements Observer
+public class MainPanel extends JPanel implements Observer
 {
     
     private SelectedDate selectedDate;
@@ -38,6 +39,8 @@ public class ChangeDatePanel extends JPanel implements Observer
     private CalendarViewPanel monthPanel;
     private CalendarViewPanel dayPanel;
     private CalendarViewPanel yearPanel;
+    
+    private EventPanel eventPanel;
     
     private JButton nextButton;
     private JButton prevButton;
@@ -48,13 +51,21 @@ public class ChangeDatePanel extends JPanel implements Observer
     
     private JTabbedPane calendarView;
     
-    public ChangeDatePanel(){
+    //tester
+    private HashMap<MyDate,AbstractCalendarEvent> events = new HashMap<>();
+    
+    
+    public MainPanel(){
         super(new BorderLayout());
+        
+        
         
         dayPanel = new DayPanel();
         weekPanel = new WeekPanel();
         monthPanel = new MonthPanel();
         yearPanel = new YearPanel();
+        
+        eventPanel = new EventPanel();
         
         calendarView = new JTabbedPane();
         
@@ -64,6 +75,7 @@ public class ChangeDatePanel extends JPanel implements Observer
         selectedDate.addObserver(weekPanel);
         selectedDate.addObserver(monthPanel);
         selectedDate.addObserver(yearPanel);
+        selectedDate.addObserver(eventPanel);
         selectedDate.addObserver(this);
         
         nextButton = new JButton("-->");
@@ -162,8 +174,10 @@ public class ChangeDatePanel extends JPanel implements Observer
         changeBox.add(nextButton,BorderLayout.NORTH);
         changeBox.add(Box.createHorizontalGlue());
         changeBox.add(labelBox);
+        
         this.add(changeBox,BorderLayout.NORTH);
         this.add(calendarView);
+        this.add(eventPanel,BorderLayout.EAST);
     }
 
     @Override
