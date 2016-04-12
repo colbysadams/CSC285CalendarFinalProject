@@ -46,13 +46,15 @@ public class MainPanel extends JPanel implements Observer
     private JButton prevButton;
     private JButton todayButton;
     
+    
     private JLabel dayOfWeek;
     private JLabel date;
     
+    private JButton eventButton;
     private JTabbedPane calendarView;
     
     //tester
-    private HashMap<MyDate,AbstractCalendarEvent> events = new HashMap<>();
+    private HashMap<MyDate,DateSquareDecorator> events = new HashMap<>();
     
     
     public MainPanel(){
@@ -81,6 +83,8 @@ public class MainPanel extends JPanel implements Observer
         nextButton = new JButton("-->");
         prevButton = new JButton("<--");
         todayButton = new JButton("Today");
+        
+        eventButton = new JButton("Create Event");
         
         nextButton.addActionListener(new ActionListener(){
 
@@ -140,6 +144,17 @@ public class MainPanel extends JPanel implements Observer
         
         });
         
+        eventButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eventPanel.setVisible(true);
+                eventButton.setEnabled(false);
+                eventButton.setVisible(false);
+            }
+        
+        });
+        
         //slap all them views in the tabbed pane
         calendarView.add("Day", dayPanel);
         calendarView.add("Week", weekPanel);
@@ -174,11 +189,15 @@ public class MainPanel extends JPanel implements Observer
         changeBox.add(nextButton,BorderLayout.NORTH);
         changeBox.add(Box.createHorizontalGlue());
         changeBox.add(labelBox);
+        changeBox.add(eventButton);
         
         this.add(changeBox,BorderLayout.NORTH);
         this.add(calendarView);
         this.add(eventPanel,BorderLayout.EAST);
+        eventPanel.setVisible(false);
     }
+    
+    
 
     @Override
     public void update() {

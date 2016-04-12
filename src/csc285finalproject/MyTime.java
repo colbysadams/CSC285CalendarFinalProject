@@ -13,13 +13,49 @@ import java.time.LocalTime;
  */
 public class MyTime {
     
-    private LocalTime start,end;
+    private LocalTime start;
+    private int hours,minutes;
     
     public MyTime(LocalTime start)
     {
         this.start = start;
-        this.end = start.plusHours(1);
+        this.hours = 1;
+        this.minutes = 0;
     }
     
+    public MyTime(){
+        start = null;
+        
+    }
+
+    /**
+     * @return the start
+     */
+    public LocalTime getStart() {
+        return start;
+    }
+
+    /**
+     * @param start the start to set
+     */
+    public void setStart(LocalTime start) {
+        this.start = start;
+    }
+
+    /**
+     * @return the end
+     */
+    public LocalTime getEnd() {
+        LocalTime end = start.plusHours(hours);
+        end.plusHours(minutes);
+        return end;
+    }
+
+    
+    
+    public void setDuration(int hours, int minutes) {
+        this.hours = hours;
+        this.minutes = minutes;
+    }
     
 }

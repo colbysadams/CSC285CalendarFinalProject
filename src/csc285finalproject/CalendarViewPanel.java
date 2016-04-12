@@ -8,6 +8,7 @@ package csc285finalproject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -29,6 +30,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
     
     boolean shortLabels;
     
+    private MasterSchedule schedule;
+    
     /**
      *
      * @param date
@@ -45,6 +48,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
         this.setPreferredSize(new Dimension(1000,600));
         
         selectedDate = date;
+        this.schedule = MasterSchedule.getInstance();
         
         this.addLabels();
         this.addDateSquares();
@@ -55,6 +59,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
      */
     public CalendarViewPanel(){
         this(SelectedDate.getInstance(),false);
+        
+        
         
     }
     
@@ -84,8 +90,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
         }
         
         
-        DateSquare dateSquare;
-        
+        AbstractDateSquare dateSquare;
+        ArrayList<CalendarEvent> events = new ArrayList();
         //displays any days from the previous month that are in the current view
         for (int i = 0; i < getBuffer(); ++i)
         {
@@ -93,6 +99,12 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                                         prevMonth.getDay(),
                                         prevMonth.getYear(),
                                         Color.lightGray);
+            if (schedule.containsDate(prevMonth)){
+                events = schedule.getDaysEvents(prevMonth);
+            
+                for (CalendarEvent event : events)
+                    dateSquare = new DateSquareDecorator(event,dateSquare);
+            }
             subPanel.add(dateSquare);
             prevMonth.nextDay();
         }
@@ -111,6 +123,12 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                                         i+getDateOffset(),
                                         selectedDate.getYear(),
                                         Color.white);
+            if (schedule.containsDate(dateSquare.getDate())){
+                events = schedule.getDaysEvents(dateSquare.getDate());
+            
+                for (CalendarEvent event : events)
+                    dateSquare = new DateSquareDecorator(event,dateSquare);
+            }
             subPanel.add(dateSquare);
             lastDay++;          
         }
@@ -130,6 +148,14 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
             dateSquare = new DateSquare(nextMonth.getMonth().getMonthNum(),
                                         nextMonth.getDay(),
                                         nextMonth.getYear(),Color.lightGray);
+            
+            if (schedule.containsDate(nextMonth)){
+                events = schedule.getDaysEvents(nextMonth);
+            
+                for (CalendarEvent event : events)
+                    dateSquare = new DateSquareDecorator(event,dateSquare);
+            }
+            
             subPanel.add(dateSquare);
             lastDay++;
             nextMonth.nextDay();

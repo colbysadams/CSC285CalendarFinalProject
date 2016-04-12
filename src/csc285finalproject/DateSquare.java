@@ -6,40 +6,41 @@
 package csc285finalproject;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 /**
  *
  * @author colbysadams
  */
-public class DateSquare extends JLabel implements MouseListener, MouseMotionListener{
+public class DateSquare extends AbstractDateSquare{
     
-    private int month,day,year;
+    private MyDate date;
+    private Color color;
     private boolean bordered;
+    
+    private final static int textHeight = 15;
+    
+    private ArrayList<DateSquareDecorator> daysEvents;
     
     
     
     public DateSquare(int month, int day, int year, Color color){
         super();
-        this.month = month;
-        this.day = day;
-        this.year = year;
+        try {
+            this.date = new MyDate(month,day,year);
+        } catch (IllegalDateException ex) {
+        }
+        this.color = color;
+        //this.daysEvents = MasterSchedule.getInstance().getDaysEvents(date);
         
-        this.setOpaque(true);
-        this.setBackground(color);
-        this.setText(String.valueOf(day));
-        this.setVerticalAlignment(SwingConstants.TOP);
+        
         this.addMouseListener(this);
         
         // if the square is the selected date, then put a border on the square
-        if (SelectedDate.getInstance().fieldsEqual(month, day, year) && (Color.white == color)){
+        if (SelectedDate.getInstance().equals(date) && (Color.white == color)){
             this.setBorder(BorderFactory.createLineBorder(Color.black));
             bordered = true;
         }
@@ -47,13 +48,31 @@ public class DateSquare extends JLabel implements MouseListener, MouseMotionList
     }
     
     @Override
+    public MyDate getDate(){
+        return date;
+    }
+    
+    @Override
+    public int getTextHeight() {
+        return textHeight;
+    }
+
+    
+    @Override
+    public void drawSquare(Graphics g,int width, int height) {
+        g.setColor(color);
+        g.fillRect(0, 0, width,height);
+        //System.out.println("Width: " + width + " Height: " + height);
+        g.setColor(Color.black);
+        g.drawString(String.valueOf(date.getDay()), 5, textHeight);
+    }
+    
+    
+    @Override
     public void mouseClicked(MouseEvent e) {
         //set the selected date to equal this date
-        try {
-            SelectedDate.getInstance().changeSelectedDate(new MyDate(month,day,year));
-        } catch (IllegalDateException ex) {
-            Logger.getLogger(DateSquare.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+        SelectedDate.getInstance().changeSelectedDate(date);
         System.out.println("Selecting Date: " + SelectedDate.getInstance());
 
     }
@@ -75,19 +94,4 @@ public class DateSquare extends JLabel implements MouseListener, MouseMotionList
             this.setBorder(BorderFactory.createEmptyBorder());
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-    }
-    
-        @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
 }

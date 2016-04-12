@@ -337,4 +337,33 @@ public class MyDate implements Comparable<MyDate>
     public boolean equals(MyDate other) {
         return this.fieldsEqual(other.month.monthNum, other.day, other.year);
     }
+    
+    public String getMapString(boolean month, boolean day, boolean year, boolean week){
+        if (week)
+            return this.getDayOfWeek().name;
+            
+        String s = "";
+        if (month){
+            s += this.month.name;
+        }
+        else{
+            s += "MM";
+        }
+        s += "_";
+        if (day){
+            s += this.day;
+        }
+        else{
+            s += "DD";
+        }
+        s += "_";
+        if (year) {
+            s += this.year;
+        }
+        else{
+            s += "YYYY";
+        }
+        //System.out.println("date: " + "mapString: " + s);
+        return s;
+    }
 }

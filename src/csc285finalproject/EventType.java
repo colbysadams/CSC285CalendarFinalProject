@@ -14,17 +14,18 @@ import java.awt.Color;
  * @author colbysadams
  */
 public enum EventType {
+    work("Work",Color.blue),
+    family("Family",Color.yellow),
+    school("School",Color.green),
+    social("Social",Color.red),
+    other("Other",Color.orange);
     
-    social(Color.red),
-    business(Color.blue),
-    school(Color.green),
-    family(Color.yellow),
-    other(Color.orange);
     
     public final Color COLOR;
-    
-    EventType(Color color) 
+    public final String TYPE;
+    EventType(String name, Color color) 
     {
+        TYPE = name;
         COLOR = color;
     }
     
