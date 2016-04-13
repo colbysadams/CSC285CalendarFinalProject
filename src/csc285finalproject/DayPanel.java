@@ -35,4 +35,6 @@ public class DayPanel extends CalendarViewPanel{
         return SelectedDate.getInstance().getDay()-1;
     }
     
+
+    
 }

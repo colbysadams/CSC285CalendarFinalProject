@@ -5,13 +5,14 @@
  */
 package csc285finalproject;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 /**
  *
  * @author colbysadams
  */
-public class MyTime {
+public class MyTime implements Serializable{
     
     private LocalTime start;
     private int hours,minutes;

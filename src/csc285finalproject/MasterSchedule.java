@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,10 +59,10 @@ public class MasterSchedule implements Serializable{
                 schedule = (MasterSchedule)obj;
         } 
         catch (IOException ex) {
-            Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
+            
         } 
         catch (ClassNotFoundException ex) {
-            Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
+            
         } 
         finally {
             try {
@@ -150,8 +149,23 @@ public class MasterSchedule implements Serializable{
             for (int i = 0; i < e.size(); ++i) {
                 daysEvents.add(e.get(i));
             }
-            
-            
+        }
+        if (date.getDay() == date.getDaysInMonth() && date.getDay() < 31){
+            //System.out.println("LastDayOf Month: " + date);
+            MyDate sample = null;
+            try {
+                sample = new MyDate(1,date.getDay()+1,date.getYear());
+            } catch (IllegalDateException ex) {System.out.println("we messing up");}
+            while (sample.getMonth() == Month.jan){
+                if (monthlyEventMap.containsKey(sample)){
+                    e = monthlyEventMap.get(sample);
+                    //System.out.println("monthly: e" + e + "Date" +date);
+                    for (int i = 0; i < e.size(); ++i) {
+                        daysEvents.add(e.get(i));
+                    }
+                }
+                sample.nextDay();
+            }
         }
         if (weeklyEventMap.containsKey(date)){
             e = weeklyEventMap.get(date);
@@ -167,6 +181,19 @@ public class MasterSchedule implements Serializable{
     }
     
     public boolean hasEventsOn(MyDate date) {
+        if (date.getDay() == date.getDaysInMonth()){
+            MyDate sample = null;
+            try {
+                sample = new MyDate(1,date.getDay(),date.getYear());
+            } catch (IllegalDateException ex) {
+                Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            while (sample.getMonth() == Month.jan){
+                if (monthlyEventMap.containsKey(sample))
+                    return true;
+                sample.nextDay();
+            }
+        }
         return (oneTimeEventMap.containsKey(date) 
                 || yearlyEventMap.containsKey(date) 
                 || monthlyEventMap.containsKey(date)

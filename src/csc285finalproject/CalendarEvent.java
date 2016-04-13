@@ -30,11 +30,8 @@ public class CalendarEvent implements Serializable{
         this.name = name;
         this.eventType = eventType;
 
-//        this.description = null;
-//        this.description = null;
-//        this.location = null;
-//
-//        this.time = new MyTime();
+
+        this.time = new MyTime();
       
     }
     

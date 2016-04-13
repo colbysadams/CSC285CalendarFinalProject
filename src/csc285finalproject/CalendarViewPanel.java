@@ -103,7 +103,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                 events = schedule.getDaysEvents(prevMonth);
             
                 for (CalendarEvent event : events)
-                    dateSquare = new DateSquareDecorator(event,dateSquare);
+                    dateSquare = decorateDateSquare(event,dateSquare);
             }
             subPanel.add(dateSquare);
             prevMonth.nextDay();
@@ -127,7 +127,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                 events = schedule.getDaysEvents(dateSquare.getDate());
             
                 for (CalendarEvent event : events)
-                    dateSquare = new DateSquareDecorator(event,dateSquare);
+                    dateSquare = decorateDateSquare(event,dateSquare);
             }
             subPanel.add(dateSquare);
             lastDay++;          
@@ -153,7 +153,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                 events = schedule.getDaysEvents(nextMonth);
             
                 for (CalendarEvent event : events)
-                    dateSquare = new DateSquareDecorator(event,dateSquare);
+                    dateSquare = decorateDateSquare(event,dateSquare);
             }
             
             subPanel.add(dateSquare);
@@ -162,8 +162,14 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
             
         }
 
+        
 
     }
+    
+    public AbstractDateSquare decorateDateSquare(CalendarEvent event, AbstractDateSquare dateSquare) {
+        return new DateSquareDecorator(event,dateSquare);
+    }
+
     
     /**
      *

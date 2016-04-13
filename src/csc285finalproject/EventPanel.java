@@ -6,13 +6,17 @@
 package csc285finalproject;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,9 +44,23 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
 
     private JButton eventCreatorButton;
 
-    private String[] comboBoxStrings = new String[]{"Never", "Yearly", "Monthly", "Weekly"};
+    private String[] repeatBoxStrings = new String[]{"Never", "Yearly", "Monthly", "Weekly"};
+    
     private JComboBox repeatComboBox;
+               
+    private JPanel timePanel;
+    private Box timeBox;
 
+    private JTextField hourTextField, minuteTextField;
+    
+    private JCheckBox hasTimeBox;
+    
+    private JComboBox hourCombo, minuteCombo;
+    
+    //private int comboBoxWidth = 70;
+    
+    private ArrayList<String> clockHourStrings,clockMinuteStrings;
+    
     private int textFieldSize = 10;
 
     public EventPanel(JButton panelButton) {
@@ -50,10 +68,59 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
 
         this.eventCreatorButton = panelButton;
 
+        clockHourStrings = new ArrayList(12);
+        clockMinuteStrings = new ArrayList(60);
+        String s = "0";
+        for (int i = 0; i < 12; ++i) {
+            clockHourStrings.add(String.valueOf(i+1));
+            
+                
+        }
+        s = "0";
+        for (int i = 0; i < 60; ++i) {
+            clockMinuteStrings.add(s+String.valueOf(i));
+            if (i == 9)
+                s= "";
+        }
+        
+        
+        hourCombo = new JComboBox(clockHourStrings.toArray());
+        //hourCombo.setPreferredSize(new Dimension(comboBoxWidth, hourCombo.getPreferredSize().height));
+        minuteCombo = new JComboBox(clockMinuteStrings.toArray());
+        //minuteCombo.setPreferredSize(new Dimension(comboBoxWidth, hourCombo.getPreferredSize().height));
+        hasTimeBox = new JCheckBox("All Day Event");
+        
+        hasTimeBox.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (hasTimeBox.isSelected())
+                    timePanel.setVisible(false);
+                else
+                    timePanel.setVisible(true);
+                
+            }
+        });
+        
+        Box allDayBox = Box.createHorizontalBox();
+        allDayBox.add(hasTimeBox);
+        allDayBox.add(Box.createHorizontalGlue());
+        JCheckBox amCheck = new JCheckBox("AM");
+        
+        timePanel = new JPanel(new GridLayout(0,1));
+        
+        timeBox = Box.createHorizontalBox();
+        timeBox.add(Box.createHorizontalGlue());
+        timeBox.add(hourCombo);
+        timeBox.add(new JLabel(":"));
+        timeBox.add(minuteCombo);
+        timeBox.add(Box.createHorizontalGlue());
+        
+        timePanel.add(timeBox);
+        timePanel.add(amCheck);
         subPanel = new JPanel();
         subPanel.setLayout(new BoxLayout(subPanel,BoxLayout.Y_AXIS));
         subPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        //subPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         saveEventButton = new JButton("Save");
         saveEventButton.addActionListener(new ActionListener() {
@@ -81,6 +148,16 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
                 if (!eventDescriptionArea.getText().equals("")) {
                     newEvent.setDescription(eventDescriptionArea.getText());
                 }
+                
+                if (!hasTimeBox.isSelected()){
+                    if (amCheck.isSelected())
+                        newEvent.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex()+1)%12, 
+                                                                 minuteCombo.getSelectedIndex())));
+                    else
+                        newEvent.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+12, 
+                                                                 minuteCombo.getSelectedIndex())));
+                }
+                
 
                 MasterSchedule.getInstance().addEventToSchedule(SelectedDate.getInstance(),
                         newEvent,
@@ -96,7 +173,7 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
         eventNameField = new JTextField(textFieldSize);
         eventLocationField = new JTextField(textFieldSize);
 
-        repeatComboBox = new JComboBox(comboBoxStrings);
+        repeatComboBox = new JComboBox(repeatBoxStrings);
 
         eventTypes = new ButtonGroup();
         eventTypeRadio = new JRadioButton[]{new JRadioButton(EventType.work.TYPE),
@@ -121,6 +198,8 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
         
         subPanel.add(createLabel("Event Name:"));
         subPanel.add(eventNameField);
+        subPanel.add(allDayBox);
+        subPanel.add(timePanel);
         subPanel.add(createLabel("Location:"));
         subPanel.add(eventLocationField);
         subPanel.add(createLabel("Description:"));
@@ -134,6 +213,7 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
             eventTypes.add(eventTypeRadio[i]);
             radioPanel.add(eventTypeRadio[i]);
         }
+        hasTimeBox.doClick();
         subPanel.add(radioPanel);
         buttonBox.add(saveEventButton);
         buttonBox.add(cancelButton);
@@ -157,6 +237,8 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
         eventDescriptionArea.setText("");
         repeatComboBox.setSelectedIndex(0);
         eventTypeRadio[0].setSelected(true);
+        if (!hasTimeBox.isSelected())
+            hasTimeBox.doClick();
         this.setVisible(false);
         eventCreatorButton.setVisible(true);
     }
