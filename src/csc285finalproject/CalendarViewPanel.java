@@ -99,9 +99,10 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                                         prevMonth.getDay(),
                                         prevMonth.getYear(),
                                         Color.lightGray);
-            if (schedule.hasEventsOn(prevMonth)){
+            if (schedule.hasEventsOn(prevMonth))
+            {
                 events = schedule.getDaysEvents(prevMonth);
-            
+                
                 for (CalendarEvent event : events)
                     dateSquare = decorateDateSquare(event,dateSquare);
             }
@@ -113,7 +114,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
         int lastDay = getBuffer();
         
         // displays all the days belonging to the current month in the view
-        for (int i = 1; i <= getDaysDisplayed(); ++i) {
+        for (int i = 1; i <= getDaysDisplayed(); ++i) 
+        {
             //when creating week panels, make sure you only create 7 days
             if (i+getDateOffset() > selectedDate.getDaysInMonth() || 
                     ((i+getBuffer() > getDaysDisplayed() && getDaysDisplayed() == 7))){
@@ -167,6 +169,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
     }
     
     public AbstractDateSquare decorateDateSquare(CalendarEvent event, AbstractDateSquare dateSquare) {
+        if (shortLabels)
+            return new YearSquareDecorator(event,dateSquare);
         return new DateSquareDecorator(event,dateSquare);
     }
 

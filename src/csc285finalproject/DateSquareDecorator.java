@@ -14,22 +14,20 @@ import javax.swing.BorderFactory;
  *
  * @author colbysadams
  */
-public class DateSquareDecorator extends AbstractDateSquare {
+public class DateSquareDecorator extends AbstractDateSquareDecorator {
 
-    private CalendarEvent event;
-    private AbstractDateSquare square;
+    
     private int textHeight;
     private final static int offset = 15;
     private final static int diameter = 10;
+    
 
     //private MyDate date;
 
     DateSquareDecorator(CalendarEvent event, AbstractDateSquare square) {
-        this.event = event;
-        this.square = square;
-        this.setOpaque(false);
-        this.addMouseListener(this);
+        super(event,square);
         this.textHeight = square.getTextHeight() + offset;
+        
 
     }
 
@@ -37,42 +35,36 @@ public class DateSquareDecorator extends AbstractDateSquare {
         return textHeight;
     }
 
-    public void drawSquare(Graphics g, int width, int height) {
-        square.drawSquare(g, width, height);
+    public void drawSquare(Graphics g, int x, int y,int width, int height) {
+        getSquare().drawSquare(g, x,y,width, height);
         this.setOpaque(false);
-        g.setColor(event.getEventType().COLOR);
-        g.fillOval(5, textHeight - diameter, diameter, diameter);
+        g.setColor(getEvent().getEventType().COLOR);
+        g.fillRect(5, textHeight - diameter, diameter, diameter);
         g.setColor(Color.black);
-        g.drawString(event.getName(), 17, textHeight);
+        g.drawString(getEvent().getName(), 17, textHeight);
 
-        if (square.getDate().equals(SelectedDate.getInstance())) {
-            this.setBorder(BorderFactory.createLineBorder(Color.black));
-        }
+        super.drawSquare(g, x, y, width, height);
     }
 
-    public MyDate getDate() {
-        return square.getDate();
-    }
+    
+    
+    
+//    @Override
+//    public void mouseEntered(MouseEvent e) {
+//        //yellow border on mouse over
+//        if (!square.getDate().equals(SelectedDate.getInstance()))
+//            this.setBorder(BorderFactory.createLoweredBevelBorder());
+//    }
+//
+//    @Override
+//    public void mouseExited(MouseEvent e) {
+//        //if square was bordered, replace the border
+//        if (!square.getDate().equals(SelectedDate.getInstance())) 
+//            this.setBorder(BorderFactory.createEmptyBorder());
+//        
+//    }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        square.mouseClicked(e);
-    }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        //yellow border on mouse over
-        this.setBorder(BorderFactory.createLineBorder(Color.yellow));
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        //if square was bordered, replace the border
-        if (square.getDate().equals(SelectedDate.getInstance())) {
-            this.setBorder(BorderFactory.createLineBorder(Color.black));
-        } else {
-            this.setBorder(BorderFactory.createEmptyBorder());
-        }
-    }
+    
 
 }

@@ -4,11 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/CalendarEvent.java</file>
-            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MasterSchedule.java</file>
-            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/EventPanel.java</file>
-            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MyDate.java</file>
             <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/CalendarViewPanel.java</file>
             <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MyTime.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/DayPanel.java</file>
         </group>
     </open-files>
 </project-private>

@@ -21,7 +21,7 @@ public class DateSquare extends AbstractDateSquare{
     private Color color;
     private boolean bordered;
     
-    private final static int textHeight = 15;
+    
     
     private ArrayList<DateSquareDecorator> daysEvents;
     
@@ -40,10 +40,10 @@ public class DateSquare extends AbstractDateSquare{
         this.addMouseListener(this);
         
         // if the square is the selected date, then put a border on the square
-        if (SelectedDate.getInstance().equals(date) && (Color.white == color)){
-            this.setBorder(BorderFactory.createLineBorder(Color.black));
-            bordered = true;
-        }
+//        if (SelectedDate.getInstance().equals(date) && (Color.white == color)){
+//            this.setBorder(BorderFactory.createLineBorder(Color.black));
+//            bordered = true;
+        //}
         
     }
     
@@ -54,44 +54,49 @@ public class DateSquare extends AbstractDateSquare{
     
     @Override
     public int getTextHeight() {
-        return textHeight;
+        return textOffset;
     }
 
     
     @Override
-    public void drawSquare(Graphics g,int width, int height) {
+    public void drawSquare(Graphics g,int x, int y, int width, int height) {
         g.setColor(color);
-        g.fillRect(0, 0, width,height);
+        g.fillRect(x, y, width, height);
         //System.out.println("Width: " + width + " Height: " + height);
         g.setColor(Color.black);
-        g.drawString(String.valueOf(date.getDay()), 5, textHeight);
+        g.drawString(String.valueOf(date.getDay()), 5, textOffset);
+        super.drawSquare(g, x, y, width, height);
     }
     
     
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        //set the selected date to equal this date
-       
-        SelectedDate.getInstance().changeSelectedDate(date);
-        System.out.println("Selecting Date: " + SelectedDate.getInstance());
+//    @Override
+//    public void mouseClicked(MouseEvent e) {
+//        //set the selected date to equal this date
+//       
+//        SelectedDate.getInstance().changeSelectedDate(date);
+//        System.out.println("Selecting Date: " + SelectedDate.getInstance());
+//
+//    }
+//
 
-    }
 
+//    @Override
+//    public void mouseEntered(MouseEvent e) {
+//        //yellow border on mouse over
+//        if (!bordered)
+//            this.setBorder(BorderFactory.createLoweredBevelBorder());
+//    }
+//
+//    @Override
+//    public void mouseExited(MouseEvent e) {
+//        //if square was bordered, replace the border
+//        if (!bordered)
+//            this.setBorder(BorderFactory.createEmptyBorder());
+//    }
 
+   
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        //yellow border on mouse over
-        this.setBorder(BorderFactory.createLineBorder(Color.yellow));
-    }
+    
 
-    @Override
-    public void mouseExited(MouseEvent e) {
-        //if square was bordered, replace the border
-        if (bordered)
-            this.setBorder(BorderFactory.createLineBorder(Color.black));
-        else
-            this.setBorder(BorderFactory.createEmptyBorder());
-    }
 
 }

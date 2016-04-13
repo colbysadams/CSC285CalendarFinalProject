@@ -6,7 +6,9 @@
 package csc285finalproject;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.Date;
 
 /**
  *
@@ -57,6 +59,15 @@ public class MyTime implements Serializable{
     public void setDuration(int hours, int minutes) {
         this.hours = hours;
         this.minutes = minutes;
+    }
+    
+    public String toString(){
+        if (start == null)
+            
+            return "";
+//        String s;
+//        hour int = S
+        return start.toString();
     }
     
 }

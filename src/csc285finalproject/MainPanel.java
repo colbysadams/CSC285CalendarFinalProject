@@ -50,24 +50,25 @@ public class MainPanel extends JFrame implements Observer
     private JLabel dayOfWeek;
     private JLabel date;
     
-    private JButton eventButton;
+    private JButton createEventButton, editEventButton;
     private JTabbedPane calendarView;
     
     //tester
-    private HashMap<MyDate,DateSquareDecorator> events = new HashMap<>();
+    //private HashMap<MyDate,DateSquareDecorator> events = new HashMap<>();
     
     
     public MainPanel(String name){
         super(name);
         
-        eventButton = new JButton("Create Event");
+        createEventButton = new JButton("Create New Event");
+        editEventButton = new JButton("Edit Selected Event");
         
         dayPanel = new DayPanel();
         weekPanel = new WeekPanel();
         monthPanel = new MonthPanel();
         yearPanel = new YearPanel();
         
-        eventPanel = new EventPanel(eventButton);
+        eventPanel = new EventPanel(createEventButton);
         
         calendarView = new JTabbedPane();
         
@@ -144,13 +145,13 @@ public class MainPanel extends JFrame implements Observer
         
         });
         
-        eventButton.addActionListener(new ActionListener(){
+        createEventButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 eventPanel.setVisible(true);
                 //eventButton.setEnabled(false);
-                eventButton.setVisible(false);
+                createEventButton.setVisible(false);
             }
         
         });
@@ -180,6 +181,11 @@ public class MainPanel extends JFrame implements Observer
         date.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         labelBox.add(date);
         
+        Box eventBox = Box.createHorizontalBox();
+        eventBox.add(Box.createHorizontalGlue());
+        eventBox.add(editEventButton);
+        eventBox.add(createEventButton);
+        
         //box holding all them buttons
         Box changeBox = Box.createHorizontalBox();
         changeBox.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -189,11 +195,12 @@ public class MainPanel extends JFrame implements Observer
         changeBox.add(nextButton,BorderLayout.NORTH);
         changeBox.add(Box.createHorizontalGlue());
         changeBox.add(labelBox);
-        changeBox.add(eventButton);
+        //changeBox.add(eventButton);
         //this.add(eventButton,BorderLayout.SOUTH);
         this.getContentPane().add(changeBox,BorderLayout.NORTH);
         this.getContentPane().add(calendarView);
         this.getContentPane().add(eventPanel,BorderLayout.EAST);
+        this.getContentPane().add(eventBox,BorderLayout.SOUTH);
         eventPanel.setVisible(false);
     }
     

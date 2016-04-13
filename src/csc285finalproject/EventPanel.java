@@ -6,7 +6,6 @@
 package csc285finalproject;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -154,7 +153,7 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
                         newEvent.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex()+1)%12, 
                                                                  minuteCombo.getSelectedIndex())));
                     else
-                        newEvent.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+12, 
+                        newEvent.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+13, 
                                                                  minuteCombo.getSelectedIndex())));
                 }
                 

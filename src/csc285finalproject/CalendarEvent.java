@@ -115,4 +115,34 @@ public class CalendarEvent implements Serializable{
         this.time = time;
     }
     
+    
+    public String getEventHTML(){
+        
+        String s;
+        s = "<html><body>";
+        s+= "<p style=font-size:120%;>";
+        if (time != null)
+            s+= "&nbsp;" +time;
+        s+= "&nbsp;&nbsp;" + name +"&nbsp;&nbsp;";
+        //s+= "<style="
+        s+= "</p>";
+        
+        s+= "<blockquote style=color:rgb(" + eventType.COLOR.getRed()+ ","
+                                       + eventType.COLOR.getGreen() + ","
+                                       + eventType.COLOR.getBlue()
+                                       + ")>";
+        s+= eventType.TYPE + "</blockquote>";
+        if (location != null){
+            s+= "<p><b>Location: </b></p>";
+            s+= "<blockquote>" + location + "</blockquote>";
+        }
+        if (description != null){
+            s+= "<p><b>Description: </b></p>";
+            s+= "<blockquote>" + description + "</blockquote>";
+        }
+        
+        s+="</body></html>";
+        return s;
+    }
+    
 }
