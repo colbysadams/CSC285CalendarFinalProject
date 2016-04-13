@@ -5,18 +5,25 @@
  */
 package csc285finalproject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author colbysadams
  */
-public class MasterSchedule {
+public class MasterSchedule implements Serializable{
     
-    private static MasterSchedule schedule = new MasterSchedule();;
+    private static MasterSchedule schedule;
     
     private EventMap oneTimeEventMap;
     
@@ -26,23 +33,56 @@ public class MasterSchedule {
     
     private EventMap weeklyEventMap;
     
-    //public static final int ONETIME = 0,YEARLY = 1,MONTHLY = 2;
+    public static final int ONETIME = 0,YEARLY = 1,MONTHLY = 2,WEEKLY = 3;
     
     private MasterSchedule(){
         
-        oneTimeEventMap = new EventMap(true,true,true,false);
-    
-        monthlyEventMap = new EventMap(false,true,false,false);
-    
-        yearlyEventMap  = new EventMap(true,true,false,false);
         
+        oneTimeEventMap = new EventMap(true,true,true,false);
+        monthlyEventMap = new EventMap(false,true,false,false);
+        yearlyEventMap  = new EventMap(true,true,false,false);
         weeklyEventMap  = new EventMap(false,false,false,true);
         
         generateSampleEvents();
         
     }
     
+    private static void retrieveSavedSchedule(){
+        ObjectInputStream obj_in = null;
+        try {
+            // Read from disk using FileInputStream
+            FileInputStream f_in = new FileInputStream("calendar.ser");
+            // Read object using ObjectInputStream
+            obj_in = new ObjectInputStream (f_in);
+            // Read an object
+            Object obj = obj_in.readObject();
+            if (obj instanceof MasterSchedule)
+                schedule = (MasterSchedule)obj;
+        } 
+        catch (IOException ex) {
+            Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        catch (ClassNotFoundException ex) {
+            Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        finally {
+            try {
+                obj_in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }
+    
+    
     public static MasterSchedule getInstance() {
+        
+        if (schedule == null)
+            retrieveSavedSchedule();
+        if (schedule == null)
+            schedule = new MasterSchedule();
+    
         
         return schedule;
         
@@ -52,16 +92,36 @@ public class MasterSchedule {
         try {
             
             yearlyEventMap.put(new MyDate(3,15,2016), new CalendarEvent("Colby's Birthday",EventType.family));
-            monthlyEventMap.put(new MyDate(3,31,2016),new CalendarEvent("Yaayyyyy",EventType.social));
+            monthlyEventMap.put(new MyDate(3,31,2016),new CalendarEvent("MONTHLY BUGG",EventType.social));
             monthlyEventMap.put(new MyDate(1,1,2016), new CalendarEvent("Pay Bills",EventType.other));
             oneTimeEventMap.put(new MyDate(9,7,2016), new CalendarEvent("Emily's Birthday",EventType.family));
-            yearlyEventMap.put(new MyDate(4,1,2015),  new CalendarEvent("April Fools Day", EventType.social));
+            yearlyEventMap.put(new MyDate(4,1,2015),  new CalendarEvent("April Fools Day", EventType.holiday));
             yearlyEventMap.put(new MyDate(3,16,2016), new CalendarEvent("Leroy's Birthday",EventType.family)); 
             weeklyEventMap.put(new MyDate(3,16,2016), new CalendarEvent("HUMP DAYYYYY", EventType.social));
+            yearlyEventMap.put(new MyDate(12,25,2999), new CalendarEvent("Jesus's Birthday", EventType.holiday));
         } catch (IllegalDateException ex) {
             
         }
         
+    }
+    
+    public void addEventToSchedule(MyDate date, CalendarEvent event, int repeating) {
+        switch (repeating) {
+            case 0:
+                oneTimeEventMap.put(date, event);
+                break;
+            case 1:
+                yearlyEventMap.put(date, event);
+                break;
+            case 2:
+                monthlyEventMap.put(date, event);
+                break;
+            case 3:
+                weeklyEventMap.put(date, event);
+                break;
+            case 4:
+                
+        }
     }
     
     public ArrayList<CalendarEvent> getDaysEvents(MyDate date) {
@@ -106,16 +166,16 @@ public class MasterSchedule {
         
     }
     
-    public boolean containsDate(MyDate date) {
+    public boolean hasEventsOn(MyDate date) {
         return (oneTimeEventMap.containsKey(date) 
                 || yearlyEventMap.containsKey(date) 
-                || monthlyEventMap.containsKey(date))
-                || weeklyEventMap.containsKey(date);
+                || monthlyEventMap.containsKey(date)
+                || weeklyEventMap.containsKey(date));
     }
     
     
     
-    private class EventMap<CalendarEvent>
+    private class EventMap<CalendarEvent> implements Serializable
     {
         
         private HashMap<String,ArrayList<CalendarEvent>> eventMap;

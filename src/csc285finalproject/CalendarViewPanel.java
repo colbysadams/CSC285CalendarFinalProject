@@ -99,7 +99,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                                         prevMonth.getDay(),
                                         prevMonth.getYear(),
                                         Color.lightGray);
-            if (schedule.containsDate(prevMonth)){
+            if (schedule.hasEventsOn(prevMonth)){
                 events = schedule.getDaysEvents(prevMonth);
             
                 for (CalendarEvent event : events)
@@ -123,7 +123,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                                         i+getDateOffset(),
                                         selectedDate.getYear(),
                                         Color.white);
-            if (schedule.containsDate(dateSquare.getDate())){
+            if (schedule.hasEventsOn(dateSquare.getDate())){
                 events = schedule.getDaysEvents(dateSquare.getDate());
             
                 for (CalendarEvent event : events)
@@ -149,7 +149,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                                         nextMonth.getDay(),
                                         nextMonth.getYear(),Color.lightGray);
             
-            if (schedule.containsDate(nextMonth)){
+            if (schedule.hasEventsOn(nextMonth)){
                 events = schedule.getDaysEvents(nextMonth);
             
                 for (CalendarEvent event : events)

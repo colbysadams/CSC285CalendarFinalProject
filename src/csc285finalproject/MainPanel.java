@@ -13,8 +13,8 @@ import java.util.HashMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 
@@ -31,7 +31,7 @@ import javax.swing.JTabbedPane;
  * 
  * @author colbysadams
  */
-public class MainPanel extends JPanel implements Observer
+public class MainPanel extends JFrame implements Observer
 {
     
     private SelectedDate selectedDate;
@@ -57,17 +57,17 @@ public class MainPanel extends JPanel implements Observer
     private HashMap<MyDate,DateSquareDecorator> events = new HashMap<>();
     
     
-    public MainPanel(){
-        super(new BorderLayout());
+    public MainPanel(String name){
+        super(name);
         
-        
+        eventButton = new JButton("Create Event");
         
         dayPanel = new DayPanel();
         weekPanel = new WeekPanel();
         monthPanel = new MonthPanel();
         yearPanel = new YearPanel();
         
-        eventPanel = new EventPanel();
+        eventPanel = new EventPanel(eventButton);
         
         calendarView = new JTabbedPane();
         
@@ -84,7 +84,7 @@ public class MainPanel extends JPanel implements Observer
         prevButton = new JButton("<--");
         todayButton = new JButton("Today");
         
-        eventButton = new JButton("Create Event");
+        
         
         nextButton.addActionListener(new ActionListener(){
 
@@ -149,7 +149,7 @@ public class MainPanel extends JPanel implements Observer
             @Override
             public void actionPerformed(ActionEvent e) {
                 eventPanel.setVisible(true);
-                eventButton.setEnabled(false);
+                //eventButton.setEnabled(false);
                 eventButton.setVisible(false);
             }
         
@@ -190,10 +190,10 @@ public class MainPanel extends JPanel implements Observer
         changeBox.add(Box.createHorizontalGlue());
         changeBox.add(labelBox);
         changeBox.add(eventButton);
-        
-        this.add(changeBox,BorderLayout.NORTH);
-        this.add(calendarView);
-        this.add(eventPanel,BorderLayout.EAST);
+        //this.add(eventButton,BorderLayout.SOUTH);
+        this.getContentPane().add(changeBox,BorderLayout.NORTH);
+        this.getContentPane().add(calendarView);
+        this.getContentPane().add(eventPanel,BorderLayout.EAST);
         eventPanel.setVisible(false);
     }
     

@@ -5,11 +5,13 @@
  */
 package csc285finalproject;
 
+import java.io.Serializable;
+
 /**
  *
  * @author colbysadams
  */
-public class CalendarEvent{
+public class CalendarEvent implements Serializable{
 
     
 
@@ -60,33 +62,33 @@ public class CalendarEvent{
         this.name = name;
     }
 
-//    /**
-//     * @return the description
-//     */
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    /**
-//     * @param description the description to set
-//     */
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
-//
-//    /**
-//     * @return the location
-//     */
-//    public String getLocation() {
-//        return location;
-//    }
-//
-//    /**
-//     * @param location the location to set
-//     */
-//    public void setLocation(String location) {
-//        this.location = location;
-//    }
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the location
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     /**
      * @return the eventType
@@ -101,19 +103,19 @@ public class CalendarEvent{
     public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
-//
-//    /**
-//     * @return the time
-//     */
-//    public MyTime getTime() {
-//        return time;
-//    }
-//
-//    /**
-//     * @param time the time to set
-//     */
-//    public void setTime(MyTime time) {
-//        this.time = time;
-//    }
+
+    /**
+     * @return the time
+     */
+    public MyTime getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(MyTime time) {
+        this.time = time;
+    }
     
 }
