@@ -8,11 +8,9 @@ package csc285finalproject;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -34,8 +32,8 @@ public class YearPanel extends CalendarViewPanel implements Subject{
     ArrayList<MonthPanel> monthPanels;
     
     public YearPanel(){
-        super();
         
+        getSubPanel().removeAll();
         
         getSubPanel().setLayout(new GridLayout(0,4,10,10));
         monthPanels = new ArrayList();
@@ -72,6 +70,7 @@ public class YearPanel extends CalendarViewPanel implements Subject{
     
     @Override
     public void addDateSquares(){
+        
         
     }
     
@@ -113,8 +112,8 @@ public class YearPanel extends CalendarViewPanel implements Subject{
     }
     @Override
     public void update(){
-        super.update();
-        addDateSquares();
+        //super.update();
+        //addDateSquares();
         notifyObservers();
     }
 

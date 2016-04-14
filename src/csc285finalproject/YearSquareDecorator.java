@@ -23,7 +23,7 @@ public class YearSquareDecorator extends AbstractDateSquareDecorator{
         g.setColor(super.getColor());
         g.drawRect(x, y, width-1, height-1);
         getSquare().drawSquare(g,x+1,y+1,width-2,height-2);
-        super.drawSquare(g, x, y, width, height);
+        
         
     }
 

@@ -1,7 +1,6 @@
 package csc285finalproject;
 
 
-import csc285finalproject.AbstractDateSquare;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -38,10 +37,7 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare{
         return event;
     }
 
-    public void drawSquare(Graphics g, int x, int y,int width, int height) {
-
-        super.drawSquare(g, x, y, width, height);
-    }
+    
 
     public MyDate getDate() {
         return square.getDate();

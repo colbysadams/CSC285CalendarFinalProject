@@ -7,15 +7,14 @@ package csc285finalproject;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 
 /**
  *
  * @author colbysadams
  */
 public class DateSquare extends AbstractDateSquare{
+    
     
     private MyDate date;
     private Color color;
@@ -65,34 +64,10 @@ public class DateSquare extends AbstractDateSquare{
         //System.out.println("Width: " + width + " Height: " + height);
         g.setColor(Color.black);
         g.drawString(String.valueOf(date.getDay()), 5, textOffset);
-        super.drawSquare(g, x, y, width, height);
+        
     }
     
     
-//    @Override
-//    public void mouseClicked(MouseEvent e) {
-//        //set the selected date to equal this date
-//       
-//        SelectedDate.getInstance().changeSelectedDate(date);
-//        System.out.println("Selecting Date: " + SelectedDate.getInstance());
-//
-//    }
-//
-
-
-//    @Override
-//    public void mouseEntered(MouseEvent e) {
-//        //yellow border on mouse over
-//        if (!bordered)
-//            this.setBorder(BorderFactory.createLoweredBevelBorder());
-//    }
-//
-//    @Override
-//    public void mouseExited(MouseEvent e) {
-//        //if square was bordered, replace the border
-//        if (!bordered)
-//            this.setBorder(BorderFactory.createEmptyBorder());
-//    }
 
    
 

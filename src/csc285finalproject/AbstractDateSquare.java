@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 /**
@@ -21,18 +20,25 @@ public abstract class AbstractDateSquare extends JComponent implements MouseList
     
     protected final static int textOffset = 15;
     
+    private MyDate date;
+    
+    
+    
     @Override
     public void paintComponent(Graphics g){
         drawSquare(g,0,0,getWidth(),getHeight());
-    }
-    
-    public abstract MyDate getDate();
-    
-    public void drawSquare(Graphics g, int x, int y, int width, int height){
-        if (getDate().equals(SelectedDate.getInstance())) {
-            this.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        if (getDate().equals(SelectedDate.getInstance())){
+            g.setColor(Color.black);
+            g.drawRect(0,0,getWidth(),getHeight());
+            g.drawRect(1,1,getWidth()-2,getHeight()-2);
         }
     }
+    
+    public MyDate getDate(){
+        return date;
+    }
+    
+    public abstract void drawSquare(Graphics g, int x, int y, int width, int height);
     
     public abstract int getTextHeight();
     
@@ -52,16 +58,18 @@ public abstract class AbstractDateSquare extends JComponent implements MouseList
         @Override
     public void mouseEntered(MouseEvent e) {
         //yellow border on mouse over
-        if (!getDate().equals(SelectedDate.getInstance()))
-            setBorder(BorderFactory.createLoweredBevelBorder());
+//        System.out.println("mouseEntered" );
+//        ;
+//        if (!getDate().equals(SelectedDate.getInstance()))
+//            setBorder(BorderFactory.createLoweredBevelBorder());
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         //if square was bordered, replace the border
-        if (!getDate().equals(SelectedDate.getInstance())) 
-            setBorder(BorderFactory.createEmptyBorder());
-        
+//        if (!getDate().equals(SelectedDate.getInstance())) 
+//            setBorder(BorderFactory.createEmptyBorder());
+//        
     }
     
     @Override

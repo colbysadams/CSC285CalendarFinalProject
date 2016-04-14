@@ -5,7 +5,6 @@
  */
 package csc285finalproject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +22,8 @@ public class SelectedDate extends MyDate implements Subject
     private ArrayList<Observer> observers;
     
     private static SelectedDate date;
+    
+    private static int count = 0;
     
     private SelectedDate()
     {
@@ -132,6 +133,7 @@ public class SelectedDate extends MyDate implements Subject
     @Override
     public void notifyObservers() 
     {
+        
         for (Observer o : observers)
             o.update();
     }
@@ -153,6 +155,7 @@ public class SelectedDate extends MyDate implements Subject
            super.prevDay();
        }
        notifyObservers();
+       
    }
     
 //    @Override

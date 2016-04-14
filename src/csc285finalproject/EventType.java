@@ -15,7 +15,7 @@ import java.awt.Color;
  */
 public enum EventType {
     work("Work",Color.blue,0),
-    family("Family",Color.yellow,1),
+    family("Family",Color.ORANGE,1),
     school("School",Color.green,2),
     social("Social",Color.red,3),
     holiday("Holiday",Color.MAGENTA,4),

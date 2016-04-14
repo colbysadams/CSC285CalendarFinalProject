@@ -34,8 +34,6 @@ public abstract class WeekMonthParent extends CalendarViewPanel{
     }
     
     
-    
-    
     @Override
     public void addLabels(){
         Box labelBox = new Box(BoxLayout.X_AXIS);

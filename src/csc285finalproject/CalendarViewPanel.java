@@ -9,13 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
@@ -63,7 +57,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
         selectedDate = date;
         this.schedule = MasterSchedule.getInstance();
         
-        
+        squaresPanel = new JPanel(new GridLayout(0,getRowSize(),5,5));
+        subPanel.add(squaresPanel);
         
         this.add(subPanel,BorderLayout.CENTER);
         if (!shortLabels)
@@ -88,18 +83,15 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
      * 
      */
     public void addDateSquares(){
-        if (squaresPanel != null)
-            subPanel.remove(squaresPanel);
         
-        
-        squaresPanel = new JPanel(new GridLayout(0,getRowSize(),5,5));
+        squaresPanel.removeAll();
         
         MyDate prevMonth = null;
         
         try {
             prevMonth = new MyDate(selectedDate.getMonth().getMonthNum(),1,selectedDate.getYear());
         } catch (IllegalDateException ex) {
-            Logger.getLogger(CalendarViewPanel.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         //
         for (int i = 0; i < getBuffer(); ++i){
@@ -180,7 +172,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
             nextMonth.nextDay();
             
         }
-        subPanel.add(squaresPanel);
+        
 
         
 
@@ -271,7 +263,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                 setSelectedDate(new MyDate(selectedDate.getMonth().getMonthNum(),
                                             1,SelectedDate.getInstance().getYear()));
         } catch (IllegalDateException ex) {
-            Logger.getLogger(CalendarViewPanel.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         else{
         
@@ -284,6 +276,11 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
         this.repaint();
         
     }
+    
+    
+    
+    
+    
 }
 
 

@@ -163,6 +163,9 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
                     if (amCheck.isSelected())
                         event.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex()+1)%12, 
                                                                  minuteCombo.getSelectedIndex())));
+                    else if (hourCombo.getSelectedIndex() == 11)
+                        event.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+1, 
+                                                                 minuteCombo.getSelectedIndex())));
                     else
                         event.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+13, 
                                                                  minuteCombo.getSelectedIndex())));

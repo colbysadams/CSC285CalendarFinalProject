@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -40,6 +39,7 @@ public class MainPanel extends JFrame implements Observer
     private CalendarViewPanel dayPanel;
     private CalendarViewPanel yearPanel;
     
+    
     private EventPanel eventPanel;
     
     private Box eventBox;
@@ -64,6 +64,8 @@ public class MainPanel extends JFrame implements Observer
         
         createEventButton = new JButton("Create New Event");
         editEventButton = new JButton("Edit Selected Event");
+        
+        EventDetailPanel.addEditEventButton(editEventButton);
         
         dayPanel = new DayPanel();
         weekPanel = new WeekPanel();
@@ -173,7 +175,7 @@ public class MainPanel extends JFrame implements Observer
                 if (EventDetailPanel.getSelectedEvent() == null)
                     return;
                 eventPanel.inputEvent(EventDetailPanel.getSelectedEvent());
-                //eventPanel.inputEvent(new CalendarEvent());
+                
                 eventPanel.setVisible(true);
                 
                 eventBox.setVisible(false);

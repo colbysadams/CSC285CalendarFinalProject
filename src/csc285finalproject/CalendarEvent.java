@@ -57,6 +57,20 @@ public class CalendarEvent implements Serializable{
         return repeating;
     }
     
+    public String getRepeatingString(){
+        switch (repeating){
+            case 0:
+                return "One Time";
+            case 1:
+                return "Yearly";
+            case 2:
+                return "Monthly";
+            case 3:
+                return "Weekly";
+        }
+        return "";
+    }
+    
     public void setRepeating(int repeating){
         this.repeating = repeating;
     }
@@ -84,8 +98,22 @@ public class CalendarEvent implements Serializable{
     /**
      * @return the description
      */
+    
     public String getDescription() {
         return description;
+    }
+    public String getDescriptionLabel() {
+        if (description.equals("")) 
+            return "";
+        String s;
+        s = "<html><body>";
+
+            s+= "<p><b>Description: </b></p>";
+            s+= "<p>&nbsp;&nbsp;" + description + "</p>";
+        
+        
+        s+="</body></html>";
+        return s;
     }
 
     /**
@@ -100,6 +128,20 @@ public class CalendarEvent implements Serializable{
      */
     public String getLocation() {
         return location;
+    }
+    
+    public String getLocationLabel() {
+        if (location.equals("")) 
+            return "";
+        String s;
+        s = "<html><body>";
+
+            s+= "<p><b>Location: </b></p>";
+            s+= "<p>&nbsp;&nbsp;" + location + "</p>";
+        
+        
+        s+="</body></html>";
+        return s;
     }
 
     /**

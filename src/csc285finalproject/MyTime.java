@@ -6,9 +6,7 @@
 package csc285finalproject;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.util.Date;
 
 /**
  *
@@ -68,6 +66,33 @@ public class MyTime implements Serializable{
 //        String s;
 //        hour int = S
         return start.toString();
+    }
+    
+    public String getClock(){
+        if (start == null)
+            
+            return "";
+    
+        
+        String s = "";
+         
+        s += start.getHour()%12;
+        
+        if (s.equals("0"))
+            s = "12";
+        s+= ":";
+        if (start.getMinute()<10)
+            s+=0;
+        s+= start.getMinute();
+        
+        if ( start.getHour()/12 == 1)
+            s+= "PM";
+        else{
+            s+= "AM";
+        }
+            
+        return s;
+        
     }
     
 }
