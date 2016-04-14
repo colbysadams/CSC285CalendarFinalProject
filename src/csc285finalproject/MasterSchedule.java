@@ -90,22 +90,22 @@ public class MasterSchedule implements Serializable{
     private void generateSampleEvents(){
         try {
             
-            yearlyEventMap.put(new MyDate(3,15,2016), new CalendarEvent("Colby's Birthday",EventType.family));
-            monthlyEventMap.put(new MyDate(3,31,2016),new CalendarEvent("MONTHLY BUGG",EventType.social));
-            monthlyEventMap.put(new MyDate(1,1,2016), new CalendarEvent("Pay Bills",EventType.other));
-            oneTimeEventMap.put(new MyDate(9,7,2016), new CalendarEvent("Emily's Birthday",EventType.family));
-            yearlyEventMap.put(new MyDate(4,1,2015),  new CalendarEvent("April Fools Day", EventType.holiday));
-            yearlyEventMap.put(new MyDate(3,16,2016), new CalendarEvent("Leroy's Birthday",EventType.family)); 
-            weeklyEventMap.put(new MyDate(3,16,2016), new CalendarEvent("HUMP DAYYYYY", EventType.social));
-            yearlyEventMap.put(new MyDate(12,25,2999), new CalendarEvent("Jesus's Birthday", EventType.holiday));
+            addEventToSchedule(new MyDate(3,15,2016), new CalendarEvent("Colby's Birthday",EventType.family,YEARLY));
+            addEventToSchedule(new MyDate(3,31,2016),new CalendarEvent("MONTHLY BUGG",EventType.social,MONTHLY));
+            addEventToSchedule(new MyDate(1,1,2016), new CalendarEvent("Pay Bills",EventType.other,MONTHLY));
+            addEventToSchedule(new MyDate(9,7,2016), new CalendarEvent("Emily's Birthday",EventType.family,YEARLY));
+            addEventToSchedule(new MyDate(4,1,2015),  new CalendarEvent("April Fools Day", EventType.holiday,YEARLY));
+            addEventToSchedule(new MyDate(3,16,2016), new CalendarEvent("Leroy's Birthday",EventType.family,YEARLY)); 
+            addEventToSchedule(new MyDate(3,16,2016), new CalendarEvent("HUMP DAYYYYY", EventType.social,WEEKLY));
+            addEventToSchedule(new MyDate(12,25,2999), new CalendarEvent("Jesus's Birthday", EventType.holiday,YEARLY));
         } catch (IllegalDateException ex) {
             
         }
         
     }
     
-    public void addEventToSchedule(MyDate date, CalendarEvent event, int repeating) {
-        switch (repeating) {
+    public void addEventToSchedule(MyDate date, CalendarEvent event) {
+        switch (event.getRepeating()) {
             case 0:
                 oneTimeEventMap.put(date, event);
                 break;
@@ -117,6 +117,25 @@ public class MasterSchedule implements Serializable{
                 break;
             case 3:
                 weeklyEventMap.put(date, event);
+                break;
+            case 4:
+                
+        }
+    }
+    
+    public void removeFromSchedule(CalendarEvent event){
+        switch (event.getRepeating()) {
+            case 0:
+                oneTimeEventMap.remove(event);
+                break;
+            case 1:
+                yearlyEventMap.remove(event);
+                break;
+            case 2:
+                monthlyEventMap.remove( event);
+                break;
+            case 3:
+                weeklyEventMap.remove(event);
                 break;
             case 4:
                 
@@ -200,9 +219,12 @@ public class MasterSchedule implements Serializable{
                 || weeklyEventMap.containsKey(date));
     }
     
+    //public static final int ONETIME = 0,YEARLY = 1,MONTHLY = 2,WEEKLY = 3;
     
     
-    private class EventMap<CalendarEvent> implements Serializable
+    
+    
+    private class EventMap implements Serializable
     {
         
         private HashMap<String,ArrayList<CalendarEvent>> eventMap;
@@ -238,6 +260,7 @@ public class MasterSchedule implements Serializable{
 
         
         public void put(MyDate key, CalendarEvent value) {
+            value.setDateString(key.getMapString(month, day, year, week));
             ArrayList<CalendarEvent> daysEvents;
             if (!containsKey(key))
                 daysEvents = new ArrayList<CalendarEvent>();
@@ -248,10 +271,10 @@ public class MasterSchedule implements Serializable{
         }
 
         
-        public void remove(MyDate key, CalendarEvent event) {
+        public void remove(CalendarEvent event) {
             ArrayList<CalendarEvent> daysEvents;
             try{
-                daysEvents = eventMap.get(key.getMapString(month,day,year,week));
+                daysEvents = eventMap.get(event.getDateString());
             }
             catch (NullPointerException e) {
                 System.out.println("remove(MyDate key, CalendarEvent): event doesnt exist");

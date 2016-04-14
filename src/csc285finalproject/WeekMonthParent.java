@@ -5,6 +5,7 @@
  */
 package csc285finalproject;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -54,7 +55,7 @@ public abstract class WeekMonthParent extends CalendarViewPanel{
             labelBox.add(Box.createHorizontalGlue());
         }
 
-        this.add(labelBox);
+        getSubPanel().add(labelBox,BorderLayout.NORTH);
     }
     
     /**

@@ -42,6 +42,8 @@ public class MainPanel extends JFrame implements Observer
     
     private EventPanel eventPanel;
     
+    private Box eventBox;
+    
     private JButton nextButton;
     private JButton prevButton;
     private JButton todayButton;
@@ -68,7 +70,13 @@ public class MainPanel extends JFrame implements Observer
         monthPanel = new MonthPanel();
         yearPanel = new YearPanel();
         
-        eventPanel = new EventPanel(createEventButton);
+        eventBox = Box.createHorizontalBox();
+        eventBox.add(Box.createHorizontalGlue());
+        eventBox.add(editEventButton);
+        eventBox.add(createEventButton);
+        
+        
+        eventPanel = new EventPanel(eventBox);
         
         calendarView = new JTabbedPane();
         
@@ -145,15 +153,31 @@ public class MainPanel extends JFrame implements Observer
         
         });
         
+        
         createEventButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                eventPanel.inputEvent();
                 eventPanel.setVisible(true);
-                //eventButton.setEnabled(false);
-                createEventButton.setVisible(false);
+                
+                eventBox.setVisible(false);
             }
         
+        });
+        
+        editEventButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (EventDetailPanel.getSelectedEvent() == null)
+                    return;
+                eventPanel.inputEvent(EventDetailPanel.getSelectedEvent());
+                //eventPanel.inputEvent(new CalendarEvent());
+                eventPanel.setVisible(true);
+                
+                eventBox.setVisible(false);
+            }
         });
         
         //slap all them views in the tabbed pane
@@ -181,10 +205,7 @@ public class MainPanel extends JFrame implements Observer
         date.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         labelBox.add(date);
         
-        Box eventBox = Box.createHorizontalBox();
-        eventBox.add(Box.createHorizontalGlue());
-        eventBox.add(editEventButton);
-        eventBox.add(createEventButton);
+        
         
         //box holding all them buttons
         Box changeBox = Box.createHorizontalBox();

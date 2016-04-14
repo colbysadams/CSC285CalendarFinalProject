@@ -17,27 +17,49 @@ public class CalendarEvent implements Serializable{
 
     private String name, description, location;
 
+    private String dateString;
+    
     private EventType eventType;
 
-    //public static final int diameter = 5;
+    
+    public static final int ONETIME = 0,YEARLY = 1,MONTHLY = 2,WEEKLY = 3;
+    private int repeating;
 
     //private static int eventNameBuffer = 30;
 
     private MyTime time;
 
-    public CalendarEvent(String name, EventType eventType) {
-        super();
+    public CalendarEvent(String name, EventType eventType,int repeating) {
+        
         this.name = name;
+        this.location = "";
+        this.description = "";
+        this.dateString = null;
         this.eventType = eventType;
-
-
+        this.repeating = repeating;
         this.time = new MyTime();
       
     }
     
+    public void setDateString(String dateString){
+        this.dateString = dateString;
+    }
     
+    public String getDateString(){
+        return dateString;
+    }
     
+    public CalendarEvent(){
+        this("",EventType.other,ONETIME);
+    }
     
+    public int getRepeating(){
+        return repeating;
+    }
+    
+    public void setRepeating(int repeating){
+        this.repeating = repeating;
+    }
 
 
     @Override
@@ -132,11 +154,11 @@ public class CalendarEvent implements Serializable{
                                        + eventType.COLOR.getBlue()
                                        + ")>";
         s+= eventType.TYPE + "</blockquote>";
-        if (location != null){
+        if (location !=  null || location.isEmpty()){
             s+= "<p><b>Location: </b></p>";
             s+= "<blockquote>" + location + "</blockquote>";
         }
-        if (description != null){
+        if (description != null || description.isEmpty()){
             s+= "<p><b>Description: </b></p>";
             s+= "<blockquote>" + description + "</blockquote>";
         }

@@ -17,51 +17,20 @@ import javax.swing.JPanel;
  *
  * @author colbysadams
  */
-public class DayPanel extends CalendarViewPanel implements ActionListener{
-
-    private JPanel detailPanel;
+public class DayPanel extends CalendarViewPanel{
     
-    private CalendarEvent selectedEvent;
     
-    private ArrayList<CalendarEvent> daysEvents;
+    
     
     public DayPanel(){
         super(); 
-        this.setLayout(new BorderLayout());
-        
-        
         
         
         
         update();
     }
     
-    public void addDateSquares(){
-        if (detailPanel != null) 
-            remove(detailPanel);
-        super.addDateSquares();
-        detailPanel = new JPanel(new GridLayout(0,1));
-        daysEvents = MasterSchedule.getInstance().getDaysEvents(SelectedDate.getInstance());
-        JButton eventLabel;
-        if (daysEvents.size() == 0){
-            eventLabel = new JButton("<html><h1>No Events</html></h1>");
-            eventLabel.setEnabled(false);
-            detailPanel.add(eventLabel);
-        }    
-        else{
-            
-            for (int i = 0; i < daysEvents.size(); ++i){
-                eventLabel = new JButton(daysEvents.get(i).getEventHTML());
-                eventLabel.setActionCommand(String.valueOf(i));
-                
-                detailPanel.add(eventLabel);
-            }
-        }
-        this.add(detailPanel,BorderLayout.EAST);
-        
-        
-        
-    }
+   
 
     @Override
     public int getDaysDisplayed() {
@@ -84,17 +53,8 @@ public class DayPanel extends CalendarViewPanel implements ActionListener{
     }
 
 
-    public CalendarEvent getSelectedEvent(){
-        return selectedEvent;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-        int n = Integer.parseInt(e.getActionCommand());
-        selectedEvent = daysEvents.get(n);
-    }
-
+    
+    
 
     
 }

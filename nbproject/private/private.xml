@@ -3,10 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/CalendarEvent.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MainPanel.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/EventPanel.java</file>
             <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/CalendarViewPanel.java</file>
-            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MyTime.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/WeekPanel.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/YearPanel.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/EventDetailPanel.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/EventType.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/CalendarTester.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/CalendarEvent.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/WeekMonthParent.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MasterSchedule.java</file>
             <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/DayPanel.java</file>
+            <file>file:/Users/colbysadams/NetBeansProjects/CSC285CalendarProject/src/csc285finalproject/MonthPanel.java</file>
         </group>
     </open-files>
 </project-private>

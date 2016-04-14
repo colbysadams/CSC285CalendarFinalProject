@@ -5,13 +5,17 @@
  */
 package csc285finalproject;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
@@ -26,11 +30,17 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
     //the currently selected date to display a view for
     private MyDate selectedDate;
     //panel that holds the DateSquare Objecgts
-    private JPanel subPanel;
+    private JPanel squaresPanel,subPanel;
     
-    boolean shortLabels;
+    //private EventDetailPanel detailPanel;
+    
+    protected boolean shortLabels;
     
     private MasterSchedule schedule;
+    
+    //private static CalendarEvent selectedEvent;
+    
+    //private ArrayList<CalendarEvent> daysEvents;
     
     /**
      *
@@ -43,15 +53,21 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
         
         this.shortLabels = shortLabels;
         
-        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout());
+        
+        subPanel = new JPanel();
+        subPanel.setLayout(new BorderLayout());
         
         this.setPreferredSize(new Dimension(1000,600));
         
         selectedDate = date;
         this.schedule = MasterSchedule.getInstance();
         
-        this.addLabels();
-        this.addDateSquares();
+        
+        
+        this.add(subPanel,BorderLayout.CENTER);
+        if (!shortLabels)
+            this.add(new EventDetailPanel(),BorderLayout.EAST);
     }
 
     /**
@@ -60,7 +76,8 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
     public CalendarViewPanel(){
         this(SelectedDate.getInstance(),false);
         
-        
+        addLabels();
+        this.addDateSquares();
         
     }
     
@@ -71,11 +88,11 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
      * 
      */
     public void addDateSquares(){
-        if (subPanel != null)
-            this.remove(subPanel);
+        if (squaresPanel != null)
+            subPanel.remove(squaresPanel);
         
         
-        subPanel = new JPanel(new GridLayout(0,getRowSize(),5,5));
+        squaresPanel = new JPanel(new GridLayout(0,getRowSize(),5,5));
         
         MyDate prevMonth = null;
         
@@ -106,10 +123,10 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                 for (CalendarEvent event : events)
                     dateSquare = decorateDateSquare(event,dateSquare);
             }
-            subPanel.add(dateSquare);
+            squaresPanel.add(dateSquare);
             prevMonth.nextDay();
         }
-        this.add(subPanel);
+        
         
         int lastDay = getBuffer();
         
@@ -131,7 +148,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                 for (CalendarEvent event : events)
                     dateSquare = decorateDateSquare(event,dateSquare);
             }
-            subPanel.add(dateSquare);
+            squaresPanel.add(dateSquare);
             lastDay++;          
         }
         
@@ -158,20 +175,28 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
                     dateSquare = decorateDateSquare(event,dateSquare);
             }
             
-            subPanel.add(dateSquare);
+            squaresPanel.add(dateSquare);
             lastDay++;
             nextMonth.nextDay();
             
         }
+        subPanel.add(squaresPanel);
 
         
 
     }
     
+
+    
+    
     public AbstractDateSquare decorateDateSquare(CalendarEvent event, AbstractDateSquare dateSquare) {
         if (shortLabels)
             return new YearSquareDecorator(event,dateSquare);
         return new DateSquareDecorator(event,dateSquare);
+    }
+    
+    protected JPanel getSubPanel(){
+        return subPanel;
     }
 
     
@@ -196,6 +221,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
     {
         return selectedDate;
     }
+    
     
 
     /**
@@ -231,6 +257,9 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
      */
     public abstract int getDateOffset();
 //    
+    
+    
+
 
 
         @Override
@@ -249,6 +278,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer{
             //for all other views, just use the singleton SelectedDate
             setSelectedDate(SelectedDate.getInstance());
         }
+        
         this.addDateSquares();
         this.revalidate();
         this.repaint();

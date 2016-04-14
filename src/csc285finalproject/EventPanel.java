@@ -32,7 +32,7 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
 
     private static int offsetX = 5;
 
-    private JButton saveEventButton, cancelButton;
+    private JButton saveEventButton, cancelButton, deleteButton;
     private JTextField eventNameField, eventLocationField;
     private JTextArea eventDescriptionArea;
 
@@ -41,7 +41,7 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
 
     private JPanel subPanel;
 
-    private JButton eventCreatorButton;
+    private Box mainPanelButton;
 
     private String[] repeatBoxStrings = new String[]{"Never", "Yearly", "Monthly", "Weekly"};
     
@@ -50,22 +50,26 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
     private JPanel timePanel;
     private Box timeBox;
 
-    private JTextField hourTextField, minuteTextField;
+    //private JTextField hourTextField, minuteTextField;
     
     private JCheckBox hasTimeBox;
     
     private JComboBox hourCombo, minuteCombo;
     
-    //private int comboBoxWidth = 70;
-    
     private ArrayList<String> clockHourStrings,clockMinuteStrings;
     
     private int textFieldSize = 10;
+    
+    private CalendarEvent event;
+    private MyDate eventDate;
+    
+    private boolean newEvent;
 
-    public EventPanel(JButton panelButton) {
+    public EventPanel(Box panelButton) {
         super();
 
-        this.eventCreatorButton = panelButton;
+        
+        this.mainPanelButton = panelButton;
 
         clockHourStrings = new ArrayList(12);
         clockMinuteStrings = new ArrayList(60);
@@ -75,7 +79,8 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
             
                 
         }
-        s = "0";
+        newEvent = false;
+        
         for (int i = 0; i < 60; ++i) {
             clockMinuteStrings.add(s+String.valueOf(i));
             if (i == 9)
@@ -139,36 +144,58 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
                         break;
                     }
                 }
-                CalendarEvent newEvent = new CalendarEvent(eventName, eventType);
+                event.setName(eventName);
+                event.setEventType(eventType);
+                if (event.getRepeating() != repeatComboBox.getSelectedIndex() && !newEvent){
+                    MasterSchedule.getInstance().removeFromSchedule(event);
+                    newEvent = true;
+                }
+                event.setRepeating(repeatComboBox.getSelectedIndex());
 
                 if (!eventLocationField.getText().equals("")) {
-                    newEvent.setLocation(eventLocationField.getText());
+                    event.setLocation(eventLocationField.getText());
                 }
                 if (!eventDescriptionArea.getText().equals("")) {
-                    newEvent.setDescription(eventDescriptionArea.getText());
+                    event.setDescription(eventDescriptionArea.getText());
                 }
                 
                 if (!hasTimeBox.isSelected()){
                     if (amCheck.isSelected())
-                        newEvent.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex()+1)%12, 
+                        event.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex()+1)%12, 
                                                                  minuteCombo.getSelectedIndex())));
                     else
-                        newEvent.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+13, 
+                        event.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex()+13, 
                                                                  minuteCombo.getSelectedIndex())));
                 }
                 
 
-                MasterSchedule.getInstance().addEventToSchedule(SelectedDate.getInstance(),
-                        newEvent,
-                        repeatComboBox.getSelectedIndex());
+                if (newEvent){
+                    MasterSchedule.getInstance().addEventToSchedule(SelectedDate.getInstance(),event);
+                    newEvent = false;
+                }
                 cancelButton.doClick();
                 SelectedDate.getInstance().notifyObservers();
 
             }
 
         });
+        
+        
+        
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(this);
+        
+        deleteButton = new JButton("DELETE EVENT");
+        deleteButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MasterSchedule.getInstance().removeFromSchedule(event);
+                SelectedDate.getInstance().notifyObservers();
+                cancelButton.doClick();
+            }
+        });
+        
         eventNameField = new JTextField(textFieldSize);
         eventLocationField = new JTextField(textFieldSize);
 
@@ -217,7 +244,10 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
         buttonBox.add(saveEventButton);
         buttonBox.add(cancelButton);
         subPanel.add(buttonBox);
-
+        Box deleteBox = Box.createHorizontalBox();
+        deleteBox.add(deleteButton);
+        deleteBox.add(Box.createHorizontalGlue());
+        subPanel.add(deleteBox);
         this.add(subPanel);
 
     }
@@ -231,6 +261,8 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        this.setVisible(false);
+        mainPanelButton.setVisible(true);
         eventNameField.setText("");
         eventLocationField.setText("");
         eventDescriptionArea.setText("");
@@ -238,8 +270,38 @@ public class EventPanel extends JPanel implements Observer, ActionListener {
         eventTypeRadio[0].setSelected(true);
         if (!hasTimeBox.isSelected())
             hasTimeBox.doClick();
-        this.setVisible(false);
-        eventCreatorButton.setVisible(true);
+        event = null;
+        
+    }
+    
+    public void inputEvent(){
+        newEvent = true;
+        
+        inputEvent(new CalendarEvent());
+        
+    }
+    
+    public void inputEvent(CalendarEvent event) {
+        this.eventDate = SelectedDate.getInstance();
+        this.event = event;
+        eventNameField.setText(this.event.getName());
+        eventLocationField.setText(this.event.getLocation());
+        eventDescriptionArea.setText(this.event.getDescription());
+        repeatComboBox.setSelectedIndex(event.getRepeating());
+        eventTypeRadio[event.getEventType().index].setSelected(true);
+        if (newEvent)
+            deleteButton.setVisible(false);
+        else
+            deleteButton.setVisible(true);
+        if (event.getTime().getStart() == null){
+            if (!hasTimeBox.isSelected())
+                hasTimeBox.doClick();
+        }
+        else{
+            hourCombo.setSelectedIndex((event.getTime().getStart().getHour()-1)%12);
+            minuteCombo.setSelectedIndex(event.getTime().getStart().getMinute());
+        }
+        
     }
 
     @Override

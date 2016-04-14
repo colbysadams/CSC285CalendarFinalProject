@@ -8,9 +8,11 @@ package csc285finalproject;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -29,19 +31,23 @@ import javax.swing.SwingConstants;
  */
 public class YearPanel extends CalendarViewPanel implements Subject{
 
-    ArrayList<Observer> observers;
+    ArrayList<MonthPanel> monthPanels;
     
     public YearPanel(){
         super();
-        this.setLayout(new GridLayout(0,4,10,10));
-        observers = new ArrayList();
-        JPanel subPanel;
         
+        
+        getSubPanel().setLayout(new GridLayout(0,4,10,10));
+        monthPanels = new ArrayList();
+        
+        
+        JPanel monthSubPanel;
+//        
         MonthPanel monthPanel = null;
         JLabel monthLabel = null;
-        //create a month panel for each month, override the SelectedDate with the first day of the month
+//        //create a month panel for each month, override the SelectedDate with the first day of the month
         for (int i = 1; i <= 12; i++){
-            subPanel = new JPanel(new BorderLayout());
+            monthSubPanel = new JPanel(new BorderLayout());
             
             try {
                 monthPanel = (new MonthPanel(new MyDate(i,
@@ -53,13 +59,16 @@ public class YearPanel extends CalendarViewPanel implements Subject{
             }
             monthLabel.setHorizontalAlignment(SwingConstants.CENTER);
             //panel.makeLabelsShort();
-            subPanel.add(monthLabel,BorderLayout.NORTH);
-            subPanel.add(monthPanel, BorderLayout.CENTER);
+            monthSubPanel.add(monthLabel,BorderLayout.NORTH);
+            monthSubPanel.add(monthPanel, BorderLayout.CENTER);
             this.addObserver(monthPanel);
-            this.add(subPanel);
+            getSubPanel().add(monthSubPanel);
         }
+        update();
             
     }
+    
+    public void addLabels(){}
     
     @Override
     public void addDateSquares(){
@@ -89,7 +98,7 @@ public class YearPanel extends CalendarViewPanel implements Subject{
 
     @Override
     public void addObserver(Observer o) {
-        observers.add(o);
+        monthPanels.add((MonthPanel)o);
     }
 
     @Override
@@ -98,14 +107,20 @@ public class YearPanel extends CalendarViewPanel implements Subject{
 
     @Override
     public void notifyObservers() {
-        for (Observer o : observers) {
+        for (Observer o : monthPanels) {
             o.update();
         }
     }
     @Override
     public void update(){
+        super.update();
+        addDateSquares();
         notifyObservers();
     }
+
+
+    
+
     
     
 
