@@ -12,28 +12,28 @@ import java.awt.Graphics;
  *
  * @author colbysadams
  */
-public class DateSquareDecorator extends AbstractDateSquareDecorator {
+public class DateSquareDecorator extends AbstractDateSquareDecorator
+{
 
-    
-    private int textHeight;
     private final static int offset = 15;
     private final static int diameter = 10;
-    
+    private int textHeight;
 
     //private MyDate date;
-
-    DateSquareDecorator(CalendarEvent event, AbstractDateSquare square) {
-        super(event,square);
+    DateSquareDecorator(CalendarEvent event, AbstractDateSquare square)
+    {
+        super(event, square);
         this.textHeight = square.getTextHeight() + offset;
-        
 
     }
 
-    public int getTextHeight() {
+    public int getTextHeight()
+    {
         return textHeight;
     }
 
-    public void drawSquare(Graphics g, int x, int y,int width, int height) {
+    public void drawSquare(Graphics g, int x, int y, int width, int height)
+    {
         getSquare().drawSquare(g, x, y, width, height);
         this.setOpaque(false);
         g.setColor(getEvent().getEventType().COLOR);
@@ -41,9 +41,6 @@ public class DateSquareDecorator extends AbstractDateSquareDecorator {
         g.setColor(Color.black);
         g.drawString(getEvent().getName(), 17, textHeight);
 
-        
     }
-
-    
 
 }

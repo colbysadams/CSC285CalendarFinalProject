@@ -6,15 +6,15 @@
 package csc285finalproject;
 
 /**
- * 
- * Exception to be thrown when an invalid date attempted to be accessed or created
  *
+ * Exception to be thrown when an invalid date attempted to be accessed or created
+ * <p>
  * @author colbysadams
  */
 public class IllegalDateException extends Exception
 {
-    
-    public IllegalDateException(String message) 
+
+    public IllegalDateException(String message)
     {
         super(message);
     }

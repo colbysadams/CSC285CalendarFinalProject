@@ -9,44 +9,37 @@ package csc285finalproject;
  *
  * @author colbysadams
  */
-public class DayPanel extends CalendarViewPanel{
-    
-    
-    
-    
-    public DayPanel(){
-        super(); 
-        
-        
-        
+public class DayPanel extends CalendarViewPanel
+{
+
+    public DayPanel()
+    {
+        super();
         update();
     }
-    
-   
 
     @Override
-    public int getDaysDisplayed() {
+    public int getDaysDisplayed()
+    {
         return 1;
     }
 
     @Override
-    public int getRowSize() {
+    public int getRowSize()
+    {
         return 1;
     }
 
     @Override
-    public int getBuffer() {
+    public int getBuffer()
+    {
         return 0;
     }
 
     @Override
-    public int getDateOffset() {
-        return SelectedDate.getInstance().getDay()-1;
+    public int getDateOffset()
+    {
+        return SelectedDate.getInstance().getDay() - 1;
     }
 
-
-    
-    
-
-    
 }

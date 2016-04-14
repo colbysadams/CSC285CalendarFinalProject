@@ -5,41 +5,39 @@
  */
 package csc285finalproject;
 
-
-
-
-
 /**
  *
  * @author colbysadams
  */
-public class MonthPanel extends WeekMonthParent{
-    
-    public MonthPanel(){
+public class MonthPanel extends WeekMonthParent
+{
+
+    public MonthPanel()
+    {
         super();
     }
-    
-    public MonthPanel(MyDate date,boolean shortLabels) {
-        super(date,shortLabels);
+
+    public MonthPanel(MyDate date, boolean shortLabels)
+    {
+        super(date, shortLabels);
     }
-    
 
     @Override
-    public int getDaysDisplayed(){
+    public int getDaysDisplayed()
+    {
         return getSelectedDate().getDaysInMonth();
     }
-    
+
     @Override
-    public int getBuffer(){
+    public int getBuffer()
+    {
         return getSelectedDate().getFirstWeekdayOfMonth();
     }
-    
+
     @Override
-    public int getDateOffset(){
+    public int getDateOffset()
+    {
         return 0;
     }
 
-   
-    
-   
 }

@@ -7,33 +7,35 @@ package csc285finalproject;
 
 import java.awt.Color;
 
-
-
 /**
  *
  * @author colbysadams
  */
-public enum EventType {
-    work("Work",Color.blue,0),
-    family("Family",Color.ORANGE,1),
-    school("School",Color.green,2),
-    social("Social",Color.red,3),
-    holiday("Holiday",Color.MAGENTA,4),
-    other("Other",Color.cyan,5);
-    
-    
+public enum EventType
+{
+
+    work("Work", Color.blue, 0),
+    family("Family", Color.ORANGE, 1),
+    school("School", Color.green, 2),
+    social("Social", Color.red, 3),
+    holiday("Holiday", Color.MAGENTA, 4),
+    other("Other", Color.cyan, 5);
+
     public final Color COLOR;
     public final String TYPE;
     public final int index;
-    EventType(String name, Color color, int index) 
+
+    EventType(String name, Color color, int index)
     {
         this.index = index;
         TYPE = name;
         COLOR = color;
     }
-    
-    public static EventType get(int index) {
-        switch (index){
+
+    public static EventType get(int index)
+    {
+        switch (index)
+        {
             case 0:
                 return work;
             case 1:

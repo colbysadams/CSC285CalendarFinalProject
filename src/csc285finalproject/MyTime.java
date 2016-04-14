@@ -12,87 +12,105 @@ import java.time.LocalTime;
  *
  * @author colbysadams
  */
-public class MyTime implements Serializable{
-    
+public class MyTime implements Serializable, Comparable<MyTime>
+{
+
     private LocalTime start;
-    private int hours,minutes;
-    
+    private int hours, minutes;
+
     public MyTime(LocalTime start)
     {
         this.start = start;
         this.hours = 1;
         this.minutes = 0;
     }
-    
-    public MyTime(){
+
+    public MyTime()
+    {
         start = null;
-        
+
     }
 
     /**
      * @return the start
      */
-    public LocalTime getStart() {
+    public LocalTime getStart()
+    {
         return start;
     }
 
     /**
      * @param start the start to set
      */
-    public void setStart(LocalTime start) {
+    public void setStart(LocalTime start)
+    {
         this.start = start;
     }
 
     /**
      * @return the end
      */
-    public LocalTime getEnd() {
+    public LocalTime getEnd()
+    {
         LocalTime end = start.plusHours(hours);
         end.plusHours(minutes);
         return end;
     }
 
-    
-    
-    public void setDuration(int hours, int minutes) {
+    public void setDuration(int hours, int minutes)
+    {
         this.hours = hours;
         this.minutes = minutes;
     }
-    
-    public String toString(){
+
+    public String toString()
+    {
         if (start == null)
-            
+
             return "";
 //        String s;
 //        hour int = S
         return start.toString();
     }
-    
-    public String getClock(){
+
+    public String getClock()
+    {
         if (start == null)
-            
+
             return "";
-    
-        
+
         String s = "";
-         
-        s += start.getHour()%12;
-        
+
+        s += start.getHour() % 12;
+
         if (s.equals("0"))
             s = "12";
-        s+= ":";
-        if (start.getMinute()<10)
-            s+=0;
-        s+= start.getMinute();
-        
-        if ( start.getHour()/12 == 1)
-            s+= "PM";
-        else{
-            s+= "AM";
-        }
-            
+        s += ":";
+        if (start.getMinute() < 10)
+            s += 0;
+        s += start.getMinute();
+
+        if (start.getHour() / 12 == 1)
+            s += "PM";
+        else
+            s += "AM";
+
         return s;
-        
+
     }
-    
+
+    @Override
+    public int compareTo(MyTime o)
+    {
+        if (start == null)
+        {
+            if (o.start == null)
+                return 0;
+            return 1;
+        }
+        if (o.start == null)
+            return -1;
+        return start.compareTo(o.start);
+    }
+
 }

@@ -5,7 +5,6 @@
  */
 package csc285finalproject;
 
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
@@ -19,74 +18,57 @@ import javax.swing.JFrame;
  *
  * @author colbysadams
  */
-public class CalendarTester{
+public class CalendarTester
+{
 
     private JFrame frame;
-   
-    
-    public CalendarTester(){
-    
 
-        
-        
+    public CalendarTester()
+    {
+
         frame = new MainPanel("Calendar");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        frame.addWindowListener(new WindowAdapter(){
+
+        frame.addWindowListener(new WindowAdapter()
+        {
             @Override
-            public void windowClosing(WindowEvent e) {
-                try {
+            public void windowClosing(WindowEvent e)
+            {
+                try
+                {
                     // Write to disk with FileOutputStream
                     FileOutputStream f_out = new FileOutputStream("calendar.ser");
-                    
+
                     // Write object with ObjectOutputStream
-                    ObjectOutputStream obj_out = new ObjectOutputStream (f_out);
-                    
+                    ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+
                     // Write object out to disk
-                    obj_out.writeObject ( MasterSchedule.getInstance() );
+                    obj_out.writeObject(MasterSchedule.getInstance());
                     obj_out.close();
-                } catch (IOException ex) {
+                }
+                catch (IOException ex)
+                {
                     Logger.getLogger(CalendarTester.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                finally {
-                    
+                finally
+                {
+
                 }
             }
         });
-        
+
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        
-        
+
     }
-    
-    
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        
-        
+    public static void main(String[] args)
+    {
         new CalendarTester();
-        
-//        try
-//        {
-//            FileOutputStream fileOut = new FileOutputStream("selectedDate.ser");
-//            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-//            out.writeObject(SelectedDate.getInstance());
-//            out.close();
-//            fileOut.close();
-//            System.out.println("Serialized dates are saved in selectedDate.ser");
-//            
-//        }
-//        catch(IOException e)
-//        {
-//            e.printStackTrace();
-//        }
-
     }
 
-    
-    
 }

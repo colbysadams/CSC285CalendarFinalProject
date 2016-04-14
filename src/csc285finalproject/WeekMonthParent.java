@@ -13,72 +13,69 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 /**
- * 
- * Implements the common methods for both week and month views
  *
+ * Implements the common methods for both week and month views
+ * <p>
  * @author colbysadams
  */
-public abstract class WeekMonthParent extends CalendarViewPanel{
+public abstract class WeekMonthParent extends CalendarViewPanel
+{
 
-    
-    
-    public WeekMonthParent(MyDate date,boolean shortLabels){
+    public WeekMonthParent(MyDate date, boolean shortLabels)
+    {
         super(date, shortLabels);
-        
-        
-        
+
     }
-    public WeekMonthParent(){
+
+    public WeekMonthParent()
+    {
         super();
-        
+
     }
-    
-    
+
     @Override
-    public void addLabels(){
+    public void addLabels()
+    {
         Box labelBox = new Box(BoxLayout.X_AXIS);
         labelBox.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         JLabel label;
-        for (int i = 0; i < 7; ++i){
-            
-            
+        for (int i = 0; i < 7; ++i)
+        {
+
             label = new JLabel(getWeekdayName(i));
-            
+
             label.setVerticalAlignment(SwingConstants.BOTTOM);
             label.setHorizontalAlignment(SwingConstants.CENTER);
             labelBox.add(Box.createHorizontalGlue());
             labelBox.add(label);
-            
+
             labelBox.add(Box.createHorizontalGlue());
         }
 
-        getSubPanel().add(labelBox,BorderLayout.NORTH);
+        getSubPanel().add(labelBox, BorderLayout.NORTH);
     }
-    
+
     /**
      *
-     * returns a string representing the day of the week
-     * type of string to be returned depends on boolean
-     * value of shortLabels;
-     * 
+     * returns a string representing the day of the week type of string to be returned depends on boolean value of
+     * shortLabels;
+     * <p>
      * @param i the index of the day of the week
+     * <p>
      * @return a string representing the day of the week
      */
-    public String getWeekdayName(int i) {
+    public String getWeekdayName(int i)
+    {
         if (shortLabels)
             return Weekday.getWeekday(i).getShortString();
         return Weekday.getWeekday(i).name;
     }
 
-
-
     @Override
-    public int getRowSize(){
+    public int getRowSize()
+    {
         return 7;
     }
 
-
-    
-    
 }

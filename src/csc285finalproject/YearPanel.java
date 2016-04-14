@@ -5,123 +5,124 @@
  */
 package csc285finalproject;
 
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-
 /**
- * 
- * Creates a collection of 12 month panels to represent the whole year
- * year panel is both a subject and observer,
- * year panel observes the SelectedDate singleton,
- * but is also observed by its 12 month panels within the view
- * 
- * update is just relayed to each month panel
  *
+ * Creates a collection of 12 month panels to represent the whole year year panel is both a subject and observer, year
+ * panel observes the SelectedDate singleton, but is also observed by its 12 month panels within the view
+ * <p>
+ * update is just relayed to each month panel
+ * <p>
  * @author colbysadams
  */
-public class YearPanel extends CalendarViewPanel implements Subject{
+public class YearPanel extends CalendarViewPanel implements Subject
+{
 
     ArrayList<MonthPanel> monthPanels;
-    
-    public YearPanel(){
-        
+
+    public YearPanel()
+    {
+
         getSubPanel().removeAll();
-        
-        getSubPanel().setLayout(new GridLayout(0,4,10,10));
+
+        getSubPanel().setLayout(new GridLayout(0, 4, 10, 10));
         monthPanels = new ArrayList();
-        
-        
+
         JPanel monthSubPanel;
 //        
         MonthPanel monthPanel = null;
         JLabel monthLabel = null;
 //        //create a month panel for each month, override the SelectedDate with the first day of the month
-        for (int i = 1; i <= 12; i++){
+        for (int i = 1; i <= 12; i++)
+        {
             monthSubPanel = new JPanel(new BorderLayout());
-            
-            try {
+
+            try
+            {
                 monthPanel = (new MonthPanel(new MyDate(i,
-                                                 1,
-                                                 SelectedDate.getInstance().getYear()),true));
+                                                        1,
+                                                        SelectedDate.getInstance().getYear()), true));
                 monthLabel = new JLabel(Month.getMonth(i).getName());
-            } catch (IllegalDateException ex) {
-                Logger.getLogger(YearPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch (IllegalDateException ex)
+            {
+            }
+
             monthLabel.setHorizontalAlignment(SwingConstants.CENTER);
             //panel.makeLabelsShort();
-            monthSubPanel.add(monthLabel,BorderLayout.NORTH);
+            monthSubPanel.add(monthLabel, BorderLayout.NORTH);
             monthSubPanel.add(monthPanel, BorderLayout.CENTER);
             this.addObserver(monthPanel);
             getSubPanel().add(monthSubPanel);
         }
         update();
-            
+
     }
-    
-    public void addLabels(){}
-    
+
     @Override
-    public void addDateSquares(){
-        
-        
+    public void addLabels()
+    {
     }
-    
+
     @Override
-    public int getDaysDisplayed() {
+    public void addDateSquares()
+    {
+    }
+
+    @Override
+    public int getDaysDisplayed()
+    {
         return 1;
     }
 
     @Override
-    public int getRowSize() {
+    public int getRowSize()
+    {
         return 1;
     }
 
-
     @Override
-    public int getBuffer() {
+    public int getBuffer()
+    {
         return 0;
     }
 
     @Override
-    public int getDateOffset() {
+    public int getDateOffset()
+    {
         return 0;
     }
 
     @Override
-    public void addObserver(Observer o) {
-        monthPanels.add((MonthPanel)o);
+    public void addObserver(Observer o)
+    {
+        monthPanels.add((MonthPanel) o);
     }
 
     @Override
-    public void deleteObserver(Observer o) {
+    public void deleteObserver(Observer o)
+    {
     }
 
     @Override
-    public void notifyObservers() {
-        for (Observer o : monthPanels) {
+    public void notifyObservers()
+    {
+        for (Observer o : monthPanels)
             o.update();
-        }
     }
+
     @Override
-    public void update(){
+    public void update()
+    {
         //super.update();
         //addDateSquares();
         notifyObservers();
     }
 
-
-    
-
-    
-    
-
-    
 }
