@@ -28,7 +28,7 @@ import javax.swing.JTextField;
  *
  * @author colbysadams
  */
-public class EventFactoryPanel extends JPanel implements Observer, ActionListener
+public class EventFactoryPanel extends JPanel implements ActionListener
 {
 
     private static int offsetX = 5;
@@ -41,17 +41,11 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
     private JPanel subPanel;
     private Box mainPanelButton;
 
-    private String[] repeatBoxStrings = new String[]
-    {
-        "Never", "Yearly", "Monthly", "Weekly"
-    };
-
     private JComboBox repeatComboBox;
 
     private JPanel timePanel;
     private Box timeBox;
 
-    //private JTextField hourTextField, minuteTextField;
     private JCheckBox hasTimeBox;
 
     private JComboBox hourCombo, minuteCombo;
@@ -88,9 +82,9 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
         }
 
         hourCombo = new JComboBox(clockHourStrings.toArray());
-        //hourCombo.setPreferredSize(new Dimension(comboBoxWidth, hourCombo.getPreferredSize().height));
+
         minuteCombo = new JComboBox(clockMinuteStrings.toArray());
-        //minuteCombo.setPreferredSize(new Dimension(comboBoxWidth, hourCombo.getPreferredSize().height));
+
         hasTimeBox = new JCheckBox("All Day Event");
 
         hasTimeBox.addActionListener(new ActionListener()
@@ -204,7 +198,7 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
         eventNameField = new JTextField(textFieldSize);
         eventLocationField = new JTextField(textFieldSize);
 
-        repeatComboBox = new JComboBox(repeatBoxStrings);
+        repeatComboBox = new JComboBox(MasterSchedule.repeatStrings);
 
         eventTypes = new ButtonGroup();
         eventTypeRadio = new JRadioButton[]
@@ -225,8 +219,7 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
 
         JScrollPane descriptionPane = new JScrollPane();
         descriptionPane.setViewportView(eventDescriptionArea);
-//        subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
-//        subPanel.setAlignmentX(SwingConstants.LEFT);
+
         Box buttonBox = Box.createHorizontalBox();
 
         subPanel.add(createLabel("Event Name:"));
@@ -255,6 +248,7 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
         Box deleteBox = Box.createHorizontalBox();
         deleteBox.add(deleteButton);
         deleteBox.add(Box.createHorizontalGlue());
+        subPanel.add(Box.createVerticalStrut(50));
         subPanel.add(deleteBox);
         this.add(subPanel);
 
@@ -287,6 +281,7 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
             amCheck.setSelected(false);
         }
         event = null;
+        newEvent = false;
         EventDetailPanel.makeVisible(true);
 
     }
@@ -310,9 +305,10 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
         eventTypeRadio[event.getEventType().index].setSelected(true);
         if (newEvent)
             deleteButton.setVisible(false);
+
         else
             deleteButton.setVisible(true);
-        if (this.event.getTime().getStart() == null)
+        if (this.event.getTimeObject().getTime() == null)
         {
 
             if (!hasTimeBox.isSelected())
@@ -321,21 +317,11 @@ public class EventFactoryPanel extends JPanel implements Observer, ActionListene
         {
             if (hasTimeBox.isSelected())
                 hasTimeBox.doClick();
-            hourCombo.setSelectedIndex((event.getTime().getStart().getHour() - 1) % 12);
-            minuteCombo.setSelectedIndex(event.getTime().getStart().getMinute());
+            hourCombo.setSelectedIndex((event.getTimeObject().getTime().getHour() - 1) % 12);
+            minuteCombo.setSelectedIndex(event.getTimeObject().getTime().getMinute());
 
-            if (event.getTime().getStart().getHour() < 12)
+            if (event.getTimeObject().getTime().getHour() < 12)
                 amCheck.setSelected(true);
         }
-
     }
-
-    @Override
-    public void update()
-    {
-
-        this.revalidate();
-        this.repaint();
-    }
-
 }

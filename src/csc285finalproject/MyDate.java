@@ -25,14 +25,9 @@ public class MyDate implements Comparable<MyDate>
      */
     public MyDate()
     {
-        try
-        {
-            month = Month.getMonth((Calendar.getInstance().get(Calendar.MONTH) + 1));
-        }
-        catch (IllegalDateException e)
-        {
-            System.out.println("In MyDate() Constructor " + e.getMessage());
-        }
+
+        month = Month.getMonth((Calendar.getInstance().get(Calendar.MONTH) + 1));
+
         day = Calendar.getInstance().get(Calendar.DATE);
         year = Calendar.getInstance().get(Calendar.YEAR);
 
@@ -42,7 +37,7 @@ public class MyDate implements Comparable<MyDate>
      *
      * @param month
      * @param day
-     * @param year <p>
+     * @param year  <p>
      * @throws IllegalDateException
      */
     public MyDate(int month, int day, int year) throws IllegalDateException
@@ -112,9 +107,19 @@ public class MyDate implements Comparable<MyDate>
     /**
      * @return the month
      */
-    public Month getMonth()
+    public String getMonthString()
     {
-        return month;
+        return month.name;
+    }
+
+    public int getMonthInt()
+    {
+        return month.monthNum;
+    }
+
+    public static String getMonth(int calendarNum)
+    {
+        return Month.getMonth(calendarNum).name;
     }
 
     /**
@@ -128,16 +133,10 @@ public class MyDate implements Comparable<MyDate>
         if (!valid())
         {
             //if day is not valid, go to next month
-            try
-            {
-                month = Month.getMonth(month.getMonthNum() + 1);
-            }
-            catch (IllegalDateException ex)
-            {
-                //next month was not valid, go to next year
-                year += 1;
-                month = Month.jan;
-            }
+            if (month.getMonthNum() + 1 == 13)
+                year++;
+            month = Month.getMonth(month.getMonthNum() + 1);
+
             day = 1;
         }
     }
@@ -153,16 +152,11 @@ public class MyDate implements Comparable<MyDate>
         if (day == 0)
         {
             // if day was not valid, go to previous month
-            try
-            {
-                month = Month.getMonth(month.getMonthNum() - 1);
-            }
-            catch (IllegalDateException ex)
-            {
-                //month was not valid, go to previous year
-                year -= 1;
-                month = Month.dec;
-            }
+            if (month.getMonthNum() - 1 == 0)
+                year--;
+            month = Month.getMonth(month.getMonthNum() - 1);
+            //month was not valid, go to previous year
+
             day = this.getDaysInMonth();
         }
     }
@@ -216,14 +210,9 @@ public class MyDate implements Comparable<MyDate>
     public void setToToday()
     {
         day = (Calendar.getInstance().get(Calendar.DATE));
-        try
-        {
-            month = (Month.getMonth(Calendar.getInstance().get(Calendar.MONTH) + 1));
-        }
-        catch (IllegalDateException ex)
-        {
-            Logger.getLogger(SelectedDate.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+        month = (Month.getMonth(Calendar.getInstance().get(Calendar.MONTH) + 1));
+
         year = (Calendar.getInstance().get(Calendar.YEAR));
     }
 
@@ -243,7 +232,7 @@ public class MyDate implements Comparable<MyDate>
      * <p>
      * @param month
      * @param day
-     * @param year <p>
+     * @param year  <p>
      * @return
      */
     public boolean fieldsEqual(int month, int day, int year)
@@ -259,30 +248,6 @@ public class MyDate implements Comparable<MyDate>
     public boolean equals(MyDate other)
     {
         return this.fieldsEqual(other.month.monthNum, other.day, other.year);
-    }
-
-    public String getMapString(boolean month, boolean day, boolean year, boolean week)
-    {
-        if (week)
-            return this.getDayOfWeek().name;
-
-        String s = "";
-        if (month)
-            s += this.month.name;
-        else
-            s += "MM";
-        s += "_";
-        if (day)
-            s += this.day;
-        else
-            s += "DD";
-        s += "_";
-        if (year)
-            s += this.year;
-        else
-            s += "YYYY";
-        //System.out.println("date: " + "mapString: " + s);
-        return s;
     }
 
     /**
@@ -363,4 +328,107 @@ public class MyDate implements Comparable<MyDate>
         numDays = numDays - subDays;
         return numDays;
     }
+
+    private enum Month
+    {
+
+        jan("January", 1, 31),
+        feb("February", 2, 28),
+        mar("March", 3, 31),
+        apr("April", 4, 30),
+        may("May", 5, 31),
+        jun("June", 6, 30),
+        jul("July", 7, 31),
+        aug("August", 8, 31),
+        sep("September", 9, 30),
+        oct("October", 10, 31),
+        nov("November", 11, 30),
+        dec("December", 12, 31);
+
+        final String name;
+        final int monthNum;
+        private final int daysInMonth;
+
+        Month(String s, int num, int days)
+        {
+            name = s;
+            monthNum = num;
+            daysInMonth = days;
+        }
+
+        /**
+         *
+         * gets the month according to its position January = 1 February = 2...
+         * <p>
+         * @param i integer representing month to be returned
+         * <p>
+         * @return the month object at position i in the calendar
+         * <p>
+         * @throws IllegalDateException i was not in between 1 and 12 inclusive
+         */
+        public static Month getMonth(int i)
+        {
+            switch (i)
+            {
+                case 0:
+
+                    return Month.dec;
+                case 1:
+                    return Month.jan;
+                case 2:
+                    return Month.feb;
+                case 3:
+                    return Month.mar;
+                case 4:
+                    return Month.apr;
+                case 5:
+                    return Month.may;
+                case 6:
+                    return Month.jun;
+                case 7:
+                    return Month.jul;
+                case 8:
+                    return Month.aug;
+                case 9:
+                    return Month.sep;
+                case 10:
+                    return Month.oct;
+                case 11:
+                    return Month.nov;
+                case 12:
+                    return Month.dec;
+                case 13:
+                    return Month.jan;
+
+            }
+            return null;
+
+        }
+
+        /**
+         * @return the name
+         */
+        public String getName()
+        {
+            return name;
+        }
+
+        /**
+         * @return the monthNum
+         */
+        public int getMonthNum()
+        {
+            return monthNum;
+        }
+
+        /**
+         * @return the daysInMonth
+         */
+        public int getNormalDaysInMonth()
+        {
+            return daysInMonth;
+        }
+
+    }
+
 }

@@ -27,24 +27,23 @@ public class MasterSchedule implements Serializable
     public static final int YEARLY = 1;
     public static final int MONTHLY = 2;
     public static final int WEEKLY = 3;
+    public static final int DAILY = 4;
+
+    public static String[] repeatStrings =
+    {
+        "Never", "Yearly", "Monthly", "Weekly", "Everyday"
+    };
+
+    private static int REPEATTYPES = 5;
 
     private static MasterSchedule schedule;
 
-    private EventMap oneTimeEventMap;
-
-    private EventMap monthlyEventMap;
-
-    private EventMap yearlyEventMap;
-
-    private EventMap weeklyEventMap;
+    private EventMap eventMap;
 
     private MasterSchedule()
     {
 
-        oneTimeEventMap = new EventMap(true, true, true, false);
-        monthlyEventMap = new EventMap(false, true, false, false);
-        yearlyEventMap = new EventMap(true, true, false, false);
-        weeklyEventMap = new EventMap(false, false, false, true);
+        eventMap = new EventMap();
 
         generateSampleEvents();
 
@@ -76,11 +75,11 @@ public class MasterSchedule implements Serializable
         }
         catch (IOException ex)
         {
-
+            System.out.println("Loading Failed");
         }
         catch (ClassNotFoundException ex)
         {
-
+            System.out.println("Loading Failed");
         }
         finally
         {
@@ -97,77 +96,32 @@ public class MasterSchedule implements Serializable
 
     public void addEventToSchedule(MyDate date, CalendarEvent event)
     {
-        switch (event.getRepeating())
-        {
-            case 0:
-                oneTimeEventMap.put(date, event);
-                break;
-            case 1:
-                yearlyEventMap.put(date, event);
-                break;
-            case 2:
-                monthlyEventMap.put(date, event);
-                break;
-            case 3:
-                weeklyEventMap.put(date, event);
-                break;
-            case 4:
-
-        }
+        eventMap.put(getMapString(date, event.getRepeating()), event);
     }
 
     public void removeFromSchedule(CalendarEvent event)
     {
-        switch (event.getRepeating())
-        {
-            case 0:
-                oneTimeEventMap.remove(event);
-                break;
-            case 1:
-                yearlyEventMap.remove(event);
-                break;
-            case 2:
-                monthlyEventMap.remove(event);
-                break;
-            case 3:
-                weeklyEventMap.remove(event);
-                break;
-            case 4:
-
-        }
+        eventMap.remove(event);
     }
 
     public ArrayList<CalendarEvent> getDaysEvents(MyDate date)
     {
         ArrayList<CalendarEvent> daysEvents = new ArrayList();
-        ArrayList<CalendarEvent> e;
-        if (oneTimeEventMap.containsKey(date))
-        {
-            e = oneTimeEventMap.get(date);
-            //System.out.println("onetime: e" + e + "Date" +date);
-            for (int i = 0; i < e.size(); ++i)
-                daysEvents.add(e.get(i));
 
-        }
+        ArrayList<CalendarEvent> temp;
 
-        if (yearlyEventMap.containsKey(date))
-        {
-            e = yearlyEventMap.get(date);
-            //System.out.println("yearly: e" + e + "Date" +date);
-            for (int i = 0; i < e.size(); ++i)
-                daysEvents.add(e.get(i));
+        for (int repeating = 0; repeating < REPEATTYPES; ++repeating)
+            if (eventMap.containsKey(getMapString(date, repeating)))
+            {
+                temp = eventMap.get(getMapString(date, repeating));
+                for (int j = 0; j < temp.size(); ++j)
+                    daysEvents.add(temp.get(j));
+            }
 
-        }
-        if (monthlyEventMap.containsKey(date))
-        {
-            e = monthlyEventMap.get(date);
-            //System.out.println("monthly: e" + e + "Date" +date);
-            for (int i = 0; i < e.size(); ++i)
-                daysEvents.add(e.get(i));
-        }
+        //tests for end of month events
         if (date.getDay() == date.getDaysInMonth() && date.getDay() < 31)
         {
-            //System.out.println("LastDayOf Month: " + date);
+
             MyDate sample = null;
             try
             {
@@ -177,25 +131,19 @@ public class MasterSchedule implements Serializable
             {
                 System.out.println("we messing up");
             }
-            while (sample.getMonth() == Month.jan)
+            while (sample.getMonthInt() == 1)
             {
-                if (monthlyEventMap.containsKey(sample))
+                if (eventMap.containsKey(getMapString(sample, MONTHLY)))
                 {
-                    e = monthlyEventMap.get(sample);
+                    temp = eventMap.get(getMapString(sample, MONTHLY));
                     //System.out.println("monthly: e" + e + "Date" +date);
-                    for (int i = 0; i < e.size(); ++i)
-                        daysEvents.add(e.get(i));
+                    for (int i = 0; i < temp.size(); ++i)
+                        daysEvents.add(temp.get(i));
                 }
                 sample.nextDay();
             }
         }
-        if (weeklyEventMap.containsKey(date))
-        {
-            e = weeklyEventMap.get(date);
-            //System.out.println("monthly: e" + e + "Date" +date);
-            for (int i = 0; i < e.size(); ++i)
-                daysEvents.add(e.get(i));
-        }
+
         daysEvents.sort(null);
         return daysEvents;
 
@@ -205,6 +153,8 @@ public class MasterSchedule implements Serializable
     {
         if (date.getDay() == date.getDaysInMonth())
         {
+            //test for end of month events (ie this month only has 28 days, but a monthly
+            //event occurs on the 31 of every month.
             MyDate sample = null;
             try
             {
@@ -214,17 +164,17 @@ public class MasterSchedule implements Serializable
             {
                 Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
             }
-            while (sample.getMonth() == Month.jan)
+            while (sample.getMonthInt() == 1)
             {
-                if (monthlyEventMap.containsKey(sample))
+                if (eventMap.containsKey(getMapString(sample, MONTHLY)))
                     return true;
                 sample.nextDay();
             }
         }
-        return (oneTimeEventMap.containsKey(date)
-                || yearlyEventMap.containsKey(date)
-                || monthlyEventMap.containsKey(date)
-                || weeklyEventMap.containsKey(date));
+        for (int i = 0; i < REPEATTYPES; ++i)
+            if (eventMap.containsKey(getMapString(date, i)))
+                return true;
+        return false;
     }
 
     private void generateSampleEvents()
@@ -232,13 +182,13 @@ public class MasterSchedule implements Serializable
         try
         {
 
-            addEventToSchedule(new MyDate(3, 15, 2016), new CalendarEvent("Colby's Birthday", EventType.family, YEARLY));
+            addEventToSchedule(new MyDate(3, 15, 2016), new CalendarEvent("Daily Event", EventType.family, DAILY));
             addEventToSchedule(new MyDate(3, 31, 2016), new CalendarEvent("Last Day of Month", EventType.other, MONTHLY));
-            addEventToSchedule(new MyDate(1, 1, 2016), new CalendarEvent("Pay Bills", EventType.work, MONTHLY));
+            addEventToSchedule(new MyDate(1, 1, 2016), new CalendarEvent("First Day of Month", EventType.work, MONTHLY));
             addEventToSchedule(new MyDate(9, 7, 2016), new CalendarEvent("Emily's Birthday", EventType.family, YEARLY));
             addEventToSchedule(new MyDate(4, 1, 2015), new CalendarEvent("April Fools Day", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(5, 1, 2016), new CalendarEvent("Leroy's Birthday", EventType.family, YEARLY));
-            addEventToSchedule(new MyDate(3, 16, 2016), new CalendarEvent("Go to Class", EventType.school, WEEKLY));
+            addEventToSchedule(new MyDate(3, 16, 2016), new CalendarEvent("Weekly Event", EventType.school, WEEKLY));
             addEventToSchedule(new MyDate(12, 25, 2999), new CalendarEvent("Jesus's Birthday", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(1, 1, 2999), new CalendarEvent("New Year's Day", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(12, 31, 2999), new CalendarEvent("New Year's Eve", EventType.holiday, YEARLY));
@@ -249,6 +199,25 @@ public class MasterSchedule implements Serializable
         {
 
         }
+    }
+
+    private static String getMapString(MyDate date, int repeating)
+    {
+        switch (repeating)
+        {
+            case ONETIME:
+                return date.getMonthString() + "_" + date.getDay() + "_" + date.getYear();
+            case YEARLY:
+                return date.getMonthString() + "_" + date.getDay() + "_" + "YYYY";
+            case MONTHLY:
+                return "MM_" + date.getDay() + "_YYYY";
+            case WEEKLY:
+                return date.getDayOfWeek().name;
+            case DAILY:
+                return "MM_DD_YYYY";
+        }
+        return "";
+
     }
 
     //public static final int ONETIME = 0,YEARLY = 1,MONTHLY = 2,WEEKLY = 3;
@@ -265,7 +234,12 @@ public class MasterSchedule implements Serializable
             this.day = day;
             this.year = year;
             this.week = week;
-            eventMap = new HashMap<String, ArrayList<CalendarEvent>>();
+            eventMap = new HashMap();
+        }
+
+        private EventMap()
+        {
+            eventMap = new HashMap();
         }
 
         public int size()
@@ -278,26 +252,26 @@ public class MasterSchedule implements Serializable
             return eventMap.isEmpty();
         }
 
-        public boolean containsKey(MyDate key)
+        public boolean containsKey(String key)
         {
-            return eventMap.containsKey(key.getMapString(month, day, year, week));
+            return eventMap.containsKey(key);
         }
 
-        public ArrayList<CalendarEvent> get(MyDate key)
+        public ArrayList<CalendarEvent> get(String key)
         {
-            return eventMap.get(key.getMapString(month, day, year, week));
+            return eventMap.get(key);
         }
 
-        public void put(MyDate key, CalendarEvent value)
+        public void put(String key, CalendarEvent value)
         {
-            value.setDateString(key.getMapString(month, day, year, week));
+            value.setDateString(key);
             ArrayList<CalendarEvent> daysEvents;
             if (!containsKey(key))
-                daysEvents = new ArrayList<CalendarEvent>();
+                daysEvents = new ArrayList();
             else
-                daysEvents = eventMap.get(key.getMapString(month, day, year, week));
+                daysEvents = eventMap.get(key);
             daysEvents.add(value);
-            eventMap.put(key.getMapString(month, day, year, week), daysEvents);
+            eventMap.put(key, daysEvents);
         }
 
         public void remove(CalendarEvent event)

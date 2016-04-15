@@ -50,24 +50,28 @@ public abstract class AbstractDateSquare extends JComponent implements MouseList
         if (getDate().equals(SelectedDate.getInstance()))
             return;
         SelectedDate.getInstance().changeSelectedDate(getDate());
-        System.out.println("Selecting Date: " + SelectedDate.getInstance());
+        //System.out.println("Selecting Date: " + SelectedDate.getInstance());
 
     }
 
     @Override
     public void mouseEntered(MouseEvent e)
-    {}
+    {
+    }
 
     @Override
     public void mouseExited(MouseEvent e)
-    {}
+    {
+    }
 
     @Override
     public void mousePressed(MouseEvent e)
-    {}
+    {
+    }
 
     @Override
     public void mouseReleased(MouseEvent e)
-    {}
+    {
+    }
 
 }

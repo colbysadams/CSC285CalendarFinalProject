@@ -9,7 +9,7 @@ package csc285finalproject;
  *
  * @author colbysadams
  */
-public class DayPanel extends CalendarViewPanel
+public class DayPanel extends AbstractCalendarViewPanel
 {
 
     public DayPanel()

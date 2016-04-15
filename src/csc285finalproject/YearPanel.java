@@ -21,7 +21,7 @@ import javax.swing.SwingConstants;
  * <p>
  * @author colbysadams
  */
-public class YearPanel extends CalendarViewPanel implements Subject
+public class YearPanel extends AbstractCalendarViewPanel implements Subject
 {
 
     ArrayList<MonthPanel> monthPanels;
@@ -48,7 +48,7 @@ public class YearPanel extends CalendarViewPanel implements Subject
                 monthPanel = (new MonthPanel(new MyDate(i,
                                                         1,
                                                         SelectedDate.getInstance().getYear()), true));
-                monthLabel = new JLabel(Month.getMonth(i).getName());
+                monthLabel = new JLabel(MyDate.getMonth(i));
             }
             catch (IllegalDateException ex)
             {

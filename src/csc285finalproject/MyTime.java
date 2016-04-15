@@ -15,36 +15,36 @@ import java.time.LocalTime;
 public class MyTime implements Serializable, Comparable<MyTime>
 {
 
-    private LocalTime start;
+    private LocalTime time;
     private int hours, minutes;
 
     public MyTime(LocalTime start)
     {
-        this.start = start;
+        this.time = start;
         this.hours = 1;
         this.minutes = 0;
     }
 
     public MyTime()
     {
-        start = null;
+        time = null;
 
     }
 
     /**
      * @return the start
      */
-    public LocalTime getStart()
+    public LocalTime getTime()
     {
-        return start;
+        return time;
     }
 
     /**
      * @param start the start to set
      */
-    public void setStart(LocalTime start)
+    public void setTime(LocalTime start)
     {
-        this.start = start;
+        this.time = start;
     }
 
     /**
@@ -52,7 +52,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
      */
     public LocalTime getEnd()
     {
-        LocalTime end = start.plusHours(hours);
+        LocalTime end = time.plusHours(hours);
         end.plusHours(minutes);
         return end;
     }
@@ -65,32 +65,32 @@ public class MyTime implements Serializable, Comparable<MyTime>
 
     public String toString()
     {
-        if (start == null)
+        if (time == null)
 
             return "";
 //        String s;
 //        hour int = S
-        return start.toString();
+        return time.toString();
     }
 
     public String getClock()
     {
-        if (start == null)
+        if (time == null)
 
             return "";
 
         String s = "";
 
-        s += start.getHour() % 12;
+        s += time.getHour() % 12;
 
         if (s.equals("0"))
             s = "12";
         s += ":";
-        if (start.getMinute() < 10)
+        if (time.getMinute() < 10)
             s += 0;
-        s += start.getMinute();
+        s += time.getMinute();
 
-        if (start.getHour() / 12 == 1)
+        if (time.getHour() / 12 == 1)
             s += "PM";
         else
             s += "AM";
@@ -102,15 +102,15 @@ public class MyTime implements Serializable, Comparable<MyTime>
     @Override
     public int compareTo(MyTime o)
     {
-        if (start == null)
+        if (time == null)
         {
-            if (o.start == null)
+            if (o.time == null)
                 return 0;
             return 1;
         }
-        if (o.start == null)
+        if (o.time == null)
             return -1;
-        return start.compareTo(o.start);
+        return time.compareTo(o.time);
     }
 
 }

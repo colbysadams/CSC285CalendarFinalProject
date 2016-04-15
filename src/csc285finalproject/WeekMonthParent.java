@@ -18,7 +18,7 @@ import javax.swing.SwingConstants;
  * <p>
  * @author colbysadams
  */
-public abstract class WeekMonthParent extends CalendarViewPanel
+public abstract class WeekMonthParent extends AbstractCalendarViewPanel
 {
 
     public WeekMonthParent(MyDate date, boolean shortLabels)

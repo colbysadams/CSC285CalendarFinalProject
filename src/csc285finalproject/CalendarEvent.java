@@ -13,10 +13,6 @@ import java.io.Serializable;
  */
 public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 {
-    public static final int ONETIME = 0;
-    public static final int YEARLY = 1;
-    public static final int MONTHLY = 2;
-    public static final int WEEKLY = 3;
 
     private String name, description, location;
     private String dateString;
@@ -24,7 +20,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     private EventType eventType;
 
     private int repeating;
-    
+
     private MyTime time;
 
     public CalendarEvent(String name, EventType eventType, int repeating)
@@ -42,7 +38,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     public CalendarEvent()
     {
-        this("", EventType.other, ONETIME);
+        this("", EventType.other, MasterSchedule.ONETIME);
     }
 
     public void setDateString(String dateString)
@@ -67,18 +63,12 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     public String getRepeatingString()
     {
-        switch (repeating)
-        {
-            case 0:
-                return "<html><p>&nbsp;&nbsp;One Time</html></p>";
-            case 1:
-                return "<html><p>&nbsp;&nbsp;Yearly</html></p>";
-            case 2:
-                return "<html><p>&nbsp;&nbsp;Monthly</html></p>";
-            case 3:
-                return "<html><p>&nbsp;&nbsp;Weekly</html></p>";
-        }
-        return "";
+
+        String s = "<html><p>&nbsp;&nbsp;";
+        s += MasterSchedule.repeatStrings[repeating];
+        s += "</html></p>";
+
+        return s;
     }
 
     @Override
@@ -106,7 +96,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     public String getShortLabel()
     {
         String s = "";
-        if (time.getStart() != null)
+        if (time.getTime() != null)
             s += time.getClock() + "  ";
         s += name;
         return s;
@@ -191,7 +181,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     /**
      * @return the time
      */
-    public MyTime getTime()
+    public MyTime getTimeObject()
     {
         return time;
     }

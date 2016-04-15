@@ -28,7 +28,7 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
 
     private static CalendarEvent selectedEvent;
     private static JButton editEventButton;
-    private static ArrayList<EventDetailPanel> allPanels = new ArrayList();
+    private static ArrayList<EventDetailPanel> everyInstance = new ArrayList();
     private static boolean visible = true;
 
     private ArrayList<CalendarEvent> daysEvents;
@@ -53,14 +53,12 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         buttonPanel = new JPanel(new GridLayout(0, 1));
         detailPanel = new JPanel();
         detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
-        //detailPanel.setPreferredSize(new Dimension(getWidth(),getHeight()));
 
-        allPanels.add(this);
+        everyInstance.add(this);
 
         this.add(buttonPanel, BorderLayout.NORTH);
         this.add(detailPanel, BorderLayout.CENTER);
 
-        //this.editEventButton = editEventButton;
         selectEventLabel = new JLabel("<html><h3>Select Event:</html></h3>");
         selectEventLabel.setHorizontalAlignment(SwingConstants.CENTER);
         nameLabel = new JLabel();
@@ -96,7 +94,7 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
     public static void makeVisible(boolean visible)
     {
         EventDetailPanel.visible = visible;
-        for (EventDetailPanel e : allPanels)
+        for (EventDetailPanel e : everyInstance)
             e.setVisible(visible);
     }
 
@@ -114,7 +112,7 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         editEventButton.setEnabled(true);
 
         nameLabel.setText(selectedEvent.getName());
-        timeLabel.setText(selectedEvent.getTime().getClock());
+        timeLabel.setText(selectedEvent.getTimeObject().getClock());
         typeLabel.setForeground(selectedEvent.getEventType().COLOR);
         typeLabel.setText(selectedEvent.getEventType().TYPE);
         repeatingLabel.setText(selectedEvent.getRepeatingString());
@@ -123,7 +121,7 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
 
         detailPanel.revalidate();
         detailPanel.repaint();
-        System.out.println("EventSelected " + selectedEvent);
+        //System.out.println("EventSelected " + selectedEvent);
     }
 
     @Override
@@ -147,7 +145,7 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         detailPanel.repaint();
 
         daysEvents = MasterSchedule.getInstance().getDaysEvents(SelectedDate.getInstance());
-        JButton eventButton;
+        JButton eventButton = null;
 
         //Box buttonBox;
         if (daysEvents.size() == 0)
@@ -167,6 +165,8 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
                 buttonPanel.add(eventButton);
 
             }
+            if (daysEvents.size() == 1)
+                eventButton.doClick();
 
         }
     }

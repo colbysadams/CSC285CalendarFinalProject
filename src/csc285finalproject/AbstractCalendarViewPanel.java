@@ -18,15 +18,15 @@ import javax.swing.JPanel;
  * <p>
  * @author colbysadams
  */
-public abstract class CalendarViewPanel extends JPanel implements Observer
+public abstract class AbstractCalendarViewPanel extends JPanel implements Observer
 {
+
     protected boolean shortLabels;
 
     //the currently selected date to display a view for
     private MyDate selectedDate;
-    
-    private JPanel squaresPanel, subPanel;
 
+    private JPanel squaresPanel, subPanel;
 
     private MasterSchedule schedule;
 
@@ -35,7 +35,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
      * @param date
      * @param shortLabels
      */
-    public CalendarViewPanel(MyDate date, boolean shortLabels)
+    public AbstractCalendarViewPanel(MyDate date, boolean shortLabels)
     {
 
         super();
@@ -67,7 +67,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
     /**
      * Constructor
      */
-    public CalendarViewPanel()
+    public AbstractCalendarViewPanel()
     {
         this(SelectedDate.getInstance(), false);
 
@@ -90,7 +90,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
 
         try
         {
-            prevMonth = new MyDate(selectedDate.getMonth().getMonthNum(), 1, selectedDate.getYear());
+            prevMonth = new MyDate(selectedDate.getMonthInt(), 1, selectedDate.getYear());
         }
         catch (IllegalDateException ex)
         {
@@ -105,7 +105,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
         //displays any days from the previous month that are in the current view
         for (int i = 0; i < getBuffer(); ++i)
         {
-            dateSquare = new DateSquare(prevMonth.getMonth().getMonthNum(),
+            dateSquare = new DateSquare(prevMonth.getMonthInt(),
                                         prevMonth.getDay(),
                                         prevMonth.getYear(),
                                         Color.lightGray);
@@ -129,7 +129,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
             if (i + getDateOffset() > selectedDate.getDaysInMonth()
                     || ((i + getBuffer() > getDaysDisplayed() && getDaysDisplayed() == 7)))
                 break;
-            dateSquare = new DateSquare(selectedDate.getMonth().getMonthNum(),
+            dateSquare = new DateSquare(selectedDate.getMonthInt(),
                                         i + getDateOffset(),
                                         selectedDate.getYear(),
                                         Color.white);
@@ -147,7 +147,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
         MyDate nextMonth = null;
         try
         {
-            nextMonth = new MyDate(selectedDate.getMonth().getMonthNum(),
+            nextMonth = new MyDate(selectedDate.getMonthInt(),
                                    selectedDate.getDaysInMonth(),
                                    selectedDate.getYear());
         }
@@ -160,7 +160,7 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
         //fill in days from next month
         while (lastDay % getRowSize() != 0)
         {
-            dateSquare = new DateSquare(nextMonth.getMonth().getMonthNum(),
+            dateSquare = new DateSquare(nextMonth.getMonthInt(),
                                         nextMonth.getDay(),
                                         nextMonth.getYear(), Color.lightGray);
 
@@ -214,7 +214,6 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
     public abstract int getRowSize();
 
 //    
-
     /**
      *
      *
@@ -233,17 +232,19 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
 //
 
     @Override
-    public void update() {
+    public void update()
+    {
         //shortlabels is only true for year view. each month of a year view holds a diff
         //selected date
         if (shortLabels)
             try
             {
-                setSelectedDate(new MyDate(selectedDate.getMonth().getMonthNum(),
-                        1, SelectedDate.getInstance().getYear()));
+                setSelectedDate(new MyDate(selectedDate.getMonthInt(),
+                                           1, SelectedDate.getInstance().getYear()));
             }
             catch (IllegalDateException ex)
-            {}
+            {
+            }
         else
             //for all other views, just use the singleton SelectedDate
             setSelectedDate(SelectedDate.getInstance());
@@ -254,11 +255,13 @@ public abstract class CalendarViewPanel extends JPanel implements Observer
 
     }
 
-    protected JPanel getSubPanel() {
+    protected JPanel getSubPanel()
+    {
         return subPanel;
     }
 
-    private void setSelectedDate(MyDate date) {
+    private void setSelectedDate(MyDate date)
+    {
         selectedDate = date;
     }
 

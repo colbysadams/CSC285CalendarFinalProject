@@ -32,10 +32,10 @@ public class MainPanel extends JFrame implements Observer
 {
 
     private SelectedDate selectedDate;
-    private CalendarViewPanel weekPanel;
-    private CalendarViewPanel monthPanel;
-    private CalendarViewPanel dayPanel;
-    private CalendarViewPanel yearPanel;
+    private AbstractCalendarViewPanel weekPanel;
+    private AbstractCalendarViewPanel monthPanel;
+    private AbstractCalendarViewPanel dayPanel;
+    private AbstractCalendarViewPanel yearPanel;
 
     private EventFactoryPanel eventPanel;
 
@@ -81,7 +81,7 @@ public class MainPanel extends JFrame implements Observer
         selectedDate.addObserver(weekPanel);
         selectedDate.addObserver(monthPanel);
         selectedDate.addObserver(yearPanel);
-        selectedDate.addObserver(eventPanel);
+        //selectedDate.addObserver(eventPanel);
         selectedDate.addObserver(this);
 
         nextButton = new JButton("-->");
@@ -111,7 +111,7 @@ public class MainPanel extends JFrame implements Observer
                         selectedDate.nextYear();
                         break;
                 }
-                System.out.println("action next:" + selectedDate);
+                //System.out.println("action next:" + selectedDate);
             }
         });
 
@@ -136,7 +136,7 @@ public class MainPanel extends JFrame implements Observer
                         selectedDate.prevYear();
                         break;
                 }
-                System.out.println("action prev:" + selectedDate);
+                //System.out.println("action prev:" + selectedDate);
 
             }
 
@@ -149,7 +149,7 @@ public class MainPanel extends JFrame implements Observer
             public void actionPerformed(ActionEvent e)
             {
                 selectedDate.setToToday();
-                System.out.println("action today:" + selectedDate);
+                //System.out.println("action today:" + selectedDate);
             }
 
         });
