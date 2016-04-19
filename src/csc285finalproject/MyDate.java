@@ -226,28 +226,35 @@ public class MyDate implements Comparable<MyDate>
         return this.day - o.day;
     }
 
-    /**
-     *
-     * lightweight, easy way to manually check equality of a date without having to handle all the exceptions
-     * <p>
-     * @param month
-     * @param day
-     * @param year  <p>
-     * @return
-     */
-    public boolean fieldsEqual(int month, int day, int year)
+    private boolean fieldsEqual(MyDate other)
     {
-        if (month != this.month.getMonthNum())
-            return false;
-        if (day != this.day)
-            return false;
+        {
+            if (other.month.getMonthNum() != this.month.getMonthNum())
+                return false;
+            if (other.day != this.day)
+                return false;
 
-        return year == this.year;
+            return other.year == this.year;
+        }
     }
 
-    public boolean equals(MyDate other)
+    @Override
+    public boolean equals(Object other)
     {
-        return this.fieldsEqual(other.month.monthNum, other.day, other.year);
+        if (other == null)
+        {
+            System.out.println("null");
+            return false;
+        }
+        if (this.getClass() != other.getClass() && (this.getClass() != other.getClass().getSuperclass()))
+        {
+            System.out.println("classes");
+            return false;
+        }
+
+        MyDate otherDate = (MyDate) other;
+        return fieldsEqual(otherDate);
+
     }
 
     /**
@@ -344,7 +351,6 @@ public class MyDate implements Comparable<MyDate>
         oct("October", 10, 31),
         nov("November", 11, 30),
         dec("December", 12, 31);
-
         final String name;
         final int monthNum;
         private final int daysInMonth;
@@ -428,7 +434,5 @@ public class MyDate implements Comparable<MyDate>
         {
             return daysInMonth;
         }
-
     }
-
 }

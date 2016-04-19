@@ -28,16 +28,12 @@ public class MasterSchedule implements Serializable
     public static final int MONTHLY = 2;
     public static final int WEEKLY = 3;
     public static final int DAILY = 4;
-
     public static String[] repeatStrings =
     {
         "Never", "Yearly", "Monthly", "Weekly", "Everyday"
     };
-
     private static int REPEATTYPES = 5;
-
     private static MasterSchedule schedule;
-
     private EventMap eventMap;
 
     private MasterSchedule()
@@ -197,10 +193,11 @@ public class MasterSchedule implements Serializable
         }
         catch (IllegalDateException ex)
         {
-
         }
     }
 
+    //depending on the type of event, return a different version of the string
+    //that represents the date of the event
     private static String getMapString(MyDate date, int repeating)
     {
         switch (repeating)
@@ -220,22 +217,10 @@ public class MasterSchedule implements Serializable
 
     }
 
-    //public static final int ONETIME = 0,YEARLY = 1,MONTHLY = 2,WEEKLY = 3;
     private class EventMap implements Serializable
     {
 
         private HashMap<String, ArrayList<CalendarEvent>> eventMap;
-
-        private boolean month, day, year, week;
-
-        private EventMap(boolean month, boolean day, boolean year, boolean week)
-        {
-            this.month = month;
-            this.day = day;
-            this.year = year;
-            this.week = week;
-            eventMap = new HashMap();
-        }
 
         private EventMap()
         {
@@ -266,6 +251,7 @@ public class MasterSchedule implements Serializable
         {
             value.setDateString(key);
             ArrayList<CalendarEvent> daysEvents;
+
             if (!containsKey(key))
                 daysEvents = new ArrayList();
             else
@@ -283,7 +269,6 @@ public class MasterSchedule implements Serializable
             }
             catch (NullPointerException e)
             {
-                System.out.println("remove(MyDate key, CalendarEvent): event doesnt exist");
                 return;
             }
             daysEvents.remove(event);
@@ -303,7 +288,5 @@ public class MasterSchedule implements Serializable
         {
             return eventMap.values();
         }
-
     }
-
 }
