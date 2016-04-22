@@ -16,13 +16,14 @@ public class MyTime implements Serializable, Comparable<MyTime>
 {
 
     private LocalTime time;
+    //reminder offset
     private int hours, minutes;
 
     public MyTime(LocalTime start)
     {
         this.time = start;
-        this.hours = 1;
-        this.minutes = 0;
+        this.hours = -1;
+        this.minutes = -1;
     }
 
     public MyTime()
@@ -57,10 +58,21 @@ public class MyTime implements Serializable, Comparable<MyTime>
         return end;
     }
 
-    public void setDuration(int hours, int minutes)
+    /**
+     * sets a reminder
+     * <p>
+     * @param hours   - hours
+     * @param minutes - minutes
+     */
+    public void setReminder(int hours, int minutes)
     {
         this.hours = hours;
         this.minutes = minutes;
+    }
+
+    public boolean hasReminder()
+    {
+        return (hours == -1);
     }
 
     public String toString()
@@ -68,8 +80,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
         if (time == null)
 
             return "";
-//        String s;
-//        hour int = S
+
         return time.toString();
     }
 
@@ -112,5 +123,4 @@ public class MyTime implements Serializable, Comparable<MyTime>
             return -1;
         return time.compareTo(o.time);
     }
-
 }

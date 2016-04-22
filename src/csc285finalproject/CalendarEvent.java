@@ -16,11 +16,8 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     private String name, description, location;
     private String dateString;
-
     private EventType eventType;
-
     private int repeating;
-
     private MyTime time;
 
     public CalendarEvent(String name, EventType eventType, int repeating)
@@ -205,5 +202,4 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
         }
         return time.compareTo(o.time);
     }
-
 }

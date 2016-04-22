@@ -9,12 +9,15 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
+import javax.swing.Timer;
 
 /**
  *
@@ -24,11 +27,12 @@ import javax.swing.JTabbedPane;
  * <p>
  * the function of the previous/next buttons depends on the current view
  * <p>
- * Ex. current view = week, next button advances one week current view = month, next button advances one month
+ * Ex. current view = week, next button advances one week current view = month,
+ * next button advances one month
  * <p>
  * @author colbysadams
  */
-public class MainPanel extends JFrame implements Observer
+public class MainFrame extends JFrame implements Observer
 {
 
     private SelectedDate selectedDate;
@@ -36,24 +40,43 @@ public class MainPanel extends JFrame implements Observer
     private AbstractCalendarViewPanel monthPanel;
     private AbstractCalendarViewPanel dayPanel;
     private AbstractCalendarViewPanel yearPanel;
-
     private EventFactoryPanel eventPanel;
-
     private Box eventBox;
-
     private JButton nextButton;
     private JButton prevButton;
     private JButton todayButton;
-
     private JLabel dayOfWeek;
     private JLabel date;
-
     private JButton createEventButton, editEventButton;
     private JTabbedPane calendarView;
+    private Timer timer;
+    private ArrayList<CalendarEvent> todaysEvents;
 
-    public MainPanel(String name)
+    public MainFrame(String name)
     {
         super(name);
+
+        this.selectedDate = SelectedDate.getInstance();
+        this.selectedDate.setToToday();
+
+        todaysEvents = MasterSchedule.getInstance().getDaysEvents(selectedDate);
+        timer = new Timer(60000, new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                LocalTime currentTime;
+                currentTime = LocalTime.now();
+                for (int i = 0; i < todaysEvents.size(); ++i)
+                {
+                    MyTime eventTime = todaysEvents.get(i).getTimeObject();
+
+                    if ()
+                }
+            }
+
+        });
 
         createEventButton = new JButton("Create New Event");
         editEventButton = new JButton("Edit Selected Event");
@@ -74,8 +97,6 @@ public class MainPanel extends JFrame implements Observer
         eventPanel = new EventFactoryPanel(eventBox);
 
         calendarView = new JTabbedPane();
-
-        this.selectedDate = SelectedDate.getInstance();
 
         selectedDate.addObserver(dayPanel);
         selectedDate.addObserver(weekPanel);
@@ -235,5 +256,4 @@ public class MainPanel extends JFrame implements Observer
 
         repaint();
     }
-
 }

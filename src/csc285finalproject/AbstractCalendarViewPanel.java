@@ -22,12 +22,9 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
 {
 
     protected boolean shortLabels;
-
     //the currently selected date to display a view for
     private MyDate selectedDate;
-
     private JPanel squaresPanel, subPanel;
-
     private MasterSchedule schedule;
 
     /**
@@ -78,7 +75,8 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
 
     /**
      *
-     * Used to build the subpanel holding all the dateSquares representing different dates in the view
+     * Used to build the subpanel holding all the dateSquares representing
+     * different dates in the view
      * <p>
      */
     public void addDateSquares()
@@ -184,6 +182,8 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
     {
         if (shortLabels)
             return new YearSquareDecorator(event, dateSquare);
+        if (this.getRowSize() == 1)
+            return new DaySquareDecorator(event, dateSquare);
         return new DateSquareDecorator(event, dateSquare);
     }
 
@@ -273,5 +273,4 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
     {
         return selectedDate;
     }
-
 }

@@ -32,7 +32,6 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 {
 
     private static int offsetX = 5;
-
     private JButton saveEventButton, cancelButton, deleteButton;
     private JTextField eventNameField, eventLocationField;
     private JTextArea eventDescriptionArea;
@@ -40,26 +39,20 @@ public class EventFactoryPanel extends JPanel implements ActionListener
     private ButtonGroup eventTypes;
     private JPanel subPanel;
     private Box mainPanelButton;
-
     private JComboBox repeatComboBox;
-
     private JPanel timePanel;
+    private JPanel reminderPanel;
     private Box timeBox;
-
     private JCheckBox hasTimeBox;
-
     private JComboBox hourCombo, minuteCombo;
-
+    private JComboBox hourReminderCombo, minuteReminderCombo;
     private ArrayList<String> clockHourStrings, clockMinuteStrings;
-
     private int textFieldSize = 10;
-
     private CalendarEvent event;
     private MyDate eventDate;
-
     private boolean newEvent;
-
     private JCheckBox amCheck;
+    private JCheckBox hasReminder;
 
     public EventFactoryPanel(Box panelButton)
     {
@@ -82,11 +75,11 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         }
 
         hourCombo = new JComboBox(clockHourStrings.toArray());
-
+        hourReminderCombo = new JComboBox(clockHourStrings.toArray());
         minuteCombo = new JComboBox(clockMinuteStrings.toArray());
 
         hasTimeBox = new JCheckBox("All Day Event");
-
+        hasReminder = new JCheckBox("Set Reminder");
         hasTimeBox.addActionListener(new ActionListener()
         {
 

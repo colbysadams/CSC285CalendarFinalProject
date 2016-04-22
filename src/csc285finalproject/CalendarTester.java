@@ -26,7 +26,7 @@ public class CalendarTester
     public CalendarTester()
     {
 
-        frame = new MainPanel("Calendar");
+        frame = new MainFrame("Calendar");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.addWindowListener(new WindowAdapter()
