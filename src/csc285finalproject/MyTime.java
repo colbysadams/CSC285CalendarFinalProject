@@ -19,6 +19,10 @@ public class MyTime implements Serializable, Comparable<MyTime>
     //reminder offset
     private int hours, minutes;
 
+    /**
+     * 
+     * @param start 
+     */
     public MyTime(LocalTime start)
     {
         this.time = start;
@@ -70,11 +74,19 @@ public class MyTime implements Serializable, Comparable<MyTime>
         this.minutes = minutes;
     }
 
+    /**
+     * 
+     * @return the reminder
+     */
     public boolean hasReminder()
     {
         return (hours == -1);
     }
 
+    /**
+     * 
+     * @return the time
+     */
     public String toString()
     {
         if (time == null)

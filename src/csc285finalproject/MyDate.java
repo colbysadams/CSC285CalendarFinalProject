@@ -112,11 +112,20 @@ public class MyDate implements Comparable<MyDate>
         return month.name;
     }
 
+    /**
+     * 
+     * @return the monthNum
+     */
     public int getMonthInt()
     {
         return month.monthNum;
     }
 
+    /**
+     * 
+     * @param calendarNum
+     * @return the Month
+     */
     public static String getMonth(int calendarNum)
     {
         return Month.getMonth(calendarNum).name;
@@ -197,6 +206,10 @@ public class MyDate implements Comparable<MyDate>
         return firstOfMonth.getDayOfWeek().index;
     }
 
+    /**
+     * 
+     * @return string
+     */
     @Override
     public String toString()
     {
@@ -216,6 +229,11 @@ public class MyDate implements Comparable<MyDate>
         year = (Calendar.getInstance().get(Calendar.YEAR));
     }
 
+    /**
+     * 
+     * @param o
+     * @return the date
+     */
     @Override
     public int compareTo(MyDate o)
     {
@@ -355,6 +373,12 @@ public class MyDate implements Comparable<MyDate>
         final int monthNum;
         private final int daysInMonth;
 
+        /**
+         * 
+         * @param s
+         * @param num
+         * @param days 
+         */
         Month(String s, int num, int days)
         {
             name = s;

@@ -17,17 +17,30 @@ public class MonthPanel extends WeekMonthParent
         super();
     }
 
+    /**
+     * 
+     * @param date
+     * @param shortLabels 
+     */
     public MonthPanel(MyDate date, boolean shortLabels)
     {
         super(date, shortLabels);
     }
 
+    /**
+     * 
+     * @return the daysInMonth
+     */
     @Override
     public int getDaysDisplayed()
     {
         return getSelectedDate().getDaysInMonth();
     }
 
+    /**
+     * 
+     * @return firstWeekdayOfMonth
+     */
     @Override
     public int getBuffer()
     {
@@ -39,5 +52,4 @@ public class MonthPanel extends WeekMonthParent
     {
         return 0;
     }
-
 }

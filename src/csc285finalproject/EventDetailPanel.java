@@ -86,11 +86,19 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         addButtonsToPanel();
     }
 
+    /**
+     * 
+     * @param editEventButton 
+     */
     public static void addEditEventButton(JButton editEventButton)
     {
         EventDetailPanel.editEventButton = editEventButton;
     }
 
+    /**
+     * 
+     * @param visible 
+     */
     public static void makeVisible(boolean visible)
     {
         EventDetailPanel.visible = visible;
@@ -98,6 +106,10 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
             e.setVisible(visible);
     }
 
+    /**
+     * 
+     * @return the selectedEvent
+     */
     public static CalendarEvent getSelectedEvent()
     {
         return selectedEvent;
@@ -167,8 +179,6 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
             }
             if (daysEvents.size() == 1)
                 eventButton.doClick();
-
         }
     }
-
 }

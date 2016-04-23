@@ -60,7 +60,6 @@ public class CalendarTester
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 
     /**
@@ -70,5 +69,4 @@ public class CalendarTester
     {
         new CalendarTester();
     }
-
 }

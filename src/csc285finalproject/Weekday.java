@@ -67,6 +67,10 @@ public enum Weekday
         return null;
     }
 
+    /**
+     * 
+     * @return the name
+     */
     public String toString()
     {
         return name;

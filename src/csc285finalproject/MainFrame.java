@@ -52,6 +52,10 @@ public class MainFrame extends JFrame implements Observer
     private Timer timer;
     private ArrayList<CalendarEvent> todaysEvents;
 
+    /**
+     * 
+     * @param name 
+     */
     public MainFrame(String name)
     {
         super(name);
@@ -71,8 +75,6 @@ public class MainFrame extends JFrame implements Observer
                 for (int i = 0; i < todaysEvents.size(); ++i)
                 {
                     MyTime eventTime = todaysEvents.get(i).getTimeObject();
-
-                    if ()
                 }
             }
 
@@ -112,6 +114,10 @@ public class MainFrame extends JFrame implements Observer
         nextButton.addActionListener(new ActionListener()
         {
 
+            /**
+             * 
+             * @param e 
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -136,9 +142,14 @@ public class MainFrame extends JFrame implements Observer
             }
         });
 
+        
         prevButton.addActionListener(new ActionListener()
         {
 
+            /**
+             * 
+             * @param e 
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -166,6 +177,10 @@ public class MainFrame extends JFrame implements Observer
         todayButton.addActionListener(new ActionListener()
         {
 
+            /**
+             * 
+             * @param e 
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -178,6 +193,10 @@ public class MainFrame extends JFrame implements Observer
         createEventButton.addActionListener(new ActionListener()
         {
 
+            /**
+             * 
+             * @param e 
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -192,6 +211,10 @@ public class MainFrame extends JFrame implements Observer
         editEventButton.addActionListener(new ActionListener()
         {
 
+            /**
+             * 
+             * @param e 
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {

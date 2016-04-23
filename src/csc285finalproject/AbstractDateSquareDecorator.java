@@ -27,16 +27,28 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
 
     }
 
+    /**
+     * 
+     * @return the event
+     */
     public CalendarEvent getEvent()
     {
         return event;
     }
 
+    /**
+     * 
+     * @return the date
+     */
     public MyDate getDate()
     {
         return square.getDate();
     }
 
+    /**
+     * 
+     * @return the color
+     */
     public Color getColor()
     {
         return event.getEventType().COLOR;
@@ -48,9 +60,12 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
         square.mouseClicked(e);
     }
 
+    /**
+     * 
+     * @return the square
+     */
     protected AbstractDateSquare getSquare()
     {
         return square;
     }
-
 }

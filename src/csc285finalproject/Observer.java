@@ -13,8 +13,5 @@ package csc285finalproject;
  */
 public interface Observer 
 {
-    
-   
-    public void update();
-    
+    public void update(); 
 }
