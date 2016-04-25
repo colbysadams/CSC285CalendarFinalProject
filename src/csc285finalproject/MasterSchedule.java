@@ -145,6 +145,21 @@ public class MasterSchedule implements Serializable
 
     }
 
+    public ArrayList<CalendarEvent> getTomorrowsEventReminders(MyDate date)
+    {
+        ArrayList<CalendarEvent> temp;
+        ArrayList<CalendarEvent> reminderEvents = new ArrayList();
+
+        MyDate tomorrow = date.clone();
+        tomorrow.nextDay();
+        temp = this.getDaysEvents(tomorrow);
+        for (CalendarEvent e : temp)
+            if (e.hasReminder() && e.getTimeObject().getTime() == null)
+                reminderEvents.add(e);
+        System.out.println(reminderEvents);
+        return reminderEvents;
+    }
+
     public boolean hasEventsOn(MyDate date)
     {
         if (date.getDay() == date.getDaysInMonth())

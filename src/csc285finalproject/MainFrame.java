@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.Timer;
 
@@ -36,6 +37,8 @@ public class MainFrame extends JFrame implements Observer
 {
 
     private SelectedDate selectedDate;
+    private MyDate today;
+    private LocalTime currentTime;
     private AbstractCalendarViewPanel weekPanel;
     private AbstractCalendarViewPanel monthPanel;
     private AbstractCalendarViewPanel dayPanel;
@@ -51,6 +54,7 @@ public class MainFrame extends JFrame implements Observer
     private JTabbedPane calendarView;
     private Timer timer;
     private ArrayList<CalendarEvent> todaysEvents;
+    //private JOptionPane reminderPanel;
 
     public MainFrame(String name)
     {
@@ -59,21 +63,40 @@ public class MainFrame extends JFrame implements Observer
         this.selectedDate = SelectedDate.getInstance();
         this.selectedDate.setToToday();
 
-        todaysEvents = MasterSchedule.getInstance().getDaysEvents(selectedDate);
-        timer = new Timer(60000, new ActionListener()
+        //reminderPanel = new JOptionPane();
+        today = new MyDate();
+
+        timer = new Timer(20000, new ActionListener()
         {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                LocalTime currentTime;
+                System.out.println("Timer Is Firing...");
+
+                today.setToToday();
+
                 currentTime = LocalTime.now();
+
+                todaysEvents = MasterSchedule.getInstance().getDaysEvents(today);
+
                 for (int i = 0; i < todaysEvents.size(); ++i)
                 {
                     MyTime eventTime = todaysEvents.get(i).getTimeObject();
 
-                    if ()
+                    if (eventTime.hasReminder())
+                        if (currentTime.isAfter(eventTime.getReminder()))
+                        {
+
+                            JOptionPane.showConfirmDialog(calendarView,
+                                                          todaysEvents.get(i).getShortLabel(),
+                                                          null,
+                                                          JOptionPane.DEFAULT_OPTION);
+                            todaysEvents.get(i).getTimeObject().setReminder(-1, -1);
+                        }
                 }
+                if (currentTime.isAfter(LocalTime.of(11, 00)))
+                    todaysEvents = MasterSchedule.getInstance().getTomorrowsEventReminders(today);
             }
 
         });
@@ -245,6 +268,7 @@ public class MainFrame extends JFrame implements Observer
         this.getContentPane().add(eventBox, BorderLayout.SOUTH);
         eventPanel.setVisible(false);
         calendarView.setSelectedComponent(monthPanel);
+        timer.start();
     }
 
     @Override

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author colbysadams
  */
-public class MyDate implements Comparable<MyDate>
+public class MyDate implements Comparable<MyDate>, Cloneable
 {
 
     private int day, year;
@@ -50,6 +50,20 @@ public class MyDate implements Comparable<MyDate>
             throw new IllegalDateException("Illegal Date Entered into MyDate(Month month, int day, int year)");
     }
 
+    public MyDate clone()
+    {
+
+        try
+        {
+            return (MyDate) super.clone();
+        }
+        catch (CloneNotSupportedException ex)
+        {
+            Logger.getLogger(MyDate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     /**
      *
      * @return true if date is in a leap year
@@ -79,7 +93,8 @@ public class MyDate implements Comparable<MyDate>
 
     /**
      *
-     * @return the number of days in the month; automatically corrects for leap year
+     * @return the number of days in the month; automatically corrects for leap
+     *         year
      */
     public int getDaysInMonth()
     {
@@ -180,7 +195,8 @@ public class MyDate implements Comparable<MyDate>
      *
      * Sunday = 0, Monday = 1 etc...
      * <p>
-     * @return the integer value of the first weekday included in the given month
+     * @return the integer value of the first weekday included in the given
+     *         month
      */
     public int getFirstWeekdayOfMonth()
     {
@@ -259,7 +275,8 @@ public class MyDate implements Comparable<MyDate>
 
     /**
      *
-     * @return true if the date is a valid calendar date between October 15, 1582 and December 31, 9999
+     * @return true if the date is a valid calendar date between October 15,
+     *         1582 and December 31, 9999
      */
     private boolean valid()
     //Returns true if date is valid

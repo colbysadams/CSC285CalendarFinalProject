@@ -191,6 +191,12 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
         this.time = time;
     }
 
+    public boolean hasReminder()
+    {
+
+        return time.hasReminder();
+    }
+
     @Override
     public int compareTo(CalendarEvent o)
     {

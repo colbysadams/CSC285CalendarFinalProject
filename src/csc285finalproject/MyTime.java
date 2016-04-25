@@ -18,18 +18,22 @@ public class MyTime implements Serializable, Comparable<MyTime>
     private LocalTime time;
     //reminder offset
     private int hours, minutes;
+    //private boolean reminder;
 
     public MyTime(LocalTime start)
     {
         this.time = start;
         this.hours = -1;
         this.minutes = -1;
+        //reminder = false;
     }
 
     public MyTime()
     {
         time = null;
-
+        this.hours = -1;
+        this.minutes = -1;
+        //reminder = false;
     }
 
     /**
@@ -66,13 +70,40 @@ public class MyTime implements Serializable, Comparable<MyTime>
      */
     public void setReminder(int hours, int minutes)
     {
+        //this.reminder = reminder;
         this.hours = hours;
         this.minutes = minutes;
     }
 
     public boolean hasReminder()
     {
-        return (hours == -1);
+        return (hours >= 0);
+    }
+
+    public LocalTime getReminder()
+    {
+        if (time == null)
+            return LocalTime.of(5, 00);
+//        System.out.println("time.getHour(): " + time.getHour());
+//        System.out.println("hours: " + hours);
+//        System.out.println("time.getMinutes(): " + time.getMinute());
+//        System.out.println("minutes: " + minutes);
+        LocalTime remindTime = LocalTime.of(time.getHour(), time.getMinute());
+        remindTime.minusHours(hours);
+        remindTime.minusMinutes(minutes);
+        return remindTime;
+
+    }
+
+    public int getHoursBefore()
+    {
+        return hours;
+
+    }
+
+    public int getMinutesBefore()
+    {
+        return minutes;
     }
 
     public String toString()
