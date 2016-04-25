@@ -44,14 +44,13 @@ public class EventFactoryPanel extends JPanel implements ActionListener
     private JPanel reminderPanel;
     private Box timeBox;
     private Box reminderBox;
-    private JCheckBox hasTimeBox;
+    private JCheckBox allDayCheckBox;
     private JCheckBox setReminder;
     private JComboBox hourCombo, minuteCombo;
     private JComboBox hourReminderCombo, minuteReminderCombo;
     private ArrayList<String> clockHourStrings, clockMinuteStrings, reminderHourStrings;
     private int textFieldSize = 10;
     private CalendarEvent event;
-    private MyDate eventDate;
     private boolean newEvent;
     private JCheckBox amCheck;
 
@@ -64,6 +63,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         clockHourStrings = new ArrayList(12);
         clockMinuteStrings = new ArrayList(60);
         reminderHourStrings = new ArrayList(12);
+
         String s = "0";
         for (int i = 0; i < 12; ++i)
         {
@@ -84,19 +84,25 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         minuteCombo = new JComboBox(clockMinuteStrings.toArray());
         minuteReminderCombo = new JComboBox(clockMinuteStrings.toArray());
 
-        hasTimeBox = new JCheckBox("All Day Event");
+        allDayCheckBox = new JCheckBox("All Day Event");
         setReminder = new JCheckBox("Set Reminder");
-        hasTimeBox.addActionListener(new ActionListener()
+        allDayCheckBox.addActionListener(new ActionListener()
         {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (hasTimeBox.isSelected())
+                if (allDayCheckBox.isSelected())
+                {
+                    if (setReminder.isSelected())
+                        reminderPanel.setVisible(false);
                     timePanel.setVisible(false);
-                else
+                } else
+                {
+                    if (setReminder.isSelected())
+                        reminderPanel.setVisible(true);
                     timePanel.setVisible(true);
-
+                }
             }
         });
 
@@ -106,7 +112,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                if (setReminder.isSelected())
+                if (setReminder.isSelected() && !allDayCheckBox.isSelected())
                     reminderPanel.setVisible(true);
                 else
                     reminderPanel.setVisible(false);
@@ -116,7 +122,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
         Box allDayBox = Box.createHorizontalBox();
         Box reminderSpaceBox = Box.createHorizontalBox();
-        allDayBox.add(hasTimeBox);
+        allDayBox.add(allDayCheckBox);
         reminderSpaceBox.add(setReminder);
         allDayBox.add(Box.createHorizontalGlue());
         reminderSpaceBox.add(Box.createHorizontalGlue());
@@ -180,7 +186,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
                 if (!eventDescriptionArea.getText().equals(""))
                     event.setDescription(eventDescriptionArea.getText());
 
-                if (!hasTimeBox.isSelected())
+                if (!allDayCheckBox.isSelected())
                     if (amCheck.isSelected())
                         event.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex() + 1) % 12,
                                                               minuteCombo.getSelectedIndex())));
@@ -270,7 +276,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
             eventTypes.add(eventTypeRadio[i]);
             radioPanel.add(eventTypeRadio[i]);
         }
-        hasTimeBox.doClick();
+        allDayCheckBox.doClick();
         reminderPanel.setVisible(false);
         subPanel.add(radioPanel);
         buttonBox.add(saveEventButton);
@@ -286,8 +292,9 @@ public class EventFactoryPanel extends JPanel implements ActionListener
     }
 
     /**
-     * 
+     *
      * @param label
+     *              <p>
      * @return the labelBox
      */
     public Component createLabel(String label)
@@ -308,8 +315,8 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         eventDescriptionArea.setText("");
         repeatComboBox.setSelectedIndex(0);
         eventTypeRadio[0].setSelected(true);
-        if (!hasTimeBox.isSelected())
-            hasTimeBox.doClick();
+        if (!allDayCheckBox.isSelected())
+            allDayCheckBox.doClick();
         else
         {
             hourCombo.setSelectedIndex(0);
@@ -322,7 +329,6 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
     }
 
-    
     public void inputEvent()
     {
         newEvent = true;
@@ -333,7 +339,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
     public void inputEvent(CalendarEvent event)
     {
-        this.eventDate = SelectedDate.getInstance();
+
         this.event = event;
         eventNameField.setText(this.event.getName());
         eventLocationField.setText(this.event.getLocation());
@@ -348,13 +354,16 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         if (this.event.getTimeObject().getTime() == null)
         {
 
-            if (!hasTimeBox.isSelected())
-                hasTimeBox.doClick();
+            if (!allDayCheckBox.isSelected())
+                allDayCheckBox.doClick();
         } else
         {
-            if (hasTimeBox.isSelected())
-                hasTimeBox.doClick();
-            hourCombo.setSelectedIndex((event.getTimeObject().getTime().getHour() - 1) % 12);
+            if (allDayCheckBox.isSelected())
+                allDayCheckBox.doClick();
+
+            //convert hour from 0-23 to 1-12
+            hourCombo.setSelectedIndex((event.getTimeObject().getTime().getHour() + 11) % 12);
+            System.out.println("hour combo index" + (event.getTimeObject().getTime().getHour() - 1) % 12);
             minuteCombo.setSelectedIndex(event.getTimeObject().getTime().getMinute());
 
             if (event.getTimeObject().getTime().getHour() < 12)

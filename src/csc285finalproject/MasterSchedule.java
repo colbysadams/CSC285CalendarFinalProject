@@ -28,7 +28,7 @@ public class MasterSchedule implements Serializable
     public static final int MONTHLY = 2;
     public static final int WEEKLY = 3;
     public static final int DAILY = 4;
-    public static String[] repeatStrings =
+    public static final String[] repeatStrings =
     {
         "Never", "Yearly", "Monthly", "Weekly", "Everyday"
     };
@@ -51,6 +51,7 @@ public class MasterSchedule implements Serializable
      */
     public static MasterSchedule getInstance()
     {
+
         if (schedule == null)
             retrieveSavedSchedule();
         if (schedule == null)
@@ -164,6 +165,37 @@ public class MasterSchedule implements Serializable
 
     }
 
+    public ArrayList<CalendarEvent> getTodaysEventReminders(MyDate date)
+    {
+        ArrayList<CalendarEvent> temp;
+        ArrayList<CalendarEvent> reminderEvents = new ArrayList();
+
+        //if reminder wraps around midnight, ignore it bc it was fired yesterday
+        temp = this.getDaysEvents(date);
+        for (CalendarEvent e : temp)
+        {
+            if (!e.hasReminder())
+                continue;
+            if (e.getTimeObject().getTime() == null)
+                reminderEvents.add(e);
+
+            else if (!e.getTimeObject().getReminder().isAfter(e.getTimeObject().getTime()))
+                reminderEvents.add(e);
+
+        }
+        MyDate tomorrow = date.clone();
+        tomorrow.nextDay();
+        temp = this.getDaysEvents(tomorrow);
+        //get events that have a reminder that wraps around midnight
+        for (CalendarEvent e : temp)
+
+            if (e.hasReminder() && e.getTimeObject().getTime() != null)
+                if (e.getTimeObject().getReminder().isAfter(e.getTimeObject().getTime()))
+                    reminderEvents.add(e);
+        //System.out.println(reminderEvents);
+        return reminderEvents;
+    }
+
     public ArrayList<CalendarEvent> getTomorrowsEventReminders(MyDate date)
     {
         ArrayList<CalendarEvent> temp;
@@ -175,7 +207,7 @@ public class MasterSchedule implements Serializable
         for (CalendarEvent e : temp)
             if (e.hasReminder() && e.getTimeObject().getTime() == null)
                 reminderEvents.add(e);
-        System.out.println(reminderEvents);
+        //System.out.println(reminderEvents);
         return reminderEvents;
     }
 
@@ -217,7 +249,7 @@ public class MasterSchedule implements Serializable
     {
         try
         {
-
+            System.out.println("generating events");
             addEventToSchedule(new MyDate(3, 15, 2016), new CalendarEvent("Daily Event", EventType.family, DAILY));
             addEventToSchedule(new MyDate(3, 31, 2016), new CalendarEvent("Last Day of Month", EventType.other, MONTHLY));
             addEventToSchedule(new MyDate(1, 1, 2016), new CalendarEvent("First Day of Month", EventType.work, MONTHLY));
@@ -228,7 +260,7 @@ public class MasterSchedule implements Serializable
             addEventToSchedule(new MyDate(12, 25, 2999), new CalendarEvent("Jesus's Birthday", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(1, 1, 2999), new CalendarEvent("New Year's Day", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(12, 31, 2999), new CalendarEvent("New Year's Eve", EventType.holiday, YEARLY));
-            addEventToSchedule(new MyDate(2, 29, 2999), new CalendarEvent("Works On Leap Year", EventType.social, YEARLY));
+            addEventToSchedule(new MyDate(2, 29, 2000), new CalendarEvent("Leap Year", EventType.social, YEARLY));
             addEventToSchedule(new MyDate(1, 18, 2999), new CalendarEvent("MLK Day", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(2, 8, 2016), new CalendarEvent("Chinese New Year", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(2, 14, 2016), new CalendarEvent("Valentine's Day", EventType.holiday, YEARLY));
@@ -247,6 +279,7 @@ public class MasterSchedule implements Serializable
         }
         catch (IllegalDateException ex)
         {
+            System.out.println("illegal date");
         }
     }
 
@@ -332,6 +365,7 @@ public class MasterSchedule implements Serializable
                 daysEvents = eventMap.get(key);
             daysEvents.add(value);
             eventMap.put(key, daysEvents);
+
         }
 
         public void remove(CalendarEvent event)

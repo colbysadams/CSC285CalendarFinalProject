@@ -21,8 +21,8 @@ public class MyTime implements Serializable, Comparable<MyTime>
     //private boolean reminder;
 
     /**
-     * 
-     * @param start 
+     *
+     * @param start
      */
     public MyTime(LocalTime start)
     {
@@ -80,7 +80,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
     }
 
     /**
-     * 
+     *
      * @return the reminder
      */
     public boolean hasReminder()
@@ -91,14 +91,14 @@ public class MyTime implements Serializable, Comparable<MyTime>
     public LocalTime getReminder()
     {
         if (time == null)
-            return LocalTime.of(5, 00);
+            return LocalTime.of(7, 00);
 //        System.out.println("time.getHour(): " + time.getHour());
 //        System.out.println("hours: " + hours);
 //        System.out.println("time.getMinutes(): " + time.getMinute());
 //        System.out.println("minutes: " + minutes);
         LocalTime remindTime = LocalTime.of(time.getHour(), time.getMinute());
-        remindTime.minusHours(hours);
-        remindTime.minusMinutes(minutes);
+        remindTime = remindTime.minusHours(hours);
+        remindTime = remindTime.minusMinutes(minutes);
         return remindTime;
 
     }
@@ -115,7 +115,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
     }
 
     /**
-     * 
+     *
      * @return the time
      */
     public String toString()

@@ -53,7 +53,7 @@ public class MainFrame extends JFrame implements Observer
     private JButton createEventButton, editEventButton;
     private JTabbedPane calendarView;
     private Timer timer;
-    private ArrayList<CalendarEvent> todaysEvents;
+    private ArrayList<CalendarEvent> alreadyRemindedToday, alreadyRemindedTomorrow;
     //private JOptionPane reminderPanel;
 
     /**
@@ -70,38 +70,69 @@ public class MainFrame extends JFrame implements Observer
         //reminderPanel = new JOptionPane();
         today = new MyDate();
 
-        timer = new Timer(20000, new ActionListener()
+        alreadyRemindedToday = new ArrayList();
+        alreadyRemindedTomorrow = new ArrayList();
+        timer = new Timer(10000, new ActionListener()
         {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                System.out.println("Timer Is Firing...");
 
-                today.setToToday();
+                if (!today.equals(new MyDate()))
+                {
+                    today.setToToday();
+                    alreadyRemindedToday.clear();
+                    alreadyRemindedTomorrow.clear();
+                }
 
                 currentTime = LocalTime.now();
 
-                todaysEvents = MasterSchedule.getInstance().getDaysEvents(today);
+                //get all of today's events
+                ArrayList<CalendarEvent> todaysEvents = MasterSchedule.getInstance().getTodaysEventReminders(today);
 
                 for (int i = 0; i < todaysEvents.size(); ++i)
                 {
+                    if ((alreadyRemindedToday.contains(todaysEvents.get(i)))
+                            || (!todaysEvents.get(i).hasReminder()))
+                        continue;
+
                     MyTime eventTime = todaysEvents.get(i).getTimeObject();
 
-                    if (eventTime.hasReminder())
+                    if (currentTime.isAfter(eventTime.getReminder()))
+                    {
+                        JOptionPane.showMessageDialog(calendarView,
+                                                      todaysEvents.get(i).getShortLabel(),
+                                                      "EVENT REMINDER",
+                                                      JOptionPane.PLAIN_MESSAGE);
+
+                        alreadyRemindedToday.add(todaysEvents.get(i));
+                    }
+
+                }
+                // at 5:30 pm, remind user about all day events occuring tomorrow
+                if ((currentTime.getHour() == 5) && (currentTime.getMinute() == 30))
+                {
+                    todaysEvents = MasterSchedule.getInstance().getTomorrowsEventReminders(today);
+                    for (int i = 0; i < todaysEvents.size(); ++i)
+                    {
+                        if ((alreadyRemindedTomorrow.contains(todaysEvents.get(i)))
+                                || (!todaysEvents.get(i).hasReminder()))
+                            continue;
+
+                        MyTime eventTime = todaysEvents.get(i).getTimeObject();
+
                         if (currentTime.isAfter(eventTime.getReminder()))
                         {
 
-                            JOptionPane.showConfirmDialog(calendarView,
+                            JOptionPane.showMessageDialog(calendarView,
                                                           todaysEvents.get(i).getShortLabel(),
-                                                          null,
-                                                          JOptionPane.DEFAULT_OPTION);
-                            todaysEvents.get(i).getTimeObject().setReminder(-1, -1);
+                                                          "REMINDER FOR TOMORROW",
+                                                          JOptionPane.PLAIN_MESSAGE);
+                            alreadyRemindedTomorrow.add(todaysEvents.get(i));
                         }
-
+                    }
                 }
-                if (currentTime.isAfter(LocalTime.of(11, 00)))
-                    todaysEvents = MasterSchedule.getInstance().getTomorrowsEventReminders(today);
             }
 
         });
@@ -193,10 +224,7 @@ public class MainFrame extends JFrame implements Observer
                         selectedDate.prevYear();
                         break;
                 }
-                //System.out.println("action prev:" + selectedDate);
-
             }
-
         });
 
         todayButton.addActionListener(new ActionListener()

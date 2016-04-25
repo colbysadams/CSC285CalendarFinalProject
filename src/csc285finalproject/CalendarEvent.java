@@ -11,7 +11,6 @@ import java.io.Serializable;
  *
  * @author colbysadams
  */
-
 public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 {
 
@@ -22,10 +21,10 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     private MyTime time;
 
     /**
-     * 
+     *
      * @param name
      * @param eventType
-     * @param repeating 
+     * @param repeating
      */
     public CalendarEvent(String name, EventType eventType, int repeating)
     {
@@ -40,15 +39,14 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     }
 
-    
     public CalendarEvent()
     {
         this("", EventType.other, MasterSchedule.ONETIME);
     }
 
     /**
-     * 
-     * @param dateString 
+     *
+     * @param dateString
      */
     public void setDateString(String dateString)
     {
@@ -56,7 +54,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
+     *
      * @return the dateString
      */
     public String getDateString()
@@ -65,7 +63,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
+     *
      * @return repeating
      */
     public int getRepeating()
@@ -74,8 +72,8 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
-     * @param repeating 
+     *
+     * @param repeating
      */
     public void setRepeating(int repeating)
     {
@@ -83,7 +81,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
+     *
      * @return repeatingString
      */
     public String getRepeatingString()
@@ -119,7 +117,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
+     *
      * @return the shortLabel
      */
     public String getShortLabel()
@@ -148,7 +146,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
+     *
      * @return the descriptionLabel
      */
     public String getDescriptionLabel()
@@ -182,7 +180,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * 
+     *
      * @return the locationLabel
      */
     public String getLocationLabel()
