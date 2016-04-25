@@ -11,6 +11,7 @@ import java.io.Serializable;
  *
  * @author colbysadams
  */
+
 public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 {
 
@@ -20,6 +21,12 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     private int repeating;
     private MyTime time;
 
+    /**
+     * 
+     * @param name
+     * @param eventType
+     * @param repeating 
+     */
     public CalendarEvent(String name, EventType eventType, int repeating)
     {
 
@@ -33,31 +40,52 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     }
 
+    
     public CalendarEvent()
     {
         this("", EventType.other, MasterSchedule.ONETIME);
     }
 
+    /**
+     * 
+     * @param dateString 
+     */
     public void setDateString(String dateString)
     {
         this.dateString = dateString;
     }
 
+    /**
+     * 
+     * @return the dateString
+     */
     public String getDateString()
     {
         return dateString;
     }
 
+    /**
+     * 
+     * @return repeating
+     */
     public int getRepeating()
     {
         return repeating;
     }
 
+    /**
+     * 
+     * @param repeating 
+     */
     public void setRepeating(int repeating)
     {
         this.repeating = repeating;
     }
 
+    /**
+     * 
+     * @return repeatingString
+     */
     public String getRepeatingString()
     {
 
@@ -90,6 +118,10 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
         this.name = name;
     }
 
+    /**
+     * 
+     * @return the shortLabel
+     */
     public String getShortLabel()
     {
         String s = "";
@@ -115,6 +147,10 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
         this.description = description;
     }
 
+    /**
+     * 
+     * @return the descriptionLabel
+     */
     public String getDescriptionLabel()
     {
         if (description.equals(""))
@@ -145,6 +181,10 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
         this.location = location;
     }
 
+    /**
+     * 
+     * @return the locationLabel
+     */
     public String getLocationLabel()
     {
         if (location.equals(""))

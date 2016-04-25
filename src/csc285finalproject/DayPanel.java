@@ -41,5 +41,4 @@ public class DayPanel extends AbstractCalendarViewPanel
     {
         return SelectedDate.getInstance().getDay() - 1;
     }
-
 }

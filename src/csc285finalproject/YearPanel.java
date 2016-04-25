@@ -68,46 +68,73 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     @Override
     public void addLabels()
     {
+        
     }
 
     @Override
     public void addDateSquares()
     {
+        
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int getDaysDisplayed()
     {
         return 1;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int getRowSize()
     {
         return 1;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int getBuffer()
     {
         return 0;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int getDateOffset()
     {
         return 0;
     }
 
+    /**
+     * 
+     * @param o 
+     */
     @Override
     public void addObserver(Observer o)
     {
         monthPanels.add((MonthPanel) o);
     }
 
+    /**
+     * 
+     * @param o 
+     */
     @Override
     public void deleteObserver(Observer o)
     {
+        
     }
 
     @Override
@@ -124,5 +151,4 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
         //addDateSquares();
         notifyObservers();
     }
-
 }

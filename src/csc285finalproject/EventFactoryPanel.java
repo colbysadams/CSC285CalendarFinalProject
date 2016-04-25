@@ -204,9 +204,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
                 }
                 cancelButton.doClick();
                 SelectedDate.getInstance().notifyObservers();
-
             }
-
         });
 
         cancelButton = new JButton("Cancel");
@@ -287,6 +285,11 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
     }
 
+    /**
+     * 
+     * @param label
+     * @return the labelBox
+     */
     public Component createLabel(String label)
     {
         Box labelBox = Box.createHorizontalBox();
@@ -319,6 +322,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
     }
 
+    
     public void inputEvent()
     {
         newEvent = true;

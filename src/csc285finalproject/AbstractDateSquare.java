@@ -34,13 +34,29 @@ public abstract class AbstractDateSquare extends JComponent implements MouseList
         }
     }
 
+    /**
+     * 
+     * @return the date
+     */
     public MyDate getDate()
     {
         return date;
     }
 
+    /**
+     * 
+     * @param g
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     public abstract void drawSquare(Graphics g, int x, int y, int width, int height);
 
+    /**
+     * 
+     * @return 
+     */
     public abstract int getTextHeight();
 
     @Override
@@ -57,21 +73,24 @@ public abstract class AbstractDateSquare extends JComponent implements MouseList
     @Override
     public void mouseEntered(MouseEvent e)
     {
+        
     }
 
     @Override
     public void mouseExited(MouseEvent e)
     {
+        
     }
 
     @Override
     public void mousePressed(MouseEvent e)
     {
+        
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
+        
     }
-
 }

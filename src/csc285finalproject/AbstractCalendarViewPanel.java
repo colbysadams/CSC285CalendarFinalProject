@@ -142,6 +142,7 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
             lastDay++;
         }
 
+        
         MyDate nextMonth = null;
         try
         {
@@ -151,6 +152,7 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
         }
         catch (IllegalDateException ex)
         {
+            
         }
         nextMonth.nextDay();
 
@@ -173,11 +175,15 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
             squaresPanel.add(dateSquare);
             lastDay++;
             nextMonth.nextDay();
-
         }
-
     }
 
+    /**
+     * 
+     * @param event
+     * @param dateSquare
+     * @return the decorator
+     */
     public AbstractDateSquare decorateDateSquare(CalendarEvent event, AbstractDateSquare dateSquare)
     {
         if (shortLabels)
@@ -255,11 +261,19 @@ public abstract class AbstractCalendarViewPanel extends JPanel implements Observ
 
     }
 
+    /**
+     * 
+     * @return the subPanel
+     */
     protected JPanel getSubPanel()
     {
         return subPanel;
     }
 
+    /**
+     * 
+     * @param date 
+     */
     private void setSelectedDate(MyDate date)
     {
         selectedDate = date;

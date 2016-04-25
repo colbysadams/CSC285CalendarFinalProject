@@ -20,6 +20,10 @@ public class MyTime implements Serializable, Comparable<MyTime>
     private int hours, minutes;
     //private boolean reminder;
 
+    /**
+     * 
+     * @param start 
+     */
     public MyTime(LocalTime start)
     {
         this.time = start;
@@ -75,6 +79,10 @@ public class MyTime implements Serializable, Comparable<MyTime>
         this.minutes = minutes;
     }
 
+    /**
+     * 
+     * @return the reminder
+     */
     public boolean hasReminder()
     {
         return (hours >= 0);
@@ -106,6 +114,10 @@ public class MyTime implements Serializable, Comparable<MyTime>
         return minutes;
     }
 
+    /**
+     * 
+     * @return the time
+     */
     public String toString()
     {
         if (time == null)

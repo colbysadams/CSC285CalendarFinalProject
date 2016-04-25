@@ -26,11 +26,23 @@ public class DaySquareDecorator extends AbstractDateSquareDecorator
 
     }
 
+    /**
+     * 
+     * @return the textHeight
+     */
     public int getTextHeight()
     {
         return textHeight;
     }
 
+    /**
+     * 
+     * @param g
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     public void drawSquare(Graphics g, int x, int y, int width, int height)
     {
         getSquare().drawSquare(g, x, y, width, height);
@@ -40,6 +52,5 @@ public class DaySquareDecorator extends AbstractDateSquareDecorator
         g.setColor(Color.black);
         g.drawString(getEvent().getShortLabel() + " : "
                 + MasterSchedule.repeatStrings[getEvent().getRepeating()], 17, textHeight);
-
     }
 }

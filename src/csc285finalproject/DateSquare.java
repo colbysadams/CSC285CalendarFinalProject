@@ -18,9 +18,6 @@ public class DateSquare extends AbstractDateSquare
     private MyDate date;
     private Color color;
     
-
-    
-
     public DateSquare(int month, int day, int year, Color color)
     {
         super();
@@ -30,6 +27,7 @@ public class DateSquare extends AbstractDateSquare
         }
         catch (IllegalDateException ex)
         {
+            
         }
         this.color = color;
 
@@ -37,18 +35,34 @@ public class DateSquare extends AbstractDateSquare
 
     }
 
+    /**
+     * 
+     * @return the date
+     */
     @Override
     public MyDate getDate()
     {
         return date;
     }
 
+    /**
+     * 
+     * @return the textOffset
+     */
     @Override
     public int getTextHeight()
     {
         return textOffset;
     }
 
+    /**
+     * 
+     * @param g
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     @Override
     public void drawSquare(Graphics g, int x, int y, int width, int height)
     {
@@ -56,7 +70,5 @@ public class DateSquare extends AbstractDateSquare
         g.fillRect(x, y, width, height);
         g.setColor(Color.black);
         g.drawString(String.valueOf(date.getDay()), 5, textOffset);
-
     }
-
 }

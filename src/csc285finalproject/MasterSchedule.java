@@ -45,6 +45,10 @@ public class MasterSchedule implements Serializable
 
     }
 
+    /**
+     *
+     * @return the schedule
+     */
     public static MasterSchedule getInstance()
     {
         if (schedule == null)
@@ -90,16 +94,31 @@ public class MasterSchedule implements Serializable
         }
     }
 
+    /**
+     *
+     * @param date
+     * @param event
+     */
     public void addEventToSchedule(MyDate date, CalendarEvent event)
     {
         eventMap.put(getMapString(date, event.getRepeating()), event);
     }
 
+    /**
+     *
+     * @param event
+     */
     public void removeFromSchedule(CalendarEvent event)
     {
         eventMap.remove(event);
     }
 
+    /**
+     *
+     * @param date
+     *             <p>
+     * @return the daysEvents
+     */
     public ArrayList<CalendarEvent> getDaysEvents(MyDate date)
     {
         ArrayList<CalendarEvent> daysEvents = new ArrayList();
@@ -160,6 +179,12 @@ public class MasterSchedule implements Serializable
         return reminderEvents;
     }
 
+    /**
+     *
+     * @param date
+     *             <p>
+     * @return
+     */
     public boolean hasEventsOn(MyDate date)
     {
         if (date.getDay() == date.getDaysInMonth())
@@ -205,6 +230,20 @@ public class MasterSchedule implements Serializable
             addEventToSchedule(new MyDate(12, 31, 2999), new CalendarEvent("New Year's Eve", EventType.holiday, YEARLY));
             addEventToSchedule(new MyDate(2, 29, 2999), new CalendarEvent("Works On Leap Year", EventType.social, YEARLY));
             addEventToSchedule(new MyDate(1, 18, 2999), new CalendarEvent("MLK Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(2, 8, 2016), new CalendarEvent("Chinese New Year", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(2, 14, 2016), new CalendarEvent("Valentine's Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(2, 15, 2016), new CalendarEvent("Presidents' Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(3, 17, 2016), new CalendarEvent("St. Patrck's Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(3, 25, 2016), new CalendarEvent("Good Friday", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(3, 27, 2016), new CalendarEvent("Easter", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(5, 5, 2016), new CalendarEvent("Cinco De Mayo", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(5, 8, 2016), new CalendarEvent("Mother's Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(6, 19, 2016), new CalendarEvent("Father's Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(7, 4, 2016), new CalendarEvent("Independence Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(9, 5, 2016), new CalendarEvent("Labor Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(10, 31, 2016), new CalendarEvent("Halloween", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(11, 24, 2016), new CalendarEvent("Thanksgiving Day", EventType.holiday, YEARLY));
+            addEventToSchedule(new MyDate(12, 25, 2016), new CalendarEvent("Christmas Day", EventType.holiday, YEARLY));
         }
         catch (IllegalDateException ex)
         {
@@ -242,21 +281,41 @@ public class MasterSchedule implements Serializable
             eventMap = new HashMap();
         }
 
+        /**
+         *
+         * @return the size
+         */
         public int size()
         {
             return eventMap.size();
         }
 
+        /**
+         *
+         * @return isEmpty
+         */
         public boolean isEmpty()
         {
             return eventMap.isEmpty();
         }
 
+        /**
+         *
+         * @param key
+         *            <p>
+         * @return containsKey
+         */
         public boolean containsKey(String key)
         {
             return eventMap.containsKey(key);
         }
 
+        /**
+         *
+         * @param key
+         *            <p>
+         * @return
+         */
         public ArrayList<CalendarEvent> get(String key)
         {
             return eventMap.get(key);
@@ -294,11 +353,19 @@ public class MasterSchedule implements Serializable
             eventMap.clear();
         }
 
+        /**
+         *
+         * @return the keySet
+         */
         public Set keySet()
         {
             return eventMap.keySet();
         }
 
+        /**
+         *
+         * @return the values
+         */
         public Collection values()
         {
             return eventMap.values();

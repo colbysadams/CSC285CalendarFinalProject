@@ -56,6 +56,10 @@ public class MainFrame extends JFrame implements Observer
     private ArrayList<CalendarEvent> todaysEvents;
     //private JOptionPane reminderPanel;
 
+    /**
+     *
+     * @param name
+     */
     public MainFrame(String name)
     {
         super(name);
@@ -94,6 +98,7 @@ public class MainFrame extends JFrame implements Observer
                                                           JOptionPane.DEFAULT_OPTION);
                             todaysEvents.get(i).getTimeObject().setReminder(-1, -1);
                         }
+
                 }
                 if (currentTime.isAfter(LocalTime.of(11, 00)))
                     todaysEvents = MasterSchedule.getInstance().getTomorrowsEventReminders(today);
@@ -135,6 +140,10 @@ public class MainFrame extends JFrame implements Observer
         nextButton.addActionListener(new ActionListener()
         {
 
+            /**
+             *
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -162,6 +171,10 @@ public class MainFrame extends JFrame implements Observer
         prevButton.addActionListener(new ActionListener()
         {
 
+            /**
+             *
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -189,6 +202,10 @@ public class MainFrame extends JFrame implements Observer
         todayButton.addActionListener(new ActionListener()
         {
 
+            /**
+             *
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -201,6 +218,10 @@ public class MainFrame extends JFrame implements Observer
         createEventButton.addActionListener(new ActionListener()
         {
 
+            /**
+             *
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {
@@ -215,6 +236,10 @@ public class MainFrame extends JFrame implements Observer
         editEventButton.addActionListener(new ActionListener()
         {
 
+            /**
+             *
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e)
             {

@@ -15,15 +15,22 @@ public class WeekPanel extends WeekMonthParent
     public WeekPanel()
     {
         super();
-
     }
 
+    /**
+     * 
+     * @return the daysDisplayed
+     */
     @Override
     public int getDaysDisplayed()
     {
         return 7;
     }
 
+    /**
+     * 
+     * @return the buffer
+     */
     @Override
     public int getBuffer()
     {
@@ -33,6 +40,10 @@ public class WeekPanel extends WeekMonthParent
         return SelectedDate.getInstance().getFirstWeekdayOfMonth();
     }
 
+    /**
+     * 
+     * @return the dateOffset
+     */
     @Override
     public int getDateOffset()
     {
@@ -45,5 +56,4 @@ public class WeekPanel extends WeekMonthParent
 
         return i;
     }
-
 }

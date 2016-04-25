@@ -11,6 +11,7 @@ import java.awt.Color;
  *
  * @author colbysadams
  */
+
 public enum EventType
 {
 
@@ -25,6 +26,12 @@ public enum EventType
     public final String TYPE;
     public final int index;
 
+    /**
+     * 
+     * @param name
+     * @param color
+     * @param index 
+     */
     EventType(String name, Color color, int index)
     {
         this.index = index;
@@ -32,6 +39,11 @@ public enum EventType
         COLOR = color;
     }
 
+    /**
+     * 
+     * @param index
+     * @return the eventType
+     */
     public static EventType get(int index)
     {
         switch (index)
@@ -49,5 +61,4 @@ public enum EventType
         }
         return other;
     }
-
 }

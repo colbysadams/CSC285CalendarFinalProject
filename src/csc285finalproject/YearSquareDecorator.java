@@ -18,6 +18,14 @@ public class YearSquareDecorator extends AbstractDateSquareDecorator
         super(event, square);
     }
 
+    /**
+     * 
+     * @param g
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     public void drawSquare(Graphics g, int x, int y, int width, int height)
     {
 
@@ -27,10 +35,13 @@ public class YearSquareDecorator extends AbstractDateSquareDecorator
 
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int getTextHeight()
     {
         return 0;
     }
-
 }
