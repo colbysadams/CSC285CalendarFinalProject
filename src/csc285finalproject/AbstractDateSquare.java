@@ -13,6 +13,10 @@ import javax.swing.JComponent;
 
 /**
  *
+ * each square represents a particular day on the calendar for the various
+ * calendar
+ * views.
+ *
  * @author colbysadams
  */
 public abstract class AbstractDateSquare extends JComponent implements MouseListener
@@ -63,7 +67,9 @@ public abstract class AbstractDateSquare extends JComponent implements MouseList
     {
         //set the selected date to equal this date
         if (getDate().equals(SelectedDate.getInstance()))
+        {
             return;
+        }
         SelectedDate.getInstance().changeSelectedDate(getDate());
 
     }

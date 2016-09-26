@@ -9,6 +9,8 @@ import java.io.Serializable;
 
 /**
  *
+ * Aggregate class that holds data associated with a calendar event.
+ *
  * @author colbysadams
  */
 public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
@@ -17,7 +19,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     private String name, description, location;
     private String dateString;
     private EventType eventType;
-    private int repeating;
+    private RepeatingEnum repeating;
     private MyTime time;
 
     /**
@@ -26,7 +28,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
      * @param eventType
      * @param repeating
      */
-    public CalendarEvent(String name, EventType eventType, int repeating)
+    public CalendarEvent(String name, EventType eventType, RepeatingEnum repeating)
     {
 
         this.name = name;
@@ -41,7 +43,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     public CalendarEvent()
     {
-        this("", EventType.other, MasterSchedule.ONETIME);
+        this("", EventType.other, RepeatingEnum.ONETIME);
     }
 
     /**
@@ -64,9 +66,11 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     /**
      *
+     * Returns enum representing how often an event is repeated
+     *
      * @return repeating
      */
-    public int getRepeating()
+    public RepeatingEnum getRepeating()
     {
         return repeating;
     }
@@ -75,20 +79,20 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
      *
      * @param repeating
      */
-    public void setRepeating(int repeating)
+    public void setRepeating(RepeatingEnum repeating)
     {
         this.repeating = repeating;
     }
 
     /**
      *
-     * @return repeatingString
+     * @return repeatingString in html format
      */
     public String getRepeatingString()
     {
 
         String s = "<html><p>&nbsp;&nbsp;";
-        s += MasterSchedule.repeatStrings[repeating];
+        s += repeating.STRING;
         s += "</html></p>";
 
         return s;
@@ -124,7 +128,9 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     {
         String s = "";
         if (time.getTime() != null)
+        {
             s += time.getClock() + "  ";
+        }
         s += name;
         return s;
     }
@@ -152,7 +158,9 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     public String getDescriptionLabel()
     {
         if (description.equals(""))
+        {
             return "";
+        }
         String s;
         s = "<html><body>";
 
@@ -164,7 +172,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * @return the location
+     * @return the location of the event
      */
     public String getLocation()
     {
@@ -172,7 +180,7 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
     }
 
     /**
-     * @param location the location to set
+     * @param location the location of the event to set
      */
     public void setLocation(String location)
     {
@@ -181,12 +189,14 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
 
     /**
      *
-     * @return the locationLabel
+     * @return the locationLabel in html format
      */
     public String getLocationLabel()
     {
         if (location.equals(""))
+        {
             return "";
+        }
         String s;
         s = "<html><body>";
 
@@ -241,8 +251,10 @@ public class CalendarEvent implements Serializable, Comparable<CalendarEvent>
         if (time.compareTo(o.time) == 0)
         {
             if (repeating == o.repeating)
+            {
                 return name.compareTo(o.name);
-            return repeating - o.repeating;
+            }
+            return repeating.NUM - o.repeating.NUM;
         }
         return time.compareTo(o.time);
     }

@@ -10,6 +10,10 @@ import java.awt.Graphics;
 
 /**
  *
+ * concrete class of date square
+ * will be wrapped by date square decorators if events occur on the
+ * date represented
+ *
  * @author colbysadams
  */
 public class DateSquare extends AbstractDateSquare
@@ -17,7 +21,7 @@ public class DateSquare extends AbstractDateSquare
 
     private MyDate date;
     private Color color;
-    
+
     public DateSquare(int month, int day, int year, Color color)
     {
         super();
@@ -27,7 +31,7 @@ public class DateSquare extends AbstractDateSquare
         }
         catch (IllegalDateException ex)
         {
-            
+
         }
         this.color = color;
 
@@ -36,7 +40,7 @@ public class DateSquare extends AbstractDateSquare
     }
 
     /**
-     * 
+     *
      * @return the date
      */
     @Override
@@ -46,8 +50,9 @@ public class DateSquare extends AbstractDateSquare
     }
 
     /**
-     * 
-     * @return the textOffset
+     *
+     * @return the textOffset - used to print events by row
+     * <p>
      */
     @Override
     public int getTextHeight()
@@ -56,12 +61,14 @@ public class DateSquare extends AbstractDateSquare
     }
 
     /**
-     * 
+     *
+     * draws the actual square
+     * <p>
      * @param g
      * @param x
      * @param y
      * @param width
-     * @param height 
+     * @param height
      */
     @Override
     public void drawSquare(Graphics g, int x, int y, int width, int height)

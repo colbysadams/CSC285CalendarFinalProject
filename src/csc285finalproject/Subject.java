@@ -6,26 +6,28 @@
 package csc285finalproject;
 
 /**
- * 
+ *
  * the Subject interface for the Observer pattern
+ * <p>
+ * Standard Java observer classes were not allowed by assignment
  *
  * @author colbysadams
  */
-public interface Subject 
+public interface Subject
 {
-    
+
     /**
      *
      * @param o observer to be added
      */
     public void addObserver(Observer o);
-    
+
     /**
      *
      * @param o observer to be deleted
      */
     public void deleteObserver(Observer o);
-    
+
     /**
      * Lets all observers know when a change has been made
      *

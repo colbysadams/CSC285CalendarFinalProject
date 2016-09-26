@@ -10,15 +10,18 @@ import java.time.LocalTime;
 
 /**
  *
+ * Local Time could not be extended, so instead I created a wrapper class
+ * that added reminder functionality
+ * <p>
+ * This class does not keep accurate time, but
+ *
  * @author colbysadams
  */
 public class MyTime implements Serializable, Comparable<MyTime>
 {
 
     private LocalTime time;
-    //reminder offset
     private int hours, minutes;
-    //private boolean reminder;
 
     /**
      *
@@ -29,7 +32,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
         this.time = start;
         this.hours = -1;
         this.minutes = -1;
-        //reminder = false;
+
     }
 
     public MyTime()
@@ -37,7 +40,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
         time = null;
         this.hours = -1;
         this.minutes = -1;
-        //reminder = false;
+
     }
 
     /**
@@ -57,16 +60,6 @@ public class MyTime implements Serializable, Comparable<MyTime>
     }
 
     /**
-     * @return the end
-     */
-    public LocalTime getEnd()
-    {
-        LocalTime end = time.plusHours(hours);
-        end.plusHours(minutes);
-        return end;
-    }
-
-    /**
      * sets a reminder
      * <p>
      * @param hours   - hours
@@ -74,7 +67,7 @@ public class MyTime implements Serializable, Comparable<MyTime>
      */
     public void setReminder(int hours, int minutes)
     {
-        //this.reminder = reminder;
+
         this.hours = hours;
         this.minutes = minutes;
     }
@@ -91,11 +84,10 @@ public class MyTime implements Serializable, Comparable<MyTime>
     public LocalTime getReminder()
     {
         if (time == null)
+        {
             return LocalTime.of(7, 00);
-//        System.out.println("time.getHour(): " + time.getHour());
-//        System.out.println("hours: " + hours);
-//        System.out.println("time.getMinutes(): " + time.getMinute());
-//        System.out.println("minutes: " + minutes);
+        }
+
         LocalTime remindTime = LocalTime.of(time.getHour(), time.getMinute());
         remindTime = remindTime.minusHours(hours);
         remindTime = remindTime.minusMinutes(minutes);
@@ -122,7 +114,9 @@ public class MyTime implements Serializable, Comparable<MyTime>
     {
         if (time == null)
 
+        {
             return "";
+        }
 
         return time.toString();
     }
@@ -130,24 +124,34 @@ public class MyTime implements Serializable, Comparable<MyTime>
     public String getClock()
     {
         if (time == null)
-
+        {
             return "";
+        }
 
         String s = "";
 
         s += time.getHour() % 12;
 
         if (s.equals("0"))
+        {
             s = "12";
+        }
+
         s += ":";
         if (time.getMinute() < 10)
+        {
             s += 0;
+        }
+
         s += time.getMinute();
 
         if (time.getHour() / 12 == 1)
+        {
             s += "PM";
-        else
+        } else
+        {
             s += "AM";
+        }
 
         return s;
 
@@ -159,11 +163,15 @@ public class MyTime implements Serializable, Comparable<MyTime>
         if (time == null)
         {
             if (o.time == null)
+            {
                 return 0;
+            }
             return 1;
         }
         if (o.time == null)
+        {
             return -1;
+        }
         return time.compareTo(o.time);
     }
 }

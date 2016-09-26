@@ -14,7 +14,10 @@ import javax.swing.SwingConstants;
 
 /**
  *
- * Implements the common methods for both week and month views
+ * The week and month views were similar, so this class implements
+ * the common methods for both week and month views.
+ * <p>
+ * Created to display an understanding of inheritance for assignment.
  * <p>
  * @author colbysadams
  */
@@ -33,6 +36,9 @@ public abstract class WeekMonthParent extends AbstractCalendarViewPanel
 
     }
 
+    /**
+     * puts the weekday names at the top of each column
+     */
     @Override
     public void addLabels()
     {
@@ -58,7 +64,8 @@ public abstract class WeekMonthParent extends AbstractCalendarViewPanel
 
     /**
      *
-     * returns a string representing the day of the week type of string to be returned depends on boolean value of
+     * returns a string representing the day of the week type of string to be
+     * returned depends on boolean value of
      * shortLabels;
      * <p>
      * @param i the index of the day of the week
@@ -68,7 +75,9 @@ public abstract class WeekMonthParent extends AbstractCalendarViewPanel
     public String getWeekdayName(int i)
     {
         if (shortLabels)
+        {
             return Weekday.getWeekday(i).getShortString();
+        }
         return Weekday.getWeekday(i).name;
     }
 
@@ -77,5 +86,4 @@ public abstract class WeekMonthParent extends AbstractCalendarViewPanel
     {
         return 7;
     }
-
 }

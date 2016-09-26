@@ -3,12 +3,12 @@ package csc285finalproject;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 
-/*
- * To change this license header, choose License Headers in Project Properties. To change this template file, choose
- * Tools | Templates and open the template in the editor.
- */
 /**
  *
+ * Decorator/Wrapper class for date squares.
+ * <p>
+ * The wrapper represents a calendar event that takes place on a particular day
+ * <p>
  * @author colbysadams
  */
 public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
@@ -17,7 +17,6 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
     private CalendarEvent event;
     private AbstractDateSquare square;
 
-    //private MyDate date;
     AbstractDateSquareDecorator(CalendarEvent event, AbstractDateSquare square)
     {
         this.event = event;
@@ -28,8 +27,8 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
     }
 
     /**
-     * 
-     * @return the event
+     *
+     * @return the event represented by this wrapper
      */
     public CalendarEvent getEvent()
     {
@@ -37,8 +36,8 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
     }
 
     /**
-     * 
-     * @return the date
+     *
+     * @return the date represented by the wrapped date square
      */
     public MyDate getDate()
     {
@@ -46,14 +45,22 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
     }
 
     /**
-     * 
-     * @return the color
+     *
+     * each type of event is represented by a different color
+     * <p>
+     * @return the color of the event
      */
     public Color getColor()
     {
         return event.getEventType().COLOR;
     }
 
+    /**
+     *
+     * Propogates click down to wrapped date square.
+     * <p>
+     * @param e
+     */
     @Override
     public void mouseClicked(MouseEvent e)
     {
@@ -61,8 +68,8 @@ public abstract class AbstractDateSquareDecorator extends AbstractDateSquare
     }
 
     /**
-     * 
-     * @return the square
+     *
+     * @return the wrapped date square
      */
     protected AbstractDateSquare getSquare()
     {

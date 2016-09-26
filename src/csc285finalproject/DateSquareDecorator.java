@@ -10,6 +10,10 @@ import java.awt.Graphics;
 
 /**
  *
+ * Concrete instance of Decorator/Wrapper class for date squares
+ * <p>
+ * draws a string representing an event on top of the date square
+ *
  * @author colbysadams
  */
 public class DateSquareDecorator extends AbstractDateSquareDecorator
@@ -19,16 +23,18 @@ public class DateSquareDecorator extends AbstractDateSquareDecorator
     private final static int diameter = 10;
     private int textHeight;
 
-    //private MyDate date;
     DateSquareDecorator(CalendarEvent event, AbstractDateSquare square)
     {
         super(event, square);
+
+        //this increases the height of the text for each event, so they will
+        //be displayed in rows
         this.textHeight = square.getTextHeight() + offset;
 
     }
 
     /**
-     * 
+     *
      * @return the textHeight
      */
     public int getTextHeight()
@@ -37,12 +43,12 @@ public class DateSquareDecorator extends AbstractDateSquareDecorator
     }
 
     /**
-     * 
+     *
      * @param g
      * @param x
      * @param y
      * @param width
-     * @param height 
+     * @param height
      */
     public void drawSquare(Graphics g, int x, int y, int width, int height)
     {

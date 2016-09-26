@@ -26,6 +26,11 @@ import javax.swing.JTextField;
 
 /**
  *
+ * This panel utilizes the Factory pattern and is used to create and edit
+ * calendar events
+ * <p>
+ * <p>
+ *
  * @author colbysadams
  */
 public class EventFactoryPanel extends JPanel implements ActionListener
@@ -74,11 +79,19 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
         for (int i = 0; i < 60; ++i)
         {
+            // by adding s, string displays 01 instead of 1
             clockMinuteStrings.add(s + String.valueOf(i));
             if (i == 9)
+            {
                 s = "";
+            }
         }
 
+        /*
+         * The following code hides/shows options for setting the time
+         * of an event based on whether or not they want the event
+         * to be an "all day" event
+         */
         hourCombo = new JComboBox(clockHourStrings.toArray());
         hourReminderCombo = new JComboBox(reminderHourStrings.toArray());
         minuteCombo = new JComboBox(clockMinuteStrings.toArray());
@@ -95,17 +108,24 @@ public class EventFactoryPanel extends JPanel implements ActionListener
                 if (allDayCheckBox.isSelected())
                 {
                     if (setReminder.isSelected())
+                    {
                         reminderPanel.setVisible(false);
+                    }
                     timePanel.setVisible(false);
                 } else
                 {
                     if (setReminder.isSelected())
+                    {
                         reminderPanel.setVisible(true);
+                    }
                     timePanel.setVisible(true);
                 }
             }
         });
 
+        /*
+         * hides/shows options for setting reminders before events
+         */
         setReminder.addActionListener(new ActionListener()
         {
 
@@ -113,9 +133,12 @@ public class EventFactoryPanel extends JPanel implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
                 if (setReminder.isSelected() && !allDayCheckBox.isSelected())
+                {
                     reminderPanel.setVisible(true);
-                else
+                } else
+                {
                     reminderPanel.setVisible(false);
+                }
 
             }
         });
@@ -151,6 +174,11 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         subPanel.setLayout(new BoxLayout(subPanel, BoxLayout.Y_AXIS));
         subPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        /*
+         *
+         * when save is clicked, event is either edited or created and placed
+         * into the master schedule
+         */
         saveEventButton = new JButton("Save");
         saveEventButton.addActionListener(new ActionListener()
         {
@@ -159,55 +187,84 @@ public class EventFactoryPanel extends JPanel implements ActionListener
             public void actionPerformed(ActionEvent e)
             {
 
+                // require event to have a name
                 String eventName = eventNameField.getText();
                 if (eventName.equals(""))
                 {
                     eventNameField.requestFocusInWindow();
                     return;
                 }
+
+                //get selected event type
                 EventType eventType = null;
                 for (int i = 0; i < eventTypeRadio.length; ++i)
+                {
                     if (eventTypeRadio[i].isSelected())
                     {
                         eventType = EventType.get(i);
                         break;
                     }
+                }
                 event.setName(eventName);
                 event.setEventType(eventType);
-                if (event.getRepeating() != repeatComboBox.getSelectedIndex() && !newEvent)
+
+                /*
+                 * if editing an event, and the repeating option has been
+                 * changed
+                 * then the previous event will be removed from the schedule and
+                 * replaced. This must be done because of how events are stored
+                 * in MasterSchedule
+                 */
+                if (event.getRepeating().NUM != repeatComboBox.getSelectedIndex() && !newEvent)
                 {
                     MasterSchedule.getInstance().removeFromSchedule(event);
                     newEvent = true;
                 }
-                event.setRepeating(repeatComboBox.getSelectedIndex());
+                event.setRepeating(RepeatingEnum.getByNum(repeatComboBox.getSelectedIndex()));
 
                 if (!eventLocationField.getText().equals(""))
+                {
                     event.setLocation(eventLocationField.getText());
+                }
                 if (!eventDescriptionArea.getText().equals(""))
+                {
                     event.setDescription(eventDescriptionArea.getText());
+                }
 
+                //if not an "all day" event, set the time
                 if (!allDayCheckBox.isSelected())
+                {
                     if (amCheck.isSelected())
+                    {
                         event.setTime(new MyTime(LocalTime.of((hourCombo.getSelectedIndex() + 1) % 12,
                                                               minuteCombo.getSelectedIndex())));
-                    else if (hourCombo.getSelectedIndex() == 11)
+                    } else if (hourCombo.getSelectedIndex() == 11)
+                    {
                         event.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex() + 1,
                                                               minuteCombo.getSelectedIndex())));
-                    else
+                    } else
+                    {
                         event.setTime(new MyTime(LocalTime.of(hourCombo.getSelectedIndex() + 13,
                                                               minuteCombo.getSelectedIndex())));
+                    }
+                }
 
+                //set the reminder if selected
                 if (setReminder.isSelected())
+                {
                     event.getTimeObject().setReminder(hourReminderCombo.getSelectedIndex(),
                                                       minuteReminderCombo.getSelectedIndex());
-                else
+                } else
+                {
                     event.getTimeObject().setReminder(-1, -1);
+                }
 
                 if (newEvent)
                 {
                     MasterSchedule.getInstance().addEventToSchedule(SelectedDate.getInstance(), event);
                     newEvent = false;
                 }
+                //clear all fields and notify observers that a change has been made
                 cancelButton.doClick();
                 SelectedDate.getInstance().notifyObservers();
             }
@@ -232,17 +289,18 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         eventNameField = new JTextField(textFieldSize);
         eventLocationField = new JTextField(textFieldSize);
 
-        repeatComboBox = new JComboBox(MasterSchedule.repeatStrings);
+        repeatComboBox = new JComboBox(RepeatingEnum.values());
 
+        /*
+         * radio buttons for selecting event type
+         */
         eventTypes = new ButtonGroup();
-        eventTypeRadio = new JRadioButton[]
+        eventTypeRadio = new JRadioButton[EventType.values().length];
+        int tempInt = 0;
+        for (EventType type : EventType.values())
         {
-            new JRadioButton(EventType.work.TYPE),
-            new JRadioButton(EventType.family.TYPE),
-            new JRadioButton(EventType.school.TYPE),
-            new JRadioButton(EventType.social.TYPE),
-            new JRadioButton(EventType.holiday.TYPE),
-            new JRadioButton(EventType.other.TYPE)
+            eventTypeRadio[tempInt++] = new JRadioButton(type.TYPE);
+
         };
 
         eventTypeRadio[0].setSelected(true);
@@ -305,6 +363,7 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         return labelBox;
     }
 
+    //resets all fields and hides panel
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -316,8 +375,9 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         repeatComboBox.setSelectedIndex(0);
         eventTypeRadio[0].setSelected(true);
         if (!allDayCheckBox.isSelected())
+        {
             allDayCheckBox.doClick();
-        else
+        } else
         {
             hourCombo.setSelectedIndex(0);
             minuteCombo.setSelectedIndex(0);
@@ -337,6 +397,12 @@ public class EventFactoryPanel extends JPanel implements ActionListener
 
     }
 
+    /**
+     *
+     * If editing an existing event, input that events settings into fields
+     * <p>
+     * @param event to be edited
+     */
     public void inputEvent(CalendarEvent event)
     {
 
@@ -344,22 +410,28 @@ public class EventFactoryPanel extends JPanel implements ActionListener
         eventNameField.setText(this.event.getName());
         eventLocationField.setText(this.event.getLocation());
         eventDescriptionArea.setText(this.event.getDescription());
-        repeatComboBox.setSelectedIndex(event.getRepeating());
+        repeatComboBox.setSelectedIndex(event.getRepeating().NUM);
         eventTypeRadio[event.getEventType().index].setSelected(true);
         if (newEvent)
+        {
             deleteButton.setVisible(false);
-
-        else
+        } else
+        {
             deleteButton.setVisible(true);
+        }
         if (this.event.getTimeObject().getTime() == null)
         {
 
             if (!allDayCheckBox.isSelected())
+            {
                 allDayCheckBox.doClick();
+            }
         } else
         {
             if (allDayCheckBox.isSelected())
+            {
                 allDayCheckBox.doClick();
+            }
 
             //convert hour from 0-23 to 1-12
             hourCombo.setSelectedIndex((event.getTimeObject().getTime().getHour() + 11) % 12);
@@ -367,12 +439,16 @@ public class EventFactoryPanel extends JPanel implements ActionListener
             minuteCombo.setSelectedIndex(event.getTimeObject().getTime().getMinute());
 
             if (event.getTimeObject().getTime().getHour() < 12)
+            {
                 amCheck.setSelected(true);
+            }
         }
         if (this.event.getTimeObject().hasReminder())
         {
             if (!setReminder.isSelected())
+            {
                 setReminder.doClick();
+            }
             hourReminderCombo.setSelectedIndex(event.getTimeObject().getHoursBefore());
             minuteReminderCombo.setSelectedIndex(event.getTimeObject().getMinutesBefore());
 

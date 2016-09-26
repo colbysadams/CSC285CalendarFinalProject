@@ -2,11 +2,11 @@ package csc285finalproject;
 
 import java.awt.Graphics;
 
-/*
- * To change this license header, choose License Headers in Project Properties. To change this template file, choose
- * Tools | Templates and open the template in the editor.
- */
 /**
+ *
+ * Wrapper/Decorator class for date squares in the YearPanel
+ * <p>
+ * Instead of text, a colored border is drawn around the date square
  *
  * @author colbysadams
  */
@@ -19,12 +19,15 @@ public class YearSquareDecorator extends AbstractDateSquareDecorator
     }
 
     /**
-     * 
+     *
+     * wrap the underlying date square and decorators with a colored border
+     * recursively
+     *
      * @param g
      * @param x
      * @param y
      * @param width
-     * @param height 
+     * @param height
      */
     public void drawSquare(Graphics g, int x, int y, int width, int height)
     {
@@ -36,8 +39,8 @@ public class YearSquareDecorator extends AbstractDateSquareDecorator
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getTextHeight()

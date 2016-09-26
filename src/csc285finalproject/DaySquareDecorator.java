@@ -10,6 +10,9 @@ import java.awt.Graphics;
 
 /**
  *
+ * Special DateSquare wrappers for the DayPanel that display more details about
+ * each event than DateSquareDecorator
+ *
  * @author colbysadams
  */
 public class DaySquareDecorator extends AbstractDateSquareDecorator
@@ -27,7 +30,7 @@ public class DaySquareDecorator extends AbstractDateSquareDecorator
     }
 
     /**
-     * 
+     *
      * @return the textHeight
      */
     public int getTextHeight()
@@ -36,12 +39,14 @@ public class DaySquareDecorator extends AbstractDateSquareDecorator
     }
 
     /**
-     * 
+     *
+     * adds extra information about each event
+     *
      * @param g
      * @param x
      * @param y
      * @param width
-     * @param height 
+     * @param height
      */
     public void drawSquare(Graphics g, int x, int y, int width, int height)
     {
@@ -51,6 +56,6 @@ public class DaySquareDecorator extends AbstractDateSquareDecorator
         g.fillOval(5, textHeight - diameter, diameter, diameter);
         g.setColor(Color.black);
         g.drawString(getEvent().getShortLabel() + " : "
-                + MasterSchedule.repeatStrings[getEvent().getRepeating()], 17, textHeight);
+                + getEvent().getRepeating().STRING, 17, textHeight);
     }
 }

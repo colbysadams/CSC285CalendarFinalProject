@@ -16,6 +16,10 @@ import javax.swing.JFrame;
 
 /**
  *
+ * builds the frame
+ * <p>
+ * contains main
+ *
  * @author colbysadams
  */
 public class CalendarTester

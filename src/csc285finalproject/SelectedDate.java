@@ -9,8 +9,11 @@ import java.util.ArrayList;
 
 /**
  *
- * Singleton instance that represents the currently selected date because only one date can be selected at a time keeps
- * all the views in sync and calls them to update whenever a change is made to the singleton instance
+ * Singleton instance that represents the currently selected date because only
+ * one date can be selected at a time
+ * <p>
+ * keeps all the views in sync and calls them to update whenever a change is
+ * made to the singleton instance
  * <p>
  * @author colbysadams
  */
@@ -18,9 +21,7 @@ public class SelectedDate extends MyDate implements Subject
 {
 
     private ArrayList<Observer> observers;
-
     private static SelectedDate date;
-
     private static int count = 0;
 
     private SelectedDate()
@@ -36,7 +37,9 @@ public class SelectedDate extends MyDate implements Subject
     public static SelectedDate getInstance()
     {
         if (date == null)
+        {
             date = new SelectedDate();
+        }
         return date;
     }
 
@@ -54,12 +57,15 @@ public class SelectedDate extends MyDate implements Subject
     public void nextDay(int days)
     {
         for (int i = 0; i < days; ++i)
+        {
             super.nextDay();
+        }
         notifyObservers();
     }
 
     /**
-     * advances calendar forward exactly one year corrects for leap year when necessary
+     * advances calendar forward exactly one year corrects for leap year when
+     * necessary
      * <p>
      */
     public void nextYear()
@@ -68,7 +74,9 @@ public class SelectedDate extends MyDate implements Subject
         {
             super.nextDay();
             if (date.getMonthInt() == 2 && date.getDay() == 29)
+            {
                 super.nextDay();
+            }
         }
         notifyObservers();
     }
@@ -88,12 +96,15 @@ public class SelectedDate extends MyDate implements Subject
     public void prevDay(int days)
     {
         for (int i = 0; i < days; ++i)
+        {
             super.prevDay();
+        }
         notifyObservers();
     }
 
     /**
-     * pushes calendar back exactly one year corrects for leap year when necessary
+     * pushes calendar back exactly one year corrects for leap year when
+     * necessary
      * <p>
      */
     public void prevYear()
@@ -102,7 +113,9 @@ public class SelectedDate extends MyDate implements Subject
         {
             super.prevDay();
             if (date.getMonthInt() == 2 && date.getDay() == 29)
+            {
                 super.prevDay();
+            }
         }
         notifyObservers();
     }
@@ -131,7 +144,9 @@ public class SelectedDate extends MyDate implements Subject
     {
 
         for (Observer o : observers)
+        {
             o.update();
+        }
     }
 
     /**
@@ -144,12 +159,16 @@ public class SelectedDate extends MyDate implements Subject
     {
         //scrolls either forward or backward until reaching desired date
         while (((MyDate) SelectedDate.date).compareTo(date) < 0)
+        {
             super.nextDay();
+        }
 
         while (((MyDate) SelectedDate.date).compareTo(date) > 0)
+        {
             super.prevDay();
+        }
+        //notify observers of new date once found
         notifyObservers();
 
     }
-
 }

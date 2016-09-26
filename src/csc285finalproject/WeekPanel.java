@@ -7,6 +7,8 @@ package csc285finalproject;
 
 /**
  *
+ * Panel representing one calendar week
+ *
  * @author colbysadams
  */
 public class WeekPanel extends WeekMonthParent
@@ -18,7 +20,7 @@ public class WeekPanel extends WeekMonthParent
     }
 
     /**
-     * 
+     *
      * @return the daysDisplayed
      */
     @Override
@@ -28,7 +30,7 @@ public class WeekPanel extends WeekMonthParent
     }
 
     /**
-     * 
+     *
      * @return the buffer
      */
     @Override
@@ -36,12 +38,14 @@ public class WeekPanel extends WeekMonthParent
     {
         if (SelectedDate.getInstance().getFirstWeekdayOfMonth()
                 + SelectedDate.getInstance().getDay() > 7)
+        {
             return 0;
+        }
         return SelectedDate.getInstance().getFirstWeekdayOfMonth();
     }
 
     /**
-     * 
+     *
      * @return the dateOffset
      */
     @Override
@@ -49,10 +53,13 @@ public class WeekPanel extends WeekMonthParent
     {
         int i;
         if (getBuffer() == 0)
+        {
             i = SelectedDate.getInstance().getDay()
                     - SelectedDate.getInstance().getDayOfWeek().index - 1;
-        else
+        } else
+        {
             i = 0;
+        }
 
         return i;
     }

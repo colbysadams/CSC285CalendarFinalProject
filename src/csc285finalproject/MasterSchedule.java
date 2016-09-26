@@ -18,21 +18,17 @@ import java.util.logging.Logger;
 
 /**
  *
+ * This Singleton class maintains a hashmap of all calendar events.
+ * <p>
+ * Details for the implementation of the hashmap are found in the private class
+ * below.
+ * <p>
+ *
  * @author colbysadams
  */
 public class MasterSchedule implements Serializable
 {
 
-    public static final int ONETIME = 0;
-    public static final int YEARLY = 1;
-    public static final int MONTHLY = 2;
-    public static final int WEEKLY = 3;
-    public static final int DAILY = 4;
-    public static final String[] repeatStrings =
-    {
-        "Never", "Yearly", "Monthly", "Weekly", "Everyday"
-    };
-    private static int REPEATTYPES = 5;
     private static MasterSchedule schedule;
     private EventMap eventMap;
 
@@ -47,19 +43,31 @@ public class MasterSchedule implements Serializable
 
     /**
      *
+     * Singleton class ensures that only one instance of masterSchedule will
+     * exist
+     *
      * @return the schedule
      */
     public static MasterSchedule getInstance()
     {
 
+        //if no schedule exists, check for a saved schedule
         if (schedule == null)
+        {
             retrieveSavedSchedule();
+        }
+        //if no saved schedule exists, then create a new schedule
         if (schedule == null)
+        {
             schedule = new MasterSchedule();
+        }
 
         return schedule;
     }
 
+    /**
+     * if user has previously saved a schedule, retrieve it
+     */
     private static void retrieveSavedSchedule()
     {
         ObjectInputStream obj_in = null;
@@ -72,13 +80,11 @@ public class MasterSchedule implements Serializable
             // Read an object
             Object obj = obj_in.readObject();
             if (obj instanceof MasterSchedule)
+            {
                 schedule = (MasterSchedule) obj;
+            }
         }
-        catch (IOException ex)
-        {
-            System.out.println("Loading Failed");
-        }
-        catch (ClassNotFoundException ex)
+        catch (IOException | ClassNotFoundException ex)
         {
             System.out.println("Loading Failed");
         }
@@ -97,15 +103,19 @@ public class MasterSchedule implements Serializable
 
     /**
      *
+     * Add a new event to the schedule
+     *
      * @param date
      * @param event
      */
     public void addEventToSchedule(MyDate date, CalendarEvent event)
     {
-        eventMap.put(getMapString(date, event.getRepeating()), event);
+        eventMap.put(event.getRepeating().getMapString(date), event);
     }
 
     /**
+     *
+     * Remove an event from the schedule
      *
      * @param event
      */
@@ -116,6 +126,8 @@ public class MasterSchedule implements Serializable
 
     /**
      *
+     * Return arraylist representing all events for a given date
+     * <p>
      * @param date
      *             <p>
      * @return the daysEvents
@@ -126,15 +138,28 @@ public class MasterSchedule implements Serializable
 
         ArrayList<CalendarEvent> temp;
 
-        for (int repeating = 0; repeating < REPEATTYPES; ++repeating)
-            if (eventMap.containsKey(getMapString(date, repeating)))
-            {
-                temp = eventMap.get(getMapString(date, repeating));
-                for (int j = 0; j < temp.size(); ++j)
-                    daysEvents.add(temp.get(j));
-            }
 
-        //tests for end of month events
+        /*
+         * checks each repeating separately, see getMapString method
+         */
+        for (RepeatingEnum repeating : RepeatingEnum.values())
+        {
+            if (eventMap.containsKey(repeating.getMapString(date)))
+            {
+                temp = eventMap.get(repeating.getMapString(date));
+                for (int j = 0; j < temp.size(); ++j)
+                {
+                    daysEvents.add(temp.get(j));
+                }
+            }
+        }
+
+        /*
+         * if an event occurs monthly on the 31st, and today is the last
+         * day of (for example) february, check for all monthly events that
+         * occur on
+         * a later date so that this month isnt skipped
+         */
         if (date.getDay() == date.getDaysInMonth() && date.getDay() < 31)
         {
 
@@ -145,16 +170,18 @@ public class MasterSchedule implements Serializable
             }
             catch (IllegalDateException ex)
             {
-                System.out.println("we messing up");
+                System.out.println("The Monthly Event Checker has thrown an exception");
             }
             while (sample.getMonthInt() == 1)
             {
-                if (eventMap.containsKey(getMapString(sample, MONTHLY)))
+                if (eventMap.containsKey(RepeatingEnum.MONTHLY.getMapString(sample)))
                 {
-                    temp = eventMap.get(getMapString(sample, MONTHLY));
-                    //System.out.println("monthly: e" + e + "Date" +date);
+                    temp = eventMap.get(RepeatingEnum.MONTHLY.getMapString(sample));
+
                     for (int i = 0; i < temp.size(); ++i)
+                    {
                         daysEvents.add(temp.get(i));
+                    }
                 }
                 sample.nextDay();
             }
@@ -165,6 +192,13 @@ public class MasterSchedule implements Serializable
 
     }
 
+    /**
+     * returns all events that have reminders that need to be fired.
+     * <p>
+     * @param date
+     *             <p>
+     * @return
+     */
     public ArrayList<CalendarEvent> getTodaysEventReminders(MyDate date)
     {
         ArrayList<CalendarEvent> temp;
@@ -175,12 +209,16 @@ public class MasterSchedule implements Serializable
         for (CalendarEvent e : temp)
         {
             if (!e.hasReminder())
+            {
                 continue;
+            }
             if (e.getTimeObject().getTime() == null)
+            {
                 reminderEvents.add(e);
-
-            else if (!e.getTimeObject().getReminder().isAfter(e.getTimeObject().getTime()))
+            } else if (!e.getTimeObject().getReminder().isAfter(e.getTimeObject().getTime()))
+            {
                 reminderEvents.add(e);
+            }
 
         }
         MyDate tomorrow = date.clone();
@@ -189,13 +227,26 @@ public class MasterSchedule implements Serializable
         //get events that have a reminder that wraps around midnight
         for (CalendarEvent e : temp)
 
+        {
             if (e.hasReminder() && e.getTimeObject().getTime() != null)
+            {
                 if (e.getTimeObject().getReminder().isAfter(e.getTimeObject().getTime()))
+                {
                     reminderEvents.add(e);
-        //System.out.println(reminderEvents);
+                }
+            }
+        }
         return reminderEvents;
     }
 
+    /**
+     * At 5:30 pm, user will be reminded of tomorrows "all day" events that
+     * have a reminder set
+     * <p>
+     * @param date
+     *             <p>
+     * @return
+     */
     public ArrayList<CalendarEvent> getTomorrowsEventReminders(MyDate date)
     {
         ArrayList<CalendarEvent> temp;
@@ -205,48 +256,26 @@ public class MasterSchedule implements Serializable
         tomorrow.nextDay();
         temp = this.getDaysEvents(tomorrow);
         for (CalendarEvent e : temp)
+        {
             if (e.hasReminder() && e.getTimeObject().getTime() == null)
+            {
                 reminderEvents.add(e);
-        //System.out.println(reminderEvents);
+            }
+        }
         return reminderEvents;
     }
 
     /**
-     *
-     * @param date
-     *             <p>
-     * @return
+     * generates a handful of generic events to populate the calendar
      */
-    public boolean hasEventsOn(MyDate date)
-    {
-        if (date.getDay() == date.getDaysInMonth())
-        {
-            //test for end of month events (ie this month only has 28 days, but a monthly
-            //event occurs on the 31 of every month.
-            MyDate sample = null;
-            try
-            {
-                sample = new MyDate(1, date.getDay(), date.getYear());
-            }
-            catch (IllegalDateException ex)
-            {
-                Logger.getLogger(MasterSchedule.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            while (sample.getMonthInt() == 1)
-            {
-                if (eventMap.containsKey(getMapString(sample, MONTHLY)))
-                    return true;
-                sample.nextDay();
-            }
-        }
-        for (int i = 0; i < REPEATTYPES; ++i)
-            if (eventMap.containsKey(getMapString(date, i)))
-                return true;
-        return false;
-    }
-
     private void generateSampleEvents()
     {
+        //MAKES TYPING EASIER
+        RepeatingEnum DAILY = RepeatingEnum.DAILY;
+        RepeatingEnum WEEKLY = RepeatingEnum.WEEKLY;
+        RepeatingEnum MONTHLY = RepeatingEnum.MONTHLY;
+        RepeatingEnum YEARLY = RepeatingEnum.YEARLY;
+        RepeatingEnum ONETIME = RepeatingEnum.ONETIME;
         try
         {
             System.out.println("generating events");
@@ -283,27 +312,12 @@ public class MasterSchedule implements Serializable
         }
     }
 
-    //depending on the type of event, return a different version of the string
-    //that represents the date of the event
-    private static String getMapString(MyDate date, int repeating)
-    {
-        switch (repeating)
-        {
-            case ONETIME:
-                return date.getMonthString() + "_" + date.getDay() + "_" + date.getYear();
-            case YEARLY:
-                return date.getMonthString() + "_" + date.getDay() + "_" + "YYYY";
-            case MONTHLY:
-                return "MM_" + date.getDay() + "_YYYY";
-            case WEEKLY:
-                return date.getDayOfWeek().name;
-            case DAILY:
-                return "MM_DD_YYYY";
-        }
-        return "";
-
-    }
-
+    /**
+     * wrapper class for HashMap that holds the events.
+     * HashMap uses strings for keys, and an ArrayList of CalendarEvents as
+     * value
+     * HashMap is wrapped to alter the behavior of put and remove
+     */
     private class EventMap implements Serializable
     {
 
@@ -354,20 +368,38 @@ public class MasterSchedule implements Serializable
             return eventMap.get(key);
         }
 
+        /**
+         * normally, this method would replace the arraylist currently in place
+         * but method has been wrapped to modify it to access the arraylist and
+         * then add the new event to the array list
+         * <p>
+         * @param key
+         * @param value
+         */
         public void put(String key, CalendarEvent value)
         {
             value.setDateString(key);
             ArrayList<CalendarEvent> daysEvents;
 
             if (!containsKey(key))
+            {
                 daysEvents = new ArrayList();
-            else
+            } else
+            {
                 daysEvents = eventMap.get(key);
+            }
             daysEvents.add(value);
             eventMap.put(key, daysEvents);
 
         }
 
+        /**
+         * normally, this method would remove the entire key/value pair from the
+         * hashmap, but it has been altered to simply retrieve the arraylist and
+         * remove the specified event.
+         * <p>
+         * @param event
+         */
         public void remove(CalendarEvent event)
         {
             ArrayList<CalendarEvent> daysEvents;

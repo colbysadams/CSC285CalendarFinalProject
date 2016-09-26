@@ -9,9 +9,10 @@ import java.awt.Color;
 
 /**
  *
+ * Enum that represents the various groups of events user can schedule
+ *
  * @author colbysadams
  */
-
 public enum EventType
 {
 
@@ -21,16 +22,15 @@ public enum EventType
     social("Social", Color.red, 3),
     holiday("Holiday", Color.MAGENTA, 4),
     other("Other", Color.cyan, 5);
-
     public final Color COLOR;
     public final String TYPE;
     public final int index;
 
     /**
-     * 
+     *
      * @param name
      * @param color
-     * @param index 
+     * @param index
      */
     EventType(String name, Color color, int index)
     {
@@ -40,8 +40,10 @@ public enum EventType
     }
 
     /**
-     * 
+     * returns eventType based on its assigned int
+     * <p>
      * @param index
+     * <p>
      * @return the eventType
      */
     public static EventType get(int index)

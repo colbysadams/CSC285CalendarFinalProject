@@ -21,16 +21,17 @@ import javax.swing.SwingConstants;
 
 /**
  *
+ * This panel is used to display the details of events on the selected date
+ *
  * @author colbysadams
  */
-public class EventDetailPanel extends JPanel implements Observer, ActionListener
+public class EventDetailPanel extends ObserverPanel implements ActionListener
 {
 
     private static CalendarEvent selectedEvent;
     private static JButton editEventButton;
     private static ArrayList<EventDetailPanel> everyInstance = new ArrayList();
     private static boolean visible = true;
-
     private ArrayList<CalendarEvent> daysEvents;
     private JPanel buttonPanel;
     private JPanel detailPanel;
@@ -87,8 +88,10 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
     }
 
     /**
-     * 
-     * @param editEventButton 
+     *
+     * Edit event button is only enabled if an event is selected
+     * <p>
+     * @param editEventButton
      */
     public static void addEditEventButton(JButton editEventButton)
     {
@@ -96,18 +99,26 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
     }
 
     /**
-     * 
-     * @param visible 
+     *
+     * if there are no events on the selected date, then this panel will
+     * not be shown.
+     * <p>
+     * @param visible
      */
     public static void makeVisible(boolean visible)
     {
         EventDetailPanel.visible = visible;
         for (EventDetailPanel e : everyInstance)
+        {
             e.setVisible(visible);
+        }
     }
 
     /**
-     * 
+     *
+     * if user clicks on an event in the panel, they can choose to edit that
+     * event
+     * <p>
      * @return the selectedEvent
      */
     public static CalendarEvent getSelectedEvent()
@@ -115,6 +126,11 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         return selectedEvent;
     }
 
+    /**
+     * when an event is clicked on, display details about that event
+     * <p>
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -136,6 +152,10 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         //System.out.println("EventSelected " + selectedEvent);
     }
 
+    /**
+     * implements method required by observer interface
+     * when a new date is selected, new events are shown
+     */
     @Override
     public void update()
     {
@@ -143,6 +163,9 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
         addButtonsToPanel();
     }
 
+    /**
+     * replaces events when selected date is changed
+     */
     private void addButtonsToPanel()
     {
         buttonPanel.removeAll();
@@ -178,7 +201,9 @@ public class EventDetailPanel extends JPanel implements Observer, ActionListener
 
             }
             if (daysEvents.size() == 1)
+            {
                 eventButton.doClick();
+            }
         }
     }
 }

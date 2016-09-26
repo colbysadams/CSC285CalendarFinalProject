@@ -39,10 +39,10 @@ public class MainFrame extends JFrame implements Observer
     private SelectedDate selectedDate;
     private MyDate today;
     private LocalTime currentTime;
-    private AbstractCalendarViewPanel weekPanel;
-    private AbstractCalendarViewPanel monthPanel;
-    private AbstractCalendarViewPanel dayPanel;
-    private AbstractCalendarViewPanel yearPanel;
+    private ObserverPanel weekPanel;
+    private ObserverPanel monthPanel;
+    private ObserverPanel dayPanel;
+    private ObserverPanel yearPanel;
     private EventFactoryPanel eventPanel;
     private Box eventBox;
     private JButton nextButton;
@@ -57,6 +57,9 @@ public class MainFrame extends JFrame implements Observer
     //private JOptionPane reminderPanel;
 
     /**
+     *
+     * Builds the main frame which holds a tabbed pane for each calendar view
+     * and event editing panels
      *
      * @param name
      */
@@ -95,7 +98,9 @@ public class MainFrame extends JFrame implements Observer
                 {
                     if ((alreadyRemindedToday.contains(todaysEvents.get(i)))
                             || (!todaysEvents.get(i).hasReminder()))
+                    {
                         continue;
+                    }
 
                     MyTime eventTime = todaysEvents.get(i).getTimeObject();
 
@@ -111,14 +116,16 @@ public class MainFrame extends JFrame implements Observer
 
                 }
                 // at 5:30 pm, remind user about all day events occuring tomorrow
-                if ((currentTime.getHour() == 5) && (currentTime.getMinute() == 30))
+                if ((currentTime.getHour() == 17) && (currentTime.getMinute() == 30))
                 {
                     todaysEvents = MasterSchedule.getInstance().getTomorrowsEventReminders(today);
                     for (int i = 0; i < todaysEvents.size(); ++i)
                     {
                         if ((alreadyRemindedTomorrow.contains(todaysEvents.get(i)))
                                 || (!todaysEvents.get(i).hasReminder()))
+                        {
                             continue;
+                        }
 
                         MyTime eventTime = todaysEvents.get(i).getTimeObject();
 
@@ -173,6 +180,9 @@ public class MainFrame extends JFrame implements Observer
 
             /**
              *
+             * jump forward the appropriate number of days when the next
+             * button is clicked
+             * <p>
              * @param e
              */
             @Override
@@ -204,6 +214,10 @@ public class MainFrame extends JFrame implements Observer
 
             /**
              *
+             * Jump backward the appropriate number of days when the previous
+             * button
+             * is clicked
+             *
              * @param e
              */
             @Override
@@ -227,6 +241,9 @@ public class MainFrame extends JFrame implements Observer
             }
         });
 
+        /*
+         * set the selected date to today
+         */
         todayButton.addActionListener(new ActionListener()
         {
 
@@ -243,6 +260,9 @@ public class MainFrame extends JFrame implements Observer
 
         });
 
+        /*
+         * bring up eventFactoryPanel
+         */
         createEventButton.addActionListener(new ActionListener()
         {
 
@@ -261,6 +281,9 @@ public class MainFrame extends JFrame implements Observer
 
         });
 
+        /*
+         * bring up event factory panel and input selected event
+         */
         editEventButton.addActionListener(new ActionListener()
         {
 
@@ -272,7 +295,9 @@ public class MainFrame extends JFrame implements Observer
             public void actionPerformed(ActionEvent e)
             {
                 if (EventDetailPanel.getSelectedEvent() == null)
+                {
                     return;
+                }
                 eventPanel.inputEvent(EventDetailPanel.getSelectedEvent());
 
                 eventPanel.setVisible(true);
@@ -313,8 +338,7 @@ public class MainFrame extends JFrame implements Observer
         changeBox.add(nextButton, BorderLayout.NORTH);
         changeBox.add(Box.createHorizontalGlue());
         changeBox.add(labelBox);
-        //changeBox.add(eventButton);
-        //this.add(eventButton,BorderLayout.SOUTH);
+
         this.getContentPane().add(changeBox, BorderLayout.NORTH);
         this.getContentPane().add(calendarView);
         this.getContentPane().add(eventPanel, BorderLayout.EAST);
@@ -324,10 +348,13 @@ public class MainFrame extends JFrame implements Observer
         timer.start();
     }
 
+    /**
+     * updates text at top of screen when selected date is changed
+     */
     @Override
     public void update()
     {
-        //updates text at top of screen when selected date is changed
+        //
         dayOfWeek.setText(SelectedDate.getInstance().getDayOfWeek().name);
         date.setText("  " + SelectedDate.getInstance().toString() + "   ");
 

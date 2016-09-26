@@ -11,6 +11,11 @@ import java.util.logging.Logger;
 
 /**
  *
+ * As part of the assignment, we were required to build our own date class.
+ * <p>
+ * The standard Calendar is used to set the date to the Current day, but
+ * everything else is handled independently of Calendar.
+ *
  * @author colbysadams
  */
 public class MyDate implements Comparable<MyDate>, Cloneable
@@ -18,7 +23,6 @@ public class MyDate implements Comparable<MyDate>, Cloneable
 
     private int day, year;
     private Month month;
-    //private transient static Calendar today = Calendar.getInstance();;
 
     /**
      * Constructor makes MyDate object for today's date
@@ -47,7 +51,9 @@ public class MyDate implements Comparable<MyDate>, Cloneable
         this.year = year;
 
         if (!valid())
+        {
             throw new IllegalDateException("Illegal Date Entered into MyDate(Month month, int day, int year)");
+        }
     }
 
     public MyDate clone()
@@ -99,7 +105,9 @@ public class MyDate implements Comparable<MyDate>, Cloneable
     public int getDaysInMonth()
     {
         if (isLeapYear() && month == Month.feb)
+        {
             return month.getNormalDaysInMonth() + 1;
+        }
         return month.getNormalDaysInMonth();
     }
 
@@ -128,7 +136,7 @@ public class MyDate implements Comparable<MyDate>, Cloneable
     }
 
     /**
-     * 
+     *
      * @return the monthNum
      */
     public int getMonthInt()
@@ -137,8 +145,9 @@ public class MyDate implements Comparable<MyDate>, Cloneable
     }
 
     /**
-     * 
+     *
      * @param calendarNum
+     *                    <p>
      * @return the Month
      */
     public static String getMonth(int calendarNum)
@@ -158,7 +167,9 @@ public class MyDate implements Comparable<MyDate>, Cloneable
         {
             //if day is not valid, go to next month
             if (month.getMonthNum() + 1 == 13)
+            {
                 year++;
+            }
             month = Month.getMonth(month.getMonthNum() + 1);
 
             day = 1;
@@ -177,7 +188,9 @@ public class MyDate implements Comparable<MyDate>, Cloneable
         {
             // if day was not valid, go to previous month
             if (month.getMonthNum() - 1 == 0)
+            {
                 year--;
+            }
             month = Month.getMonth(month.getMonthNum() - 1);
             //month was not valid, go to previous year
 
@@ -223,7 +236,7 @@ public class MyDate implements Comparable<MyDate>, Cloneable
     }
 
     /**
-     * 
+     *
      * @return string
      */
     @Override
@@ -246,17 +259,22 @@ public class MyDate implements Comparable<MyDate>, Cloneable
     }
 
     /**
-     * 
+     *
      * @param o
+     *          <p>
      * @return the date
      */
     @Override
     public int compareTo(MyDate o)
     {
         if (this.year != o.year)
+        {
             return year - o.year;
+        }
         if (this.month != o.month)
+        {
             return month.compareTo(o.month);
+        }
         return this.day - o.day;
     }
 
@@ -264,9 +282,13 @@ public class MyDate implements Comparable<MyDate>, Cloneable
     {
         {
             if (other.month.getMonthNum() != this.month.getMonthNum())
+            {
                 return false;
+            }
             if (other.day != this.day)
+            {
                 return false;
+            }
 
             return other.year == this.year;
         }
@@ -302,21 +324,33 @@ public class MyDate implements Comparable<MyDate>, Cloneable
         //if day is before Oct 15, 1582 return false
         //calendar is only good for the next 8000 years (formatting purposes)
         if (year < 1582 || year > 9999)
+        {
             return false;
+        }
         if (year == 1582)
         {
             if (month.compareTo(Month.oct) < 0)
+            {
                 return false;
+            }
             if (month == Month.oct && day < 15)
+            {
                 return false;
+            }
         }
 
         // if it is a february and leap year, add one day to daysPerMonth then compare
         if (month == Month.feb)
-            //returns true if leap year
+        //returns true if leap year
+        {
             if (isLeapYear())
+            {
                 if (day > 0 && day <= month.getNormalDaysInMonth() + 1)
+                {
                     return true;
+                }
+            }
+        }
         //not a leap year, check that day is valid and return
         return (day > 0 && day <= month.getNormalDaysInMonth());
     }
@@ -345,9 +379,12 @@ public class MyDate implements Comparable<MyDate>, Cloneable
 
         // Add days in the months.
         if (month.getMonthNum() <= 2)
+        {
             numDays = numDays + (month.getMonthNum() - 1) * 31;
-        else
+        } else
+        {
             numDays = numDays + ((month.getMonthNum() - 1) * 31) - ((4 * (month.getMonthNum() - 1) + 27) / 10);
+        }
 
         // Add days in the days.
         numDays = numDays + day;
@@ -359,11 +396,17 @@ public class MyDate implements Comparable<MyDate>, Cloneable
         if (month.getMonthNum() < 3)
         {
             if ((year % 4) == 0)
+            {
                 numDays = numDays - 1;
+            }
             if ((year % 100) == 0)
+            {
                 numDays = numDays + 1;
+            }
             if ((year % 400) == 0)
+            {
                 numDays = numDays - 1;
+            }
         }
 
         // Subtract extra days up to 10/14/1582.
@@ -391,10 +434,10 @@ public class MyDate implements Comparable<MyDate>, Cloneable
         private final int daysInMonth;
 
         /**
-         * 
+         *
          * @param s
          * @param num
-         * @param days 
+         * @param days
          */
         Month(String s, int num, int days)
         {

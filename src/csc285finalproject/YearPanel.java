@@ -14,8 +14,11 @@ import javax.swing.SwingConstants;
 
 /**
  *
- * Creates a collection of 12 month panels to represent the whole year year panel is both a subject and observer, year
- * panel observes the SelectedDate singleton, but is also observed by its 12 month panels within the view
+ * Creates a collection of 12 month panels to represent the whole year year
+ * panel and is both a subject and observer.
+ * <p>
+ * Year panel observes the SelectedDate singleton, but is also observed by its
+ * 12 month panels within the view
  * <p>
  * update is just relayed to each month panel
  * <p>
@@ -68,18 +71,18 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     @Override
     public void addLabels()
     {
-        
+
     }
 
     @Override
     public void addDateSquares()
     {
-        
+
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getDaysDisplayed()
@@ -88,8 +91,8 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getRowSize()
@@ -98,8 +101,8 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getBuffer()
@@ -108,8 +111,8 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     @Override
     public int getDateOffset()
@@ -118,8 +121,8 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     }
 
     /**
-     * 
-     * @param o 
+     *
+     * @param o
      */
     @Override
     public void addObserver(Observer o)
@@ -128,27 +131,28 @@ public class YearPanel extends AbstractCalendarViewPanel implements Subject
     }
 
     /**
-     * 
-     * @param o 
+     *
+     * @param o
      */
     @Override
     public void deleteObserver(Observer o)
     {
-        
+
     }
 
     @Override
     public void notifyObservers()
     {
         for (Observer o : monthPanels)
+        {
             o.update();
+        }
     }
 
     @Override
     public void update()
     {
-        //super.update();
-        //addDateSquares();
+
         notifyObservers();
     }
 }

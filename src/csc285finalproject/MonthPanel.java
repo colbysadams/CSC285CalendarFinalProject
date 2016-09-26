@@ -7,6 +7,8 @@ package csc285finalproject;
 
 /**
  *
+ * Displays a panel representing the month of the currently selected date
+ *
  * @author colbysadams
  */
 public class MonthPanel extends WeekMonthParent
@@ -18,9 +20,9 @@ public class MonthPanel extends WeekMonthParent
     }
 
     /**
-     * 
+     *
      * @param date
-     * @param shortLabels 
+     * @param shortLabels
      */
     public MonthPanel(MyDate date, boolean shortLabels)
     {
@@ -28,7 +30,7 @@ public class MonthPanel extends WeekMonthParent
     }
 
     /**
-     * 
+     *
      * @return the daysInMonth
      */
     @Override
@@ -38,7 +40,7 @@ public class MonthPanel extends WeekMonthParent
     }
 
     /**
-     * 
+     *
      * @return firstWeekdayOfMonth
      */
     @Override

@@ -7,6 +7,8 @@ package csc285finalproject;
 
 /**
  *
+ * panel that displays only one day at a time
+ *
  * @author colbysadams
  */
 public class DayPanel extends AbstractCalendarViewPanel
